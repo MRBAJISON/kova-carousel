@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Download Kova Slides</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #5B2BE8;
+    --purple-hover: #4A1FCB;
+    --purple-tint: #EFE7FF;
+    --purple-soft: #7A53F0;
+    --teal: #0D9488;
+    --teal-tint: #CCFBF1;
+    --slate-50: #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Geist', system-ui, sans-serif;
+    background: #0F172A;
+    color: white;
+    padding: 40px;
+    text-align: center;
+  }
+  h1 { font-size: 28px; margin-bottom: 10px; }
+  p { color: #94A3B8; margin-bottom: 30px; }
+  #btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 16px 48px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Geist', system-ui, sans-serif;
+    margin-bottom: 30px;
+  }
+  #btn:hover { background: var(--purple-hover); }
+  #btn:disabled { opacity: 0.5; cursor: default; }
+  #status { color: var(--teal); font-size: 16px; margin-bottom: 40px; min-height: 24px; }
+  .slides-row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+
+  .slide {
+    width: 1080px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 120px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Geist', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide-wrapper {
+    width: 270px;
+    height: 270px;
+    overflow: hidden;
+    border-radius: 12px;
+    position: relative;
+  }
+  .slide-wrapper .slide {
+    transform: scale(0.25);
+    transform-origin: top left;
+  }
+  .slide-label { margin-top: 8px; font-size: 13px; color: #94A3B8; }
+
+  .headline { font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; text-align: center; }
+  .body-text { font-size: 30px; font-weight: 400; line-height: 1.6; text-align: center; }
+  .kova-wordmark { height: 64px; margin-bottom: 48px; }
+  .slide-logo-top { position: absolute; top: 56px; left: 64px; }
+  .slide-logo-top img { height: 44px; }
+
+  /* SLIDE 1 */
+  .slide-1 { background: #FFFFFF; }
+  .slide-1 .headline { font-size: 88px; color: var(--slate-900); }
+  .slide-1 .headline .purple { color: var(--purple); }
+  .slide-1 .subtitle { font-size: 30px; color: var(--slate-500); margin-top: 40px; text-align: center; font-weight: 400; }
+  .slide-1 .accent-line { width: 160px; height: 4px; background: linear-gradient(90deg, var(--purple), var(--teal)); margin-top: 40px; border-radius: 4px; }
+
+  /* SLIDE 2 */
+  .slide-2 { background: var(--slate-900); align-items: flex-start; padding: 120px 112px; }
+  .slide-2 .headline { font-size: 76px; color: #FFFFFF; text-align: left; margin-bottom: 72px; }
+  .slide-2 .bullet-list { display: flex; flex-direction: column; gap: 36px; width: 100%; }
+  .slide-2 .bullet-item { display: flex; align-items: flex-start; gap: 28px; font-size: 30px; color: var(--slate-400); line-height: 1.5; }
+  .slide-2 .bullet-dot { width: 14px; height: 14px; min-width: 14px; background: var(--teal); border-radius: 50%; margin-top: 14px; }
+
+  /* SLIDE 3 */
+  .slide-3 { background: #FFFFFF; }
+  .slide-3 .headline { font-size: 96px; color: var(--slate-900); margin-bottom: 16px; }
+  .slide-3 .sub-headline { font-size: 44px; font-weight: 700; color: var(--purple); margin-bottom: 48px; text-align: center; }
+  .slide-3 .body-text { color: var(--slate-600); max-width: 760px; }
+
+  /* SLIDE 4 */
+  .slide-4 { background: var(--slate-50); padding: 96px 88px; justify-content: flex-start; padding-top: 104px; }
+  .slide-4 .headline { font-size: 68px; color: var(--slate-900); margin-bottom: 56px; text-align: center; }
+  .step-cards { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+  .step-card { display: flex; align-items: center; gap: 32px; background: #FFFFFF; border: 2px solid var(--slate-200); border-radius: 28px; padding: 36px 40px; }
+  .step-num { width: 80px; height: 80px; min-width: 80px; background: var(--purple); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; color: white; }
+  .step-title { font-size: 32px; font-weight: 700; color: var(--slate-900); margin-bottom: 4px; }
+  .step-desc { font-size: 26px; color: var(--slate-500); line-height: 1.4; }
+
+  /* SLIDE 5 */
+  .slide-5 { background: #FFFFFF; padding: 96px 88px; justify-content: flex-start; padding-top: 104px; }
+  .slide-5 .headline { font-size: 68px; color: var(--slate-900); margin-bottom: 56px; }
+  .feature-list { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+  .feature-row { display: flex; align-items: center; gap: 28px; background: var(--purple-tint); border-radius: 24px; padding: 32px 40px; }
+  .feature-check { width: 56px; height: 56px; min-width: 56px; background: var(--teal); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .feature-check svg { width: 28px; height: 28px; stroke: white; stroke-width: 3; fill: none; }
+  .feature-text { font-size: 30px; font-weight: 500; color: var(--slate-800); }
+
+  /* SLIDE 6 */
+  .slide-6 { background: var(--slate-900); padding: 96px 80px; justify-content: flex-start; padding-top: 104px; }
+  .slide-6 .headline { font-size: 64px; color: #FFFFFF; margin-bottom: 56px; }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; }
+  .why-card { background: var(--slate-800); border: 2px solid rgba(203,213,225,0.1); border-radius: 28px; padding: 40px; }
+  .why-accent { width: 56px; height: 6px; border-radius: 4px; margin-bottom: 24px; }
+  .why-accent.purple { background: var(--purple); }
+  .why-accent.teal { background: var(--teal); }
+  .why-title { font-size: 30px; font-weight: 700; color: #FFFFFF; margin-bottom: 12px; }
+  .why-desc { font-size: 24px; color: var(--slate-400); line-height: 1.5; }
+
+  /* SLIDE 7 */
+  .slide-7 { background: var(--purple); }
+  .slide-7 .headline { font-size: 76px; color: #FFFFFF; margin-bottom: 32px; }
+  .slide-7 .subtitle { font-size: 30px; color: rgba(255,255,255,0.75); text-align: center; line-height: 1.6; max-width: 720px; margin-bottom: 56px; }
+  .cta-btn { background: #FFFFFF; color: var(--purple); font-family: 'Geist', system-ui, sans-serif; font-size: 32px; font-weight: 700; padding: 28px 72px; border-radius: 9999px; border: none; }
+  .slide-7 .footer { position: absolute; bottom: 64px; font-size: 24px; color: rgba(255,255,255,0.4); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1>Kova AI Carousel — Download</h1>
+<p>Click the button to save all 7 slides as 1080x1080 PNGs</p>
+<button id="btn" onclick="downloadAll()">Download All Slides</button>
+<div id="status"></div>
+
+<div class="slides-row" id="previews"></div>
+
+<!-- Full-size slides (hidden, used for capture) -->
+<div id="capture-area" style="position:absolute;left:-9999px;top:0;">
+
+  <div class="slide slide-1" id="s1">
+    <img class="kova-wordmark" src="kova-wordmark-light.png" alt="Kova AI">
+    <div class="headline">Sell on WhatsApp.<br><span class="purple">Without typing.</span></div>
+    <div class="subtitle">AI-powered WhatsApp sales for your business</div>
+    <div class="accent-line"></div>
+  </div>
+
+  <div class="slide slide-2" id="s2">
+    <div class="slide-logo-top"><img src="kova-wordmark-dark.png" alt="Kova AI"></div>
+    <div class="headline">You're losing sales<br>in your DMs.</div>
+    <div class="bullet-list">
+      <div class="bullet-item"><div class="bullet-dot"></div>Hours spent replying to the same questions</div>
+      <div class="bullet-item"><div class="bullet-dot"></div>Orders slipping through the cracks</div>
+      <div class="bullet-item"><div class="bullet-dot"></div>Customers waiting too long for replies</div>
+    </div>
+  </div>
+
+  <div class="slide slide-3" id="s3">
+    <div class="slide-logo-top"><img src="kova-wordmark-light.png" alt="Kova AI"></div>
+    <div class="headline">Meet Kova</div>
+    <div class="sub-headline">Your AI WhatsApp Sales Agent</div>
+    <div class="body-text">Turns WhatsApp conversations into orders, bookings, and paid customers. Your team stays focused on fulfillment.</div>
+  </div>
+
+  <div class="slide slide-4" id="s4">
+    <div class="slide-logo-top"><img src="kova-wordmark-light.png" alt="Kova AI"></div>
+    <div class="headline">3 Steps to Go Live</div>
+    <div class="step-cards">
+      <div class="step-card"><div class="step-num">01</div><div><div class="step-title">Connect</div><div class="step-desc">Link your WhatsApp number. Keep your existing one.</div></div></div>
+      <div class="step-card"><div class="step-num">02</div><div><div class="step-title">Teach</div><div class="step-desc">Add your catalog, prices, FAQs, and policies.</div></div></div>
+      <div class="step-card"><div class="step-num">03</div><div><div class="step-title">Go Live</div><div class="step-desc">AI handles the rest. Your team retains control.</div></div></div>
+    </div>
+  </div>
+
+  <div class="slide slide-5" id="s5">
+    <div class="slide-logo-top"><img src="kova-wordmark-light.png" alt="Kova AI"></div>
+    <div class="headline">Everything You Need</div>
+    <div class="feature-list">
+      <div class="feature-row"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="feature-text">Answer questions instantly</div></div>
+      <div class="feature-row"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="feature-text">Take orders and bookings</div></div>
+      <div class="feature-row"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="feature-text">Collect payments (MoMo, card, bank)</div></div>
+      <div class="feature-row"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="feature-text">Hand off to humans when needed</div></div>
+      <div class="feature-row"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="feature-text">Works 24/7, even while you sleep</div></div>
+    </div>
+  </div>
+
+  <div class="slide slide-6" id="s6">
+    <div class="slide-logo-top"><img src="kova-wordmark-dark.png" alt="Kova AI"></div>
+    <div class="headline">Built for African<br>Businesses</div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-accent purple"></div><div class="why-title">No App Needed</div><div class="why-desc">Works on the WhatsApp your customers already use</div></div>
+      <div class="why-card"><div class="why-accent teal"></div><div class="why-title">Launch Fast</div><div class="why-desc">Go live in days, not months</div></div>
+      <div class="why-card"><div class="why-accent purple"></div><div class="why-title">Focus on Fulfillment</div><div class="why-desc">Your team handles what matters while AI handles the rest</div></div>
+      <div class="why-card"><div class="why-accent teal"></div><div class="why-title">Made for You</div><div class="why-desc">Salons, shops, restaurants across Africa</div></div>
+    </div>
+  </div>
+
+  <div class="slide slide-7" id="s7">
+    <img class="kova-wordmark" src="kova-wordmark-light.png" alt="Kova AI" style="height:72px;margin-bottom:56px;background:#FFFFFF;padding:20px 40px;border-radius:20px">
+    <div class="headline">Ready to sell<br>on WhatsApp?</div>
+    <div class="subtitle">Let Kova handle the conversations while you grow your business.</div>
+    <button class="cta-btn">trykovaai.com</button>
+    <div class="footer">trykovaai.com &middot; 0547605037</div>
+  </div>
+
+</div>
+
+<script>
+const names = ['slide-1-cover','slide-2-problem','slide-3-meet-kova','slide-4-how-it-works','slide-5-features','slide-6-why-kova','slide-7-cta'];
+
+async function downloadAll() {
+  const btn = document.getElementById('btn');
+  const status = document.getElementById('status');
+  btn.disabled = true;
+
+  for (let i = 0; i < 7; i++) {
+    status.textContent = 'Capturing slide ' + (i+1) + ' of 7...';
+    const el = document.getElementById('s' + (i+1));
+    const canvas = await html2canvas(el, { width: 1080, height: 1080, scale: 1, useCORS: true });
+    const link = document.createElement('a');
+    link.download = names[i] + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    await new Promise(r => setTimeout(r, 1000));
+  }
+
+  status.textContent = 'All 7 slides downloaded!';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>

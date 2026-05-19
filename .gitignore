@@ -1,0 +1,7 @@
+node_modules/
+reel/out/
+heygen-frames/
+heygen-audio.wav
+filter*.txt
+*.wav
+.claude/
