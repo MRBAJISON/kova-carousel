@@ -66,11 +66,12 @@
   .field-group h3{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--app-sub);margin-bottom:12px;}
   .field{margin-bottom:14px;}
   .field label{display:block;font-size:13px;font-weight:600;color:var(--app-ink);margin-bottom:6px;}
-  .field input[type=text], .field input[type=number]{
+  .field input[type=text], .field input[type=number], .field textarea{
     width:100%;padding:10px 12px;border:1px solid var(--app-border);border-radius:8px;
-    font-family:inherit;font-size:14px;color:var(--app-ink);background:#F8FAFC;
+    font-family:inherit;font-size:14px;color:var(--app-ink);background:#F8FAFC;resize:vertical;
   }
-  .field input:focus{outline:none;border-color:var(--green);background:#fff;}
+  .field textarea{min-height:56px;line-height:1.4;}
+  .field input:focus, .field textarea:focus{outline:none;border-color:var(--green);background:#fff;}
   .field-note{font-size:11.5px;color:var(--app-sub);margin-top:4px;line-height:1.4;}
   .result-box{
     margin-top:6px;background:var(--navy);border-radius:12px;padding:16px 18px;color:#fff;
@@ -105,174 +106,192 @@
   .preview-frame .scaler{position:absolute;top:0;left:0;width:1240px;height:1754px;transform-origin:top left;}
 
   /* ============================================================
-     SLIDE / PAGE SYSTEM  (native size 1240 x 1754 — A4 @ ~150dpi)
+     PAGE SYSTEM  (native size 1240 x 1754 — A4 @ ~150dpi)
+     Every page has a neutral cream canvas; light/dark sections are
+     self-contained panels so two sections can share a page.
      ============================================================ */
-  .page{width:1240px;height:1754px;position:relative;overflow:hidden;font-family:'Geist',sans-serif;-webkit-font-smoothing:antialiased;}
-  .page-light{background:var(--cream);color:var(--ink);}
-  .page-dark{background:var(--navy);color:#fff;}
-  .grid-bg::before{
+  .page{width:1240px;height:1754px;position:relative;overflow:hidden;font-family:'Geist',sans-serif;-webkit-font-smoothing:antialiased;background:var(--cream);color:var(--ink);}
+  .page-pad{padding:46px 60px;height:100%;display:flex;flex-direction:column;}
+  .runner{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line-light);}
+  .runner .r-left{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--ink);}
+  .runner .r-left span{color:var(--green);}
+  .runner .r-right{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9AA3AD;}
+  .pagenum{position:absolute;right:34px;bottom:22px;font-size:12.5px;font-weight:600;color:#A2A9AE;z-index:2;}
+
+  .panel-stack{display:flex;flex-direction:column;gap:20px;}
+  .panel{border-radius:16px;}
+  .panel-light{background:#fff;border:1px solid var(--line-light);}
+  .panel-dark{background:var(--navy);color:#fff;position:relative;overflow:hidden;}
+  .panel-dark.grid-bg::before{
     content:'';position:absolute;inset:0;pointer-events:none;
     background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
-    background-size:62px 62px;
+    background-size:56px 56px;
   }
-  .pad{padding:64px 68px;height:100%;position:relative;z-index:1;}
-  .eyebrow{font-size:14px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
-  .page-dark .eyebrow{color:var(--green-mint);}
-  .headline{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.22;max-width:100%;}
-  .headline.tight{max-width:100%;}
-  .body-copy{font-size:15.5px;line-height:1.65;color:var(--slate-600);max-width:760px;margin-top:16px;}
-  .page-dark .body-copy{color:#9FB0C3;}
-  .pagenum{position:absolute;right:36px;bottom:24px;font-size:13px;font-weight:600;color:#A2A9AE;z-index:2;}
-  .page-dark .pagenum{color:#4E5E73;}
+  .panel-inner{position:relative;z-index:1;padding:26px 28px;}
 
-  .card{background:#fff;border:1px solid var(--line-light);border-radius:14px;padding:22px 24px;}
-  .page-dark .card{background:rgba(255,255,255,.035);border-color:var(--line-dark);}
-  .card-label{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
-  .page-dark .card-label{color:var(--green-mint);}
-  .card-title{font-size:18px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
-  .card-body{font-size:14px;line-height:1.55;color:var(--slate-500);}
-  .page-dark .card-body{color:#9FB0C3;}
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
+  .panel-dark .eyebrow{color:var(--green-mint);}
+  .headline{font-size:26px;font-weight:800;letter-spacing:-.015em;line-height:1.22;}
+  .body-copy{font-size:14.5px;line-height:1.6;color:var(--slate-600);max-width:760px;margin-top:12px;}
+  .panel-dark .body-copy{color:#9FB0C3;}
+
+  .card{background:#fff;border:1px solid var(--line-light);border-radius:12px;padding:18px 20px;}
+  .panel-dark .card{background:rgba(255,255,255,.035);border-color:var(--line-dark);}
+  .card-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
+  .panel-dark .card-label{color:var(--green-mint);}
+  .card-title{font-size:16px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em;}
+  .card-body{font-size:12.5px;line-height:1.5;color:var(--slate-500);}
+  .panel-dark .card-body{color:#9FB0C3;}
   .card.accent{background:#F0FBF6;border-color:#BFE9D3;}
-  .page-dark .card.accent{background:rgba(15,139,95,.14);border-color:rgba(117,212,157,.35);}
+  .panel-dark .card.accent{background:rgba(15,139,95,.14);border-color:rgba(117,212,157,.35);}
 
-  .badge-circle{width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
-  .bullets{list-style:none;margin-top:14px;padding:0;}
-  .bullets li{position:relative;padding-left:16px;font-size:13.5px;color:var(--slate-500);margin-bottom:7px;line-height:1.4;}
-  .page-dark .bullets li{color:#9FB0C3;}
-  .bullets li::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--green);}
-  .page-dark .bullets li::before{background:var(--green-mint);}
+  .badge-circle{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  .bullets{list-style:none;margin-top:10px;padding:0;}
+  .bullets li{position:relative;padding-left:14px;font-size:12px;color:var(--slate-500);margin-bottom:5px;line-height:1.4;}
+  .panel-dark .bullets li{color:#9FB0C3;}
+  .bullets li::before{content:'';position:absolute;left:0;top:6px;width:4px;height:4px;border-radius:50%;background:var(--green);}
+  .panel-dark .bullets li::before{background:var(--green-mint);}
 
-  .pill{display:inline-flex;align-items:center;padding:8px 16px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:13.5px;font-weight:700;color:var(--ink);}
-  .page-dark .pill{background:rgba(117,212,157,.08);border-color:rgba(117,212,157,.35);color:var(--green-mint);}
+  .pill{display:inline-flex;align-items:center;padding:6px 13px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:12px;font-weight:700;color:var(--ink);}
+  .panel-dark .pill{background:rgba(117,212,157,.08);border-color:rgba(117,212,157,.35);color:var(--green-mint);}
 
-  /* ---- Cover slide (single column, letterhead style) ---- */
-  .cover-wrap{padding:56px 68px 0;height:100%;display:flex;flex-direction:column;}
-  .cover-header{display:flex;align-items:center;margin-bottom:26px;}
-  .cover-wordmark{width:132px;height:30.5px;display:block;flex:none;align-self:flex-start;}
-  .cover-tag{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:18px;}
-  .cover-headline{font-size:33px;font-weight:800;line-height:1.18;letter-spacing:-.02em;color:var(--ink);}
-  .cover-body{font-size:15.5px;line-height:1.62;color:var(--slate-600);margin-top:18px;max-width:640px;}
-  .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);margin-top:28px;padding-top:18px;gap:16px;}
-  .cover-stats .stat-big{font-size:19px;font-weight:800;color:var(--green);margin-bottom:4px;}
-  .cover-stats .stat-lbl{font-size:12px;color:var(--slate-500);line-height:1.35;}
-  .chat-card{margin-top:30px;background:#fff;border:1px solid var(--line-light);border-radius:16px;overflow:hidden;box-shadow:0 16px 34px -18px rgba(11,18,32,.3);}
-  .chat-card .thread-head{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid #EEEDE8;background:#FCFBF7;}
-  .chat-card .thread-head b{font-size:14px;color:var(--ink);display:block;}
-  .chat-card .thread-head span{font-size:10.5px;color:var(--green);font-weight:700;}
-  .chat-card .thread-body{padding:18px 20px;}
-  .avatar{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
-  .msg{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.48;margin-bottom:10px;}
+  /* ---- Letter (cover, page 1) ---- */
+  .letter-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+  .letter-wordmark{width:118px;height:27.2px;display:block;}
+  .letter-kova-addr{text-align:right;font-size:11px;line-height:1.55;color:var(--slate-500);}
+  .letter-kova-addr b{color:var(--ink);font-size:12px;display:block;margin-bottom:2px;}
+  .letter-rule{border-top:2px solid var(--green);margin-bottom:22px;}
+  .letter-date{font-size:13px;color:var(--slate-500);margin-bottom:18px;}
+  .letter-to{font-size:14px;color:var(--ink);line-height:1.55;margin-bottom:18px;}
+  .letter-to b{display:block;}
+  .letter-re{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:16px;}
+  .letter-re span{color:var(--green);}
+  .letter-salutation{font-size:14.5px;margin-bottom:14px;}
+  .letter-body p{font-size:14.5px;line-height:1.62;color:var(--slate-600);margin-bottom:13px;}
+  .cover-tag{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
+  .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);border-bottom:1px solid var(--line-light);margin:16px 0;padding:14px 0;gap:14px;}
+  .cover-stats .stat-big{font-size:16.5px;font-weight:800;color:var(--green);margin-bottom:3px;}
+  .cover-stats .stat-lbl{font-size:11px;color:var(--slate-500);line-height:1.3;}
+  .chat-card{margin:16px 0;background:#fff;border:1px solid var(--line-light);border-radius:14px;overflow:hidden;box-shadow:0 12px 26px -16px rgba(11,18,32,.28);}
+  .chat-card .thread-head{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:1px solid #EEEDE8;background:#FCFBF7;}
+  .chat-card .thread-head b{font-size:12.5px;color:var(--ink);display:block;}
+  .chat-card .thread-head span{font-size:10px;color:var(--green);font-weight:700;}
+  .chat-card .thread-body{padding:14px 16px;}
+  .avatar{width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+  .msg{border-radius:10px;padding:9px 12px;font-size:11.5px;line-height:1.44;margin-bottom:8px;}
   .msg-customer{background:#fff;border:1px solid #E9E7DF;color:#22262B;}
   .msg-kova{background:#F0FBF6;border:1px solid #C9EEDC;color:#1B3A2C;}
-  .msg-cards{display:flex;gap:8px;margin-top:9px;}
-  .msg-card{flex:1;background:#fff;border:1px solid #D6EFE1;border-radius:8px;padding:8px 10px;}
-  .msg-card b{font-size:11px;display:block;color:var(--ink);}
-  .msg-card span{font-size:10px;color:var(--green);}
-  .handoff-btn{margin-top:9px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:11px;padding:7px 13px;border-radius:9999px;}
-  .cover-tagstrip{margin-top:28px;border-radius:12px;overflow:hidden;display:flex;background:var(--navy);}
-  .cover-tagstrip .tag-item{flex:1;padding:15px 16px;font-size:11.5px;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.12);line-height:1.35;}
-  .cover-tagstrip .tag-item:last-child{border-right:none;}
+  .msg-cards{display:flex;gap:7px;margin-top:7px;}
+  .msg-card{flex:1;background:#fff;border:1px solid #D6EFE1;border-radius:7px;padding:6px 9px;}
+  .msg-card b{font-size:10px;display:block;color:var(--ink);}
+  .msg-card span{font-size:9px;color:var(--green);}
+  .handoff-btn{margin-top:7px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:10px;padding:5px 11px;border-radius:9999px;}
+  .letter-closing p{font-size:14px;line-height:1.6;color:var(--slate-600);margin-bottom:14px;}
+  .signature b{display:block;font-size:14.5px;color:var(--ink);}
+  .signature span{font-size:12.5px;color:var(--slate-500);}
+  .sig-word{color:var(--ink);font-weight:800;font-size:15px;margin-bottom:2px;}
+  .sig-word em{color:var(--green);font-style:normal;}
 
-  /* ---- What Kova Is (slide 2) ---- */
-  .side-card{background:#F0FBF6;border:1px solid #BFE9D3;border-radius:14px;padding:24px;margin-top:22px;}
-  .side-card .card-label{margin-bottom:10px;}
-  .side-card p{font-size:14px;line-height:1.6;color:#22432F;}
-  .where-row{margin-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  /* ---- What Kova Is ---- */
+  .where-row{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .where-row .card-label{margin:0;}
-  .where-pills{display:flex;gap:10px;}
-  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;}
+  .where-pills{display:flex;gap:8px;}
+  .simple-note{background:#F0FBF6;border:1px solid #BFE9D3;border-radius:10px;padding:14px 16px;margin-top:14px;}
+  .simple-note .card-label{margin-bottom:6px;}
+  .simple-note p{font-size:12.5px;line-height:1.5;color:#22432F;}
+  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
+  .three-col .card-body{color:var(--slate-500);}
 
-  /* ---- Opportunity (dark 2x2 card) ---- */
-  .four-col{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:26px;}
-  .four-col .card .num{font-size:13px;font-weight:800;color:var(--green-mint);margin-bottom:12px;}
-  .four-col .card .card-title{color:#fff;font-size:18px;}
-  .callout{margin-top:22px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 10px 10px 0;padding:18px 22px;font-size:14.5px;line-height:1.55;color:#C7D2DC;}
+  /* ---- Opportunity (2x2) ---- */
+  .four-col{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;}
+  .four-col .card .num{font-size:12px;font-weight:800;color:var(--green-mint);margin-bottom:8px;}
+  .four-col .card .card-title{color:#fff;font-size:15px;}
+  .callout{margin-top:14px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 8px 8px 0;padding:13px 16px;font-size:12.5px;line-height:1.5;color:#C7D2DC;}
 
-  /* ---- Business case (stacked) ---- */
-  .bc-left{display:flex;flex-direction:column;gap:14px;margin-top:24px;}
-  .bc-right{background:var(--navy);border-radius:16px;padding:24px 26px;color:#fff;margin-top:20px;}
-  .bc-right h4{font-size:18px;font-weight:800;margin-bottom:2px;}
-  .calc-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1);}
-  .calc-row label{font-size:13.5px;color:#B9C4D0;}
-  .calc-row .inwrap{display:flex;align-items:center;gap:6px;}
-  .calc-row input{width:80px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#fff;font-family:inherit;font-size:13.5px;padding:7px 10px;text-align:right;}
-  .calc-row .unit{font-size:12px;color:#8A98A8;}
-  .calc-result{padding-top:16px;display:flex;justify-content:space-between;align-items:flex-end;}
-  .calc-result .rl{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9FB0C3;line-height:1.4;max-width:160px;}
-  .calc-result .rv{font-size:30px;font-weight:800;color:var(--gold);text-align:right;}
-  .note-strip{margin-top:18px;border:1px solid var(--line-light);border-radius:10px;padding:13px 18px;font-size:12.5px;color:var(--slate-500);}
+  /* ---- Business case ---- */
+  .bc-left{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .bc-right{background:var(--navy);border-radius:14px;padding:20px 22px;color:#fff;margin-top:16px;}
+  .bc-right h4{font-size:16px;font-weight:800;margin-bottom:2px;}
+  .calc-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+  .calc-row label{font-size:12.5px;color:#B9C4D0;}
+  .calc-row .inwrap{display:flex;align-items:center;gap:5px;}
+  .calc-row input{width:74px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:7px;color:#fff;font-family:inherit;font-size:12.5px;padding:6px 9px;text-align:right;}
+  .calc-row .unit{font-size:11px;color:#8A98A8;}
+  .calc-result{padding-top:14px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .calc-result .rl{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9FB0C3;line-height:1.35;max-width:150px;}
+  .calc-result .rv{font-size:26px;font-weight:800;color:var(--gold);text-align:right;}
+  .note-strip{margin-top:14px;border:1px solid var(--line-light);border-radius:9px;padding:11px 15px;font-size:11.5px;color:var(--slate-500);}
 
-  /* ---- Changes (dark, stacked pairs) ---- */
-  .change-rows{margin-top:24px;}
-  .change-block{margin-bottom:20px;}
-  .change-block .rowlabel{font-size:12.5px;font-weight:800;letter-spacing:.04em;color:var(--green-mint);margin-bottom:10px;}
-  .change-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .change-box{border-radius:12px;padding:16px 18px;border:1px solid var(--line-dark);background:rgba(255,255,255,.02);}
+  /* ---- Changes (stacked pairs) ---- */
+  .change-rows{margin-top:14px;}
+  .change-block{margin-bottom:12px;}
+  .change-block:last-child{margin-bottom:0;}
+  .change-block .rowlabel{font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--green-mint);margin-bottom:7px;}
+  .change-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .change-box{border-radius:10px;padding:11px 13px;border:1px solid var(--line-dark);background:rgba(255,255,255,.02);}
   .change-box.today .tag{color:#8A98A8;}
   .change-box.kova{background:rgba(15,139,95,.12);border-color:rgba(117,212,157,.3);}
-  .change-box .tag{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;}
+  .change-box .tag{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
   .change-box.kova .tag{color:var(--green-mint);}
-  .change-box p{font-size:13.5px;line-height:1.48;color:#DCE3EA;}
+  .change-box p{font-size:11.5px;line-height:1.4;color:#DCE3EA;}
 
-  /* ---- Handles (stacked cards, Inform/Qualify/Hand off) ---- */
-  .handle-grid{display:flex;flex-direction:column;gap:14px;margin-top:24px;}
-  .handle-card{background:#FFFDF5;border:1px solid var(--line-light);border-radius:14px;padding:24px;}
+  /* ---- Handles (stacked cards) ---- */
+  .handle-grid{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+  .handle-card{background:#FFFDF5;border:1px solid var(--line-light);border-radius:12px;padding:16px 18px;}
   .handle-card.accent{background:#F0FBF6;border-color:#BFE9D3;}
-  .handle-card h3{font-size:21px;font-weight:800;margin-bottom:8px;}
-  .handle-card p{font-size:14px;color:var(--slate-500);line-height:1.55;}
-  .handle-card .bullets{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
-  .example-strip{margin-top:20px;border:1px solid var(--line-light);border-radius:12px;padding:16px 20px;}
-  .example-strip .card-label{margin-bottom:8px;}
-  .example-strip p{font-size:14px;font-style:italic;color:#333;line-height:1.5;}
+  .handle-card h3{font-size:16px;font-weight:800;margin-bottom:6px;}
+  .handle-card p{font-size:12.5px;color:var(--slate-500);line-height:1.48;}
+  .handle-card .bullets{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+  .example-strip{margin-top:12px;border:1px solid var(--line-light);border-radius:10px;padding:12px 16px;}
+  .example-strip .card-label{margin-bottom:6px;}
+  .example-strip p{font-size:12.5px;font-style:italic;color:#333;line-height:1.45;}
 
-  /* ---- Workflow (2x2 steps + boundary below) ---- */
-  .wf-steps{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
-  .wf-step-card{border:1px solid var(--line-light);border-radius:14px;padding:22px;}
-  .wf-step-card h3{font-size:17.5px;font-weight:700;margin-bottom:7px;}
-  .wf-step-card p{font-size:13.5px;color:var(--slate-500);line-height:1.5;}
-  .boundary-panel{background:var(--navy);border-radius:16px;padding:26px 28px;margin-top:22px;}
-  .boundary-panel h3{font-size:22px;font-weight:800;color:#fff;margin-bottom:12px;}
-  .boundary-panel p{font-size:14.5px;line-height:1.62;color:#C7D2DC;}
+  /* ---- Workflow (2x2 + boundary) ---- */
+  .wf-steps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+  .wf-step-card{border:1px solid var(--line-light);border-radius:12px;padding:15px;}
+  .wf-step-card h3{font-size:14px;font-weight:700;margin-bottom:5px;}
+  .wf-step-card p{font-size:11.5px;color:var(--slate-500);line-height:1.42;}
+  .boundary-panel{background:var(--navy);border-radius:12px;padding:17px 19px;margin-top:14px;}
+  .boundary-panel h3{font-size:16px;font-weight:800;color:#fff;margin-bottom:8px;}
+  .boundary-panel p{font-size:12.5px;line-height:1.5;color:#C7D2DC;}
 
-  /* ---- Revenue (dark, tags + conversation stack) ---- */
-  .tag-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
-  .tag-pill{padding:11px 16px;border-radius:9px;border:1px solid rgba(117,212,157,.35);background:rgba(117,212,157,.07);font-weight:700;font-size:13.5px;color:var(--green-mint);}
-  .conv-stack{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
-  .conv-card{border:1px solid var(--line-dark);border-radius:12px;padding:16px 18px;background:rgba(255,255,255,.02);}
-  .conv-card .card-label{margin-bottom:7px;}
-  .conv-card p{font-size:14px;line-height:1.5;color:#E4EAF0;}
+  /* ---- Revenue (tags + conversation) ---- */
+  .tag-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+  .tag-pill{padding:8px 12px;border-radius:8px;border:1px solid rgba(117,212,157,.35);background:rgba(117,212,157,.07);font-weight:700;font-size:11.5px;color:var(--green-mint);}
+  .conv-stack{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+  .conv-card{border:1px solid var(--line-dark);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,.02);}
+  .conv-card .card-label{margin-bottom:5px;}
+  .conv-card p{font-size:12px;line-height:1.42;color:#E4EAF0;}
 
-  /* ---- Rollout (phases, note below) ---- */
-  .phase-list{display:flex;flex-direction:column;gap:14px;margin-top:24px;}
-  .phase-card{border:1px solid var(--line-light);border-radius:14px;padding:22px 24px;}
+  /* ---- Rollout (phases) ---- */
+  .phase-list{display:flex;flex-direction:column;gap:9px;margin-top:14px;}
+  .phase-card{border:1px solid var(--line-light);border-radius:12px;padding:14px 16px;}
   .phase-card.active{background:#F0FBF6;border-color:#BFE9D3;}
-  .phase-card h3{font-size:20px;font-weight:800;margin-bottom:7px;}
-  .phase-card p{font-size:14px;color:var(--slate-500);line-height:1.55;}
-  .roll-note{background:var(--navy);border-radius:14px;padding:22px 24px;margin-top:18px;color:#D7E0E9;font-size:14px;line-height:1.6;}
+  .phase-card h3{font-size:15px;font-weight:800;margin-bottom:5px;}
+  .phase-card p{font-size:12px;color:var(--slate-500);line-height:1.45;}
 
-  /* ---- Pricing (2x2 tiers) ---- */
-  .price-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:24px;}
-  .price-card{border:1px solid var(--line-dark);border-radius:14px;padding:22px;background:rgba(255,255,255,.02);}
+  /* ---- Pricing (2x2) ---- */
+  .price-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;}
+  .price-card{border:1px solid var(--line-dark);border-radius:12px;padding:15px;background:rgba(255,255,255,.02);}
   .price-card.rec{background:rgba(15,139,95,.12);border:1px solid rgba(117,212,157,.5);}
-  .price-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-  .price-top b{font-size:17px;color:#fff;}
-  .price-badge{font-size:9.5px;font-weight:800;letter-spacing:.05em;color:var(--green-mint);}
-  .price-amt{font-size:25px;font-weight:800;color:var(--gold);}
-  .price-amt span{font-size:12.5px;font-weight:600;color:#9FB0C3;}
-  .price-desc{font-size:12.5px;color:#AEBAC7;line-height:1.5;margin:10px 0 12px;min-height:38px;}
-  .price-meta{border-top:1px solid var(--line-dark);padding-top:10px;margin-top:4px;}
-  .price-meta .pl{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8A98A8;margin-bottom:2px;}
-  .price-meta .pv{font-size:13px;color:#E4EAF0;margin-bottom:7px;}
-  .pricing-note{margin-top:22px;border:1px solid var(--line-dark);border-radius:10px;padding:13px 18px;font-size:12.5px;color:#9FB0C3;}
+  .price-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+  .price-top b{font-size:14px;color:#fff;}
+  .price-badge{font-size:8.5px;font-weight:800;letter-spacing:.05em;color:var(--green-mint);}
+  .price-amt{font-size:19px;font-weight:800;color:var(--gold);}
+  .price-amt span{font-size:11px;font-weight:600;color:#9FB0C3;}
+  .price-desc{font-size:11px;color:#AEBAC7;line-height:1.42;margin:7px 0 9px;}
+  .price-meta{border-top:1px solid var(--line-dark);padding-top:7px;margin-top:3px;}
+  .price-meta .pl{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8A98A8;margin-bottom:1px;}
+  .price-meta .pv{font-size:11.5px;color:#E4EAF0;margin-bottom:5px;}
 
   /* ---- Next steps ---- */
-  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px;}
-  .step-card{border:1px solid var(--line-dark);border-radius:14px;padding:22px;background:rgba(255,255,255,.02);}
-  .step-card h3{font-size:16.5px;font-weight:700;color:#fff;margin:12px 0 7px;}
-  .step-card p{font-size:12.5px;color:#AEBAC7;line-height:1.48;}
-  .ns-footnote{margin-top:36px;max-width:100%;font-size:14px;color:#9FB0C3;line-height:1.55;}
-  .contact-card{margin-top:22px;max-width:460px;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:14px;padding:20px 24px;}
-  .contact-card .crow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-dark);font-size:14px;}
+  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
+  .step-card{border:1px solid var(--line-dark);border-radius:12px;padding:16px;background:rgba(255,255,255,.02);}
+  .step-card h3{font-size:13.5px;font-weight:700;color:#fff;margin:9px 0 5px;}
+  .step-card p{font-size:11px;color:#AEBAC7;line-height:1.42;}
+  .ns-footnote{margin-top:18px;font-size:13px;color:#9FB0C3;line-height:1.5;}
+  .contact-card{margin-top:16px;max-width:460px;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:12px;padding:16px 20px;}
+  .contact-card .crow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-dark);font-size:13px;}
   .contact-card .crow:last-child{border-bottom:none;}
   .contact-card .crow .k{color:var(--green-mint);font-weight:700;}
   .contact-card .crow .v{color:#fff;font-weight:700;}
@@ -289,7 +308,7 @@
 <div class="app-header">
   <div>
     <h1>Kova <span>AI</span> — Enterprise Proposal Generator</h1>
-    <p>A4 document format, same visual system as the pharmacy proposal, retargeted per industry. Fill in the details, then download.</p>
+    <p>A4 letterhead document, same visual system as the pharmacy proposal, retargeted per industry.</p>
   </div>
   <div class="industry-toggle" id="industryToggle"></div>
 </div>
@@ -303,6 +322,14 @@
       <div class="field">
         <label for="companyName">Company / agency name</label>
         <input type="text" id="companyName" placeholder="e.g. Star Life Assurance">
+      </div>
+      <div class="field">
+        <label for="companyAddress">Company address (optional)</label>
+        <textarea id="companyAddress" placeholder="e.g. 12 Independence Ave, Accra, Ghana"></textarea>
+      </div>
+      <div class="field">
+        <label for="contactPerson">Attention / contact person (optional)</label>
+        <input type="text" id="contactPerson" placeholder="e.g. Mr. Kwabena Asante">
       </div>
     </div>
 
@@ -356,6 +383,17 @@
 const PAGE_W = 1240;
 const PAGE_H = 1754;
 
+const KOVA = {
+  name:'KOVA AI Limited Company',
+  address:'IPS Road, Near ARS Roundabout, 191 East Legon, Accra, Ghana',
+  digital:'GM 040 1984',
+  email:'info@trykovaai.com',
+  phone:'0547605037',
+  website:'www.trykovaai.com',
+  signeeName:'Isaiah Baji',
+  signeeTitle:'Co-Founder & Chief Marketing Officer'
+};
+
 /* ============================================================
    CONTENT DATA — per industry
    ============================================================ */
@@ -401,7 +439,7 @@ insurance: {
   },
   whatIs:{
     headline:'An assistant that talks to your clients — and knows where to stop.',
-    body:'Kova AI is a customer assistant for WhatsApp. It answers policy, pricing, coverage, and eligibility questions using only the product information you approve, quotes and sells standardised products like third-party motor cover directly in the chat — any hour, including nights and weekends — and the moment a conversation touches a claim, underwriting decision, or coverage dispute, it stops and hands over to your licensed team, with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget — so clients get one consistent experience wherever they reach you.',
+    body:'Kova AI is a customer assistant for WhatsApp. It answers policy, pricing, coverage, and eligibility questions using only the product information you approve, quotes and sells standardised products like third-party motor cover directly in the chat — any hour, including nights and weekends — and the moment a conversation touches a claim, underwriting decision, or coverage dispute, it stops and hands over to your licensed team, with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
     simple:'It does not assess claims, interpret policy wording as advice, approve payouts, or make underwriting decisions. It handles the repetitive front desk so your agents and adjusters do not have to.',
     where:['WhatsApp','Website live chat'],
     cols:[
@@ -473,8 +511,7 @@ insurance: {
     headline:'Start with AI conversations first. Connect systems only where it creates value.',
     phase1:{title:'AI concierge', body:'WhatsApp conversations, policy-approved responses, claims-safe intake, staff handoff, and conversation analytics. If you have a website, the same AI also runs there as a live chat widget.'},
     phase2:{title:'Operations connection', body:'Sync policy catalog, premium schedules, claims status, and client records where the existing system supports it.'},
-    optional:{title:'Kova commerce tools', body:'Payment collection, premium reminders, and full policy-servicing workflows are available if you want a broader platform later.'},
-    note:'Standard setup can be included. Custom integrations are scoped only after we confirm which workflows need to connect to your policy admin system.'
+    optional:{title:'Kova commerce tools', body:'Payment collection, premium reminders, and full policy-servicing workflows are available if you want a broader platform later.'}
   },
   nextSteps:{
     headline:'Start with a low-risk pilot. See it working on your real conversations.',
@@ -590,8 +627,7 @@ bank: {
     headline:'Start with AI conversations first. Connect systems only where it creates value.',
     phase1:{title:'AI concierge', body:'WhatsApp conversations, product-approved responses, fraud-safe intake, staff handoff, and conversation analytics. If you have a website, the same AI also runs there as a live chat widget.'},
     phase2:{title:'Operations connection', body:'Sync product catalog, rates, branch data, and customer records where the existing core banking system supports it.'},
-    optional:{title:'Kova commerce tools', body:'Payment collection, statement requests, and full servicing workflows are available if you want a broader platform later.'},
-    note:'Standard setup can be included. Custom integrations to core banking or KYC systems are scoped only after we confirm which workflows need to connect.'
+    optional:{title:'Kova commerce tools', body:'Payment collection, statement requests, and full servicing workflows are available if you want a broader platform later.'}
   },
   nextSteps:{
     headline:'Start with a low-risk pilot. See it working on your real conversations.',
@@ -707,8 +743,7 @@ government: {
     headline:'Start with AI conversations first. Connect systems only where it creates value.',
     phase1:{title:'AI concierge', body:'WhatsApp conversations, service-approved responses, sensitive-case-safe intake, officer handoff, and conversation analytics. If you have a website, the same AI also runs there as a live chat widget.'},
     phase2:{title:'Operations connection', body:'Sync service catalog, application status, appointment slots, and citizen records where the existing system supports it.'},
-    optional:{title:'Kova commerce tools', body:'Fee payment collection and full case-servicing workflows are available if the agency wants a broader platform later.'},
-    note:'Standard setup can be included. Custom integrations to case-management or registry systems are scoped only after we confirm which workflows need to connect.'
+    optional:{title:'Kova commerce tools', body:'Fee payment collection and full case-servicing workflows are available if the agency wants a broader platform later.'}
   },
   nextSteps:{
     headline:'Start with a low-risk pilot. See it working on your real conversations.',
@@ -728,6 +763,8 @@ government: {
 const state = {
   industry:'insurance',
   companyName:'',
+  companyAddress:'',
+  contactPerson:'',
   recommendedTier:'ent10',
   calc:{}
 };
@@ -743,77 +780,46 @@ initCalc();
    ============================================================ */
 function esc(s){ return (s===undefined||s===null) ? '' : String(s); }
 function fmtGHS(n){ return 'GHS ' + Math.round(n).toLocaleString('en-US'); }
-
-function pageFoot(n){ return `<div class="pagenum">${n} / 11</div>`; }
-
-/* ---- Page 1: Cover ---- */
-function slideCover(d, company, proposalType){
-  const companyLabel = company ? company.toUpperCase() : '[YOUR COMPANY NAME]';
-  const messages = d.chat.messages.map(m=>{
-    if(m.from==='customer'){
-      return `<div class="msg msg-customer">${esc(m.text)}</div>`;
-    }
-    const cards = m.cards ? `<div class="msg-cards">${m.cards.map(c=>`<div class="msg-card"><b>${esc(c.title)}</b><span>${esc(c.sub)}</span></div>`).join('')}</div>` : '';
-    const handoff = m.handoff ? `<div class="handoff-btn">${esc(m.handoff)}</div>` : '';
-    return `<div class="msg msg-kova">${esc(m.text)}${cards}${handoff}</div>`;
-  }).join('');
-  const stats = d.stats.map(s=>`<div><div class="stat-big">${esc(s.big)}</div><div class="stat-lbl">${esc(s.label)}</div></div>`).join('');
-  const tags = d.tags.map(t=>`<div class="tag-item">${esc(t)}</div>`).join('');
-
-  return `<div class="page page-light">
-    <div class="cover-wrap">
-      <div class="cover-header"><img class="cover-wordmark" src="kova-wordmark-light.png" alt="Kova AI"></div>
-      <div class="cover-tag">${esc(proposalType)} · PREPARED FOR ${companyLabel}</div>
-      <div class="cover-headline">${esc(d.headline)}</div>
-      <div class="cover-body">${esc(d.body)}</div>
-      <div class="cover-stats">${stats}</div>
-      <div class="chat-card">
-        <div class="thread-head"><div class="avatar">${esc(d.chat.contacts[0].initial)}</div><div><b>${esc(d.chat.activeName)}</b><span>ONLINE NOW</span></div></div>
-        <div class="thread-body">${messages}</div>
-      </div>
-      <div class="cover-tagstrip">${tags}</div>
-    </div>
-    ${pageFoot(1)}
-  </div>`;
+function nl2br(s){ return esc(s).split('\n').map(l=>l.trim()).filter(Boolean).join('<br>'); }
+function formatToday(){
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const d = new Date();
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-/* ---- Page 2: What Kova Is ---- */
-function slideWhatIs(d){
+const TOTAL_PAGES = 5;
+function pageFoot(n){ return `<div class="pagenum">${n} / ${TOTAL_PAGES}</div>`; }
+function runner(proposalType, company){
+  return `<div class="runner"><div class="r-left">KOVA <span>AI</span></div><div class="r-right">${esc(proposalType)} · ${company ? esc(company).toUpperCase() : 'PROPOSAL'}</div></div>`;
+}
+function panel(inner, dark){
+  return `<div class="panel ${dark?'panel-dark grid-bg':'panel-light'}"><div class="panel-inner">${inner}</div></div>`;
+}
+
+/* ---- Panel content builders (no outer wrapper) ---- */
+function pcWhatIs(d){
   const cols = d.cols.map(c=>`<div class="card"><div class="card-label">${esc(c.label)}</div><div class="card-title">${esc(c.title)}</div><div class="card-body">${esc(c.body)}</div></div>`).join('');
   const pills = d.where.map(w=>`<span class="pill">${esc(w)}</span>`).join('');
-  return `<div class="page page-light"><div class="pad">
-    <div class="eyebrow">WHAT KOVA AI IS</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">WHAT KOVA AI IS</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="body-copy">${esc(d.body)}</div>
     <div class="where-row"><div class="card-label">WHERE IT WORKS</div><div class="where-pills">${pills}</div></div>
-    <div class="side-card">
-      <div class="card-label">THE SIMPLE VERSION</div>
-      <p>${esc(d.simple)}</p>
-    </div>
-    <div class="three-col">${cols}</div>
-    ${pageFoot(2)}
-  </div></div>`;
+    <div class="simple-note"><div class="card-label">THE SIMPLE VERSION</div><p>${esc(d.simple)}</p></div>
+    <div class="three-col">${cols}</div>`;
 }
-
-/* ---- Page 3: Opportunity ---- */
-function slideOpportunity(d){
+function pcOpportunity(d){
   const items = d.items.map(it=>`<div class="card"><div class="num">${esc(it.n)}</div><div class="card-title">${esc(it.title)}</div><div class="card-body">${esc(it.body)}</div></div>`).join('');
-  return `<div class="page page-dark grid-bg"><div class="pad">
-    <div class="eyebrow">THE OPPORTUNITY</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">THE OPPORTUNITY</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="four-col">${items}</div>
-    <div class="callout">${esc(d.callout)}</div>
-    ${pageFoot(3)}
-  </div></div>`;
+    <div class="callout">${esc(d.callout)}</div>`;
 }
-
-/* ---- Page 4: Business case ---- */
-function slideBusinessCase(d, calc, calcState){
+function computeCalc(c){ return (Number(c.extra)||0) * (Number(c.avg)||0) * 30; }
+function pcBusinessCase(d, calc, calcState, note){
   const cards = d.cards.map(c=>`<div class="card"><div class="card-label">${esc(c.label)}</div><div class="card-title">${esc(c.title)}</div><div class="card-body">${esc(c.body)}</div></div>`).join('');
   const result = computeCalc(calcState);
-  return `<div class="page page-light"><div class="pad">
-    <div class="eyebrow">THE BUSINESS CASE</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">THE BUSINESS CASE</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="bc-left">${cards}</div>
     <div class="bc-right">
       <h4>What it could mean for you</h4>
@@ -823,14 +829,9 @@ function slideBusinessCase(d, calc, calcState){
       <div class="calc-row"><label>${esc(calc.avgLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.avg}"></div></div>
       <div class="calc-result"><div class="rl">${esc(calc.resultLabel)}</div><div class="rv">${fmtGHS(result)}</div></div>
     </div>
-    <div class="note-strip">${esc(CONTENT[state.industry].businessCase.note)}</div>
-    ${pageFoot(4)}
-  </div></div>`;
+    <div class="note-strip">${esc(note)}</div>`;
 }
-function computeCalc(c){ return (Number(c.extra)||0) * (Number(c.avg)||0) * 30; }
-
-/* ---- Page 5: What changes ---- */
-function slideChanges(d, company){
+function pcChanges(d, company){
   const rows = d.rows.map(r=>`
     <div class="change-block">
       <div class="rowlabel">${esc(r.label)}</div>
@@ -839,78 +840,52 @@ function slideChanges(d, company){
         <div class="change-box kova"><div class="tag">WITH KOVA</div><p>${esc(r.kova)}</p></div>
       </div>
     </div>`).join('');
-  return `<div class="page page-dark grid-bg"><div class="pad">
-    <div class="eyebrow">WHAT CHANGES FOR ${company ? esc(company).toUpperCase() : 'YOUR ORGANISATION'}</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">WHAT CHANGES FOR ${company ? esc(company).toUpperCase() : 'YOUR ORGANISATION'}</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="body-copy">${esc(d.body)}</div>
-    <div class="change-rows">${rows}</div>
-    ${pageFoot(5)}
-  </div></div>`;
+    <div class="change-rows">${rows}</div>`;
 }
-
-/* ---- Page 6: What Kova handles ---- */
-function slideHandles(d){
+function pcHandles(d){
   const cols = d.cols.map(c=>`
     <div class="handle-card ${c.accent?'accent':''}">
       <h3>${esc(c.title)}</h3>
       <p>${esc(c.body)}</p>
       <ul class="bullets">${c.bullets.map(b=>`<li>${esc(b)}</li>`).join('')}</ul>
     </div>`).join('');
-  return `<div class="page page-light"><div class="pad">
-    <div class="eyebrow">WHAT KOVA HANDLES</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">WHAT KOVA HANDLES</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="handle-grid">${cols}</div>
-    <div class="example-strip"><div class="card-label">EXAMPLE RESPONSE</div><p>${esc(d.example)}</p></div>
-    ${pageFoot(6)}
-  </div></div>`;
+    <div class="example-strip"><div class="card-label">EXAMPLE RESPONSE</div><p>${esc(d.example)}</p></div>`;
 }
-
-/* ---- Page 7: Safe workflow ---- */
-function slideWorkflow(d){
+function pcWorkflow(d){
   const steps = d.steps.map(s=>`<div class="wf-step-card"><div class="badge-circle">${s.n}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></div>`).join('');
-  return `<div class="page page-light"><div class="pad">
-    <div class="eyebrow">${esc(d.eyebrow)}</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">${esc(d.eyebrow)}</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="wf-steps">${steps}</div>
-    <div class="boundary-panel"><h3>${esc(d.boundaryTitle)}</h3><p>${esc(d.boundaryBody)}</p></div>
-    ${pageFoot(7)}
-  </div></div>`;
+    <div class="boundary-panel"><h3>${esc(d.boundaryTitle)}</h3><p>${esc(d.boundaryBody)}</p></div>`;
 }
-
-/* ---- Page 8: Revenue / demand breadth ---- */
-function slideRevenue(d){
+function pcRevenue(d){
   const tags = d.tags.map(t=>`<div class="tag-pill">${esc(t)}</div>`).join('');
-  return `<div class="page page-dark grid-bg"><div class="pad">
-    <div class="eyebrow">${esc(d.eyebrow)}</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">${esc(d.eyebrow)}</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="body-copy">${esc(d.body)}</div>
     <div class="tag-grid">${tags}</div>
     <div class="conv-stack">
       <div class="conv-card"><div class="card-label">CUSTOMER ASKS</div><p>${esc(d.ask)}</p></div>
       <div class="conv-card"><div class="card-label">KOVA RESPONDS</div><p>${esc(d.respond)}</p></div>
       <div class="conv-card"><div class="card-label">TEAM RECEIVES</div><p>${esc(d.receives)}</p></div>
-    </div>
-    ${pageFoot(8)}
-  </div></div>`;
+    </div>`;
 }
-
-/* ---- Page 9: Rollout ---- */
-function slideRollout(d){
-  return `<div class="page page-light"><div class="pad">
-    <div class="eyebrow">LOW-RISK ROLLOUT</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+function pcRollout(d){
+  return `<div class="eyebrow">LOW-RISK ROLLOUT</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="phase-list">
       <div class="phase-card active"><div class="card-label">PHASE 1</div><h3>${esc(d.phase1.title)}</h3><p>${esc(d.phase1.body)}</p></div>
       <div class="phase-card"><div class="card-label">PHASE 2</div><h3>${esc(d.phase2.title)}</h3><p>${esc(d.phase2.body)}</p></div>
       <div class="phase-card"><div class="card-label">OPTIONAL</div><h3>${esc(d.optional.title)}</h3><p>${esc(d.optional.body)}</p></div>
-    </div>
-    <div class="roll-note">${esc(d.note)}</div>
-    ${pageFoot(9)}
-  </div></div>`;
+    </div>`;
 }
-
-/* ---- Page 10: Pricing ---- */
-function slidePricing(descMap, recommendedKey){
+function pcPricing(descMap, recommendedKey){
   const cards = PRICING_TIERS.map(t=>{
     const rec = t.key===recommendedKey;
     const badge = rec ? 'RECOMMENDED' : t.badge;
@@ -920,78 +895,132 @@ function slidePricing(descMap, recommendedKey){
       <div class="price-desc">${esc(descMap[t.key])}</div>
       <div class="price-meta">
         <div class="pl">CREDITS</div><div class="pv">${esc(t.credits)}</div>
-        <div class="pl">CONVERSATIONS</div><div class="pv">${esc(t.conversations)}</div>
         <div class="pl">DAILY RANGE</div><div class="pv">${esc(t.daily)}</div>
       </div>
     </div>`;
   }).join('');
-  return `<div class="page page-dark grid-bg"><div class="pad">
-    <div class="eyebrow">COMMERCIAL PROPOSAL</div>
-    <div class="headline tight">Four pricing options, with ${esc(PRICING_TIERS.find(t=>t.key===recommendedKey).name)} as the recommended starting point.</div>
-    <div class="price-grid">${cards}</div>
-    <div class="pricing-note">Estimates assume AI customer conversations with typical catalog lookup, intake, and handoff usage. No one-time setup fee for the standard first phase.</div>
-    ${pageFoot(10)}
-  </div></div>`;
+  return `<div class="eyebrow">COMMERCIAL PROPOSAL</div>
+    <div class="headline">Four pricing options, with ${esc(PRICING_TIERS.find(t=>t.key===recommendedKey).name)} recommended.</div>
+    <div class="price-grid">${cards}</div>`;
 }
-
-/* ---- Page 11: Next steps ---- */
-function slideNextSteps(d){
+function pcNextSteps(d){
   const steps = d.steps.map(s=>`<div class="step-card"><div class="badge-circle">${s.n}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></div>`).join('');
-  return `<div class="page page-dark grid-bg"><div class="pad">
-    <img class="cover-wordmark" src="kova-wordmark-dark.png" alt="Kova AI" style="margin-bottom:24px;">
-    <div class="eyebrow">NEXT STEPS</div>
-    <div class="headline tight">${esc(d.headline)}</div>
+  return `<div class="eyebrow">NEXT STEPS</div>
+    <div class="headline">${esc(d.headline)}</div>
     <div class="steps-row">${steps}</div>
     <div class="ns-footnote">${esc(d.footnote)}</div>
     <div class="contact-card">
-      <div class="crow"><span class="k">Contact</span><span class="v">Isaiah Baji</span></div>
-      <div class="crow"><span class="k">WhatsApp</span><span class="v">0547605037</span></div>
+      <div class="crow"><span class="k">Contact</span><span class="v">${esc(KOVA.signeeName)}</span></div>
+      <div class="crow"><span class="k">WhatsApp</span><span class="v">${esc(KOVA.phone)}</span></div>
       <div class="crow"><span class="k">Email</span><span class="v">sales@trykovaai.com</span></div>
+    </div>`;
+}
+
+/* ---- Page 1: Cover letter ---- */
+function pageCoverLetter(ind, company, address, contactPerson){
+  const d = ind.cover;
+  const companyLabel = company || '[Your Company Name]';
+  const salutation = contactPerson ? `Dear ${esc(contactPerson)},` : (company ? `Dear ${esc(company)} Team,` : 'Dear Sir/Madam,');
+  const addressLines = address ? `<br>${nl2br(address)}` : '';
+
+  const messages = d.chat.messages.map(m=>{
+    if(m.from==='customer'){ return `<div class="msg msg-customer">${esc(m.text)}</div>`; }
+    const cards = m.cards ? `<div class="msg-cards">${m.cards.map(c=>`<div class="msg-card"><b>${esc(c.title)}</b><span>${esc(c.sub)}</span></div>`).join('')}</div>` : '';
+    const handoff = m.handoff ? `<div class="handoff-btn">${esc(m.handoff)}</div>` : '';
+    return `<div class="msg msg-kova">${esc(m.text)}${cards}${handoff}</div>`;
+  }).join('');
+  const stats = d.stats.map(s=>`<div><div class="stat-big">${esc(s.big)}</div><div class="stat-lbl">${esc(s.label)}</div></div>`).join('');
+
+  return `<div class="page"><div class="page-pad">
+    <div class="letter-head">
+      <img class="letter-wordmark" src="kova-wordmark-light.png" alt="Kova AI">
+      <div class="letter-kova-addr">
+        <b>${esc(KOVA.name)}</b>
+        ${esc(KOVA.address)}<br>
+        ${esc(KOVA.phone)} · ${esc(KOVA.email)}<br>
+        ${esc(KOVA.website)}
+      </div>
     </div>
-    ${pageFoot(11)}
+    <div class="letter-rule"></div>
+    <div class="letter-date">${formatToday()}</div>
+    <div class="letter-to"><b>${esc(companyLabel)}</b>${addressLines}</div>
+    <div class="letter-re"><span>RE:</span> ${esc(d.headline)}</div>
+    <div class="letter-salutation">${salutation}</div>
+    <div class="letter-body">
+      <p>${esc(d.body)}</p>
+      <p>Below is an example of how this looks in practice on WhatsApp.</p>
+    </div>
+    <div class="chat-card">
+      <div class="thread-head"><div class="avatar">${esc(d.chat.contacts[0].initial)}</div><div><b>${esc(d.chat.activeName)}</b><span>ONLINE NOW</span></div></div>
+      <div class="thread-body">${messages}</div>
+    </div>
+    <div class="cover-stats">${stats}</div>
+    <div class="letter-closing">
+      <p>We look forward to the opportunity to support ${company ? esc(company) : 'your organisation'}. The pages that follow set out the opportunity, the business case, and our commercial proposal in full.</p>
+      <p>Sincerely,</p>
+      <div class="signature">
+        <div class="sig-word">Kova<em> AI</em></div>
+        <b>${esc(KOVA.signeeName)}</b>
+        <span>${esc(KOVA.signeeTitle)}, ${esc(KOVA.name)}</span>
+      </div>
+    </div>
+    ${pageFoot(1)}
   </div></div>`;
 }
 
 /* ============================================================
-   BUILD ALL SLIDES
+   BUILD ALL PAGES  (7 total)
    ============================================================ */
-function buildSlides(){
+function buildPages(){
   const ind = CONTENT[state.industry];
   const company = state.companyName.trim();
-  return [
-    slideCover(ind.cover, company, ind.proposalType),
-    slideWhatIs(ind.whatIs),
-    slideOpportunity(ind.opportunity),
-    slideBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc),
-    slideChanges(ind.changes, company),
-    slideHandles(ind.handles),
-    slideWorkflow(ind.workflow),
-    slideRevenue(ind.revenue),
-    slideRollout(ind.rollout),
-    slidePricing(ind.pricingDesc, state.recommendedTier),
-    slideNextSteps(ind.nextSteps)
-  ];
+  const address = state.companyAddress.trim();
+  const contactPerson = state.contactPerson.trim();
+  const rn = (n)=>runner(ind.proposalType, company);
+
+  const p1 = pageCoverLetter(ind, company, address, contactPerson);
+
+  const p2 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcWhatIs(ind.whatIs), false)}
+      ${panel(pcOpportunity(ind.opportunity), true)}
+    </div>${pageFoot(2)}</div></div>`;
+
+  const p3 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false)}
+      ${panel(pcChanges(ind.changes, company), true)}
+    </div>${pageFoot(3)}</div></div>`;
+
+  const p4 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcHandles(ind.handles), false)}
+      ${panel(pcWorkflow(ind.workflow), false)}
+      ${panel(pcRevenue(ind.revenue), true)}
+    </div>${pageFoot(4)}</div></div>`;
+
+  const p5 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcRollout(ind.rollout), false)}
+      ${panel(pcPricing(ind.pricingDesc, state.recommendedTier), true)}
+      ${panel(pcNextSteps(ind.nextSteps), true)}
+    </div>${pageFoot(5)}</div></div>`;
+
+  return [p1,p2,p3,p4,p5];
 }
 
 const SLIDE_TITLES = [
-  '1 · Cover','2 · What Kova AI Is','3 · The Opportunity','4 · The Business Case',
-  '5 · What Changes','6 · What Kova Handles','7 · Safe Workflow','8 · Demand & Revenue',
-  '9 · Rollout Plan','10 · Pricing','11 · Next Steps'
+  '1 · Cover Letter','2 · What Kova Is + The Opportunity','3 · The Business Case + What Changes',
+  '4 · What Kova Handles + Safe Workflow + Demand & Revenue','5 · Rollout + Pricing + Next Steps'
 ];
 
 /* ============================================================
    RENDER APP
    ============================================================ */
 function renderAll(){
-  const slides = buildSlides();
+  const pages = buildPages();
 
-  // hidden capture area (native A4 px, used for PDF export)
   const capEl = document.getElementById('captureArea');
-  capEl.innerHTML = slides.map((html,i)=>`<div id="cap-${i+1}">${html}</div>`).join('');
+  capEl.innerHTML = pages.map((html,i)=>`<div id="cap-${i+1}">${html}</div>`).join('');
 
-  // visible scaled preview
   const previewCol = document.getElementById('previewCol');
-  previewCol.innerHTML = slides.map((html,i)=>`
+  previewCol.innerHTML = pages.map((html,i)=>`
     <div class="preview-item">
       <div class="lbl">${SLIDE_TITLES[i]}</div>
       <div class="preview-frame"><div class="scaler" id="prev-${i+1}">${html}</div></div>
@@ -1054,10 +1083,9 @@ function updateCalcResult(){
   });
 });
 
-document.getElementById('companyName').addEventListener('input', e=>{
-  state.companyName = e.target.value;
-  renderAll();
-});
+document.getElementById('companyName').addEventListener('input', e=>{ state.companyName = e.target.value; renderAll(); });
+document.getElementById('companyAddress').addEventListener('input', e=>{ state.companyAddress = e.target.value; renderAll(); });
+document.getElementById('contactPerson').addEventListener('input', e=>{ state.contactPerson = e.target.value; renderAll(); });
 
 /* ---- pricing tier selector ---- */
 function renderTierSelect(){
@@ -1083,8 +1111,8 @@ async function downloadPdf(){
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
 
-  for(let i=1; i<=11; i++){
-    status.textContent = `Rendering page ${i} of 11...`;
+  for(let i=1; i<=TOTAL_PAGES; i++){
+    status.textContent = `Rendering page ${i} of ${TOTAL_PAGES}...`;
     const el = document.getElementById('cap-' + i);
     const canvas = await html2canvas(el, {width:PAGE_W, height:PAGE_H, scale:2, useCORS:true, backgroundColor:null});
     const img = canvas.toDataURL('image/jpeg', 0.92);
