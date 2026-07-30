@@ -18,8 +18,8 @@
     --green:#5B2BE8;
     --green-mint:#B8A6FF;
     --gold:#FFF3A0;
-    --slate-600:#4B5768;
-    --slate-500:#5C6773;
+    --slate-600:#20242B;
+    --slate-500:#2E333B;
     --slate-400:#94A3B8;
     --line-light:#E7E1D3;
     --line-dark:rgba(255,255,255,.09);
@@ -76,7 +76,7 @@
   .result-box{
     margin-top:6px;background:var(--navy);border-radius:12px;padding:16px 18px;color:#fff;
   }
-  .result-box .rl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9FB0C3;margin-bottom:6px;}
+  .result-box .rl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#C7D3E0;margin-bottom:6px;}
   .result-box .rv{font-size:26px;font-weight:800;color:var(--gold);}
   .tier-select{display:flex;flex-direction:column;gap:8px;}
   .tier-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--app-border);border-radius:8px;cursor:pointer;font-size:13px;}
@@ -110,13 +110,13 @@
      Every page has a neutral cream canvas; light/dark sections are
      self-contained panels so two sections can share a page.
      ============================================================ */
-  .page{width:1240px;height:1754px;position:relative;overflow:hidden;font-family:'Geist',sans-serif;-webkit-font-smoothing:antialiased;background:var(--cream);color:var(--ink);}
+  .page{width:1240px;height:1754px;position:relative;overflow:hidden;font-family:'Times New Roman',Times,Georgia,serif;-webkit-font-smoothing:antialiased;background:var(--cream);color:var(--ink);}
   .page-pad{padding:46px 60px;height:100%;display:flex;flex-direction:column;}
   .runner{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line-light);}
-  .runner .r-left{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--ink);}
+  .runner .r-left{font-size:19.5px;font-weight:800;letter-spacing:.08em;color:var(--ink);}
   .runner .r-left span{color:var(--green);}
-  .runner .r-right{font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9AA3AD;}
-  .pagenum{position:absolute;right:34px;bottom:22px;font-size:15px;font-weight:600;color:#A2A9AE;z-index:2;}
+  .runner .r-right{font-size:19px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9AA3AD;}
+  .pagenum{position:absolute;right:34px;bottom:22px;font-size:22.5px;font-weight:600;color:#A2A9AE;z-index:2;}
 
   .panel-stack{display:flex;flex-direction:column;gap:20px;}
   .panel{border-radius:16px;}
@@ -129,67 +129,72 @@
   }
   .panel-inner{position:relative;z-index:1;padding:26px 28px;}
 
-  .eyebrow{font-size:15.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
+  .eyebrow{font-size:23px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
   .panel-dark .eyebrow{color:var(--green-mint);}
-  .headline{font-size:31px;font-weight:800;letter-spacing:-.015em;line-height:1.22;}
-  .body-copy{font-size:17.5px;line-height:1.6;color:var(--slate-600);max-width:760px;margin-top:12px;}
-  .panel-dark .body-copy{color:#9FB0C3;}
+  .headline{font-size:46.5px;font-weight:800;letter-spacing:-.015em;line-height:1.22;}
+  .body-copy{font-size:26px;line-height:1.6;color:var(--slate-600);max-width:760px;margin-top:12px;}
+  .panel-dark .body-copy{color:#C7D3E0;}
 
   .card{background:#fff;border:1px solid var(--line-light);border-radius:12px;padding:18px 20px;}
   .panel-dark .card{background:rgba(255,255,255,.035);border-color:var(--line-dark);}
-  .card-label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
+  .card-label{font-size:19.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
   .panel-dark .card-label{color:var(--green-mint);}
-  .card-title{font-size:19px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em;}
-  .card-body{font-size:15px;line-height:1.5;color:var(--slate-500);}
-  .panel-dark .card-body{color:#9FB0C3;}
+  .card-title{font-size:28.5px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em;}
+  .card-body{font-size:22.5px;line-height:1.5;color:var(--slate-500);}
+  .panel-dark .card-body{color:#C7D3E0;}
   .card.accent{background:#F3F0FF;border-color:#D9CCFF;}
   .panel-dark .card.accent{background:rgba(91,43,232,.14);border-color:rgba(184,166,255,.35);}
 
-  .badge-circle{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  .badge-circle{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:22.5px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
   .bullets{list-style:none;margin-top:10px;padding:0;}
-  .bullets li{position:relative;padding-left:14px;font-size:14.5px;color:var(--slate-500);margin-bottom:5px;line-height:1.4;}
-  .panel-dark .bullets li{color:#9FB0C3;}
+  .bullets li{position:relative;padding-left:14px;font-size:22px;color:var(--slate-500);margin-bottom:5px;line-height:1.4;}
+  .panel-dark .bullets li{color:#C7D3E0;}
   .bullets li::before{content:'';position:absolute;left:0;top:6px;width:4px;height:4px;border-radius:50%;background:var(--green);}
   .panel-dark .bullets li::before{background:var(--green-mint);}
 
-  .pill{display:inline-flex;align-items:center;padding:6px 13px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:14.5px;font-weight:700;color:var(--ink);}
+  .pill{display:inline-flex;align-items:center;padding:6px 13px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:22px;font-weight:700;color:var(--ink);}
   .panel-dark .pill{background:rgba(184,166,255,.08);border-color:rgba(184,166,255,.35);color:var(--green-mint);}
 
   /* ---- Letter (cover, page 1) ---- */
   .letter-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
   .letter-wordmark{width:118px;height:27.2px;display:block;}
-  .letter-kova-addr{text-align:right;font-size:13px;line-height:1.55;color:var(--slate-500);}
-  .letter-kova-addr b{color:var(--ink);font-size:14.5px;display:block;margin-bottom:2px;}
+  .letter-kova-addr{text-align:right;font-size:22px;line-height:1.5;color:var(--ink);font-weight:700;}
+  .letter-kova-addr b{color:var(--ink);font-size:22px;display:block;margin-bottom:2px;}
   .letter-rule{border-top:2px solid var(--green);margin-bottom:22px;}
-  .letter-date{font-size:15.5px;color:var(--slate-500);margin-bottom:18px;}
-  .letter-to{font-size:17px;color:var(--ink);line-height:1.55;margin-bottom:18px;}
+  .letter-date{font-size:23px;color:var(--slate-500);margin-bottom:18px;}
+  .letter-to{font-size:25.5px;color:var(--ink);line-height:1.5;margin-bottom:18px;font-weight:700;}
   .letter-to b{display:block;}
-  .letter-re{font-size:18px;font-weight:700;line-height:1.4;margin-bottom:16px;}
+  .letter-re{font-size:27px;font-weight:700;line-height:1.4;margin-bottom:16px;}
   .letter-re span{color:var(--green);}
-  .letter-salutation{font-size:17.5px;margin-bottom:14px;}
-  .letter-body p{font-size:17.5px;line-height:1.62;color:var(--slate-600);margin-bottom:13px;}
-  .cover-tag{font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
+  .letter-salutation{font-size:26px;margin-bottom:14px;}
+  .letter-body p{font-size:26px;line-height:1.62;color:var(--slate-600);margin-bottom:13px;}
+  .letter-subhead{font-size:27px;font-weight:700;color:var(--ink);margin:16px 0 8px;}
+  .letter-bullets{list-style:none;margin:10px 0 13px;padding:0;}
+  .letter-bullets li{position:relative;padding-left:26px;font-size:26px;line-height:1.5;color:var(--slate-600);margin-bottom:11px;}
+  .letter-bullets li::before{content:'\2022';position:absolute;left:2px;top:0;color:var(--green);font-weight:800;}
+  .letter-bullets li b{color:var(--ink);}
+  .cover-tag{font-size:22px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
   .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);border-bottom:1px solid var(--line-light);margin:16px 0;padding:14px 0;gap:14px;}
-  .cover-stats .stat-big{font-size:20px;font-weight:800;color:var(--green);margin-bottom:3px;}
-  .cover-stats .stat-lbl{font-size:13px;color:var(--slate-500);line-height:1.3;}
+  .cover-stats .stat-big{font-size:30px;font-weight:800;color:var(--green);margin-bottom:3px;}
+  .cover-stats .stat-lbl{font-size:19.5px;color:var(--slate-500);line-height:1.3;}
   .chat-card{margin:16px 0;background:#fff;border:1px solid var(--line-light);border-radius:14px;overflow:hidden;box-shadow:0 12px 26px -16px rgba(11,18,32,.28);}
   .chat-card .thread-head{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:1px solid #EEEDE8;background:#FCFBF7;}
-  .chat-card .thread-head b{font-size:15px;color:var(--ink);display:block;}
-  .chat-card .thread-head span{font-size:12px;color:var(--green);font-weight:700;}
+  .chat-card .thread-head b{font-size:22.5px;color:var(--ink);display:block;}
+  .chat-card .thread-head span{font-size:18px;color:var(--green);font-weight:700;}
   .chat-card .thread-body{padding:14px 16px;}
-  .avatar{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
-  .msg{border-radius:10px;padding:9px 12px;font-size:14px;line-height:1.44;margin-bottom:8px;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+  .msg{border-radius:10px;padding:9px 12px;font-size:21px;line-height:1.44;margin-bottom:8px;}
   .msg-customer{background:#fff;border:1px solid #E9E7DF;color:#22262B;}
   .msg-kova{background:#F3F0FF;border:1px solid #DCD0FF;color:#2E1F5C;}
   .msg-cards{display:flex;gap:7px;margin-top:7px;}
   .msg-card{flex:1;background:#fff;border:1px solid #E5DBFF;border-radius:7px;padding:6px 9px;}
-  .msg-card b{font-size:12px;display:block;color:var(--ink);}
-  .msg-card span{font-size:11px;color:var(--green);}
-  .handoff-btn{margin-top:7px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:12px;padding:5px 11px;border-radius:9999px;}
-  .letter-closing p{font-size:17px;line-height:1.6;color:var(--slate-600);margin-bottom:14px;}
-  .signature b{display:block;font-size:17.5px;color:var(--ink);}
-  .signature span{font-size:15px;color:var(--slate-500);}
-  .sig-word{color:var(--ink);font-weight:800;font-size:18px;margin-bottom:2px;}
+  .msg-card b{font-size:18px;display:block;color:var(--ink);}
+  .msg-card span{font-size:16.5px;color:var(--green);}
+  .handoff-btn{margin-top:7px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:18px;padding:5px 11px;border-radius:9999px;}
+  .letter-closing p{font-size:25.5px;line-height:1.6;color:var(--slate-600);margin-bottom:14px;}
+  .signature b{display:block;font-size:26px;color:var(--ink);}
+  .signature span{font-size:22.5px;color:var(--slate-500);}
+  .sig-word{color:var(--ink);font-weight:800;font-size:27px;margin-bottom:2px;}
   .sig-word em{color:var(--green);font-style:normal;}
 
   /* ---- What Kova Is ---- */
@@ -198,100 +203,100 @@
   .where-pills{display:flex;gap:8px;}
   .simple-note{background:#F3F0FF;border:1px solid #D9CCFF;border-radius:10px;padding:14px 16px;margin-top:14px;}
   .simple-note .card-label{margin-bottom:6px;}
-  .simple-note p{font-size:15px;line-height:1.5;color:#3A2A6B;}
+  .simple-note p{font-size:22.5px;line-height:1.5;color:#3A2A6B;}
   .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
   .three-col .card-body{color:var(--slate-500);}
 
   /* ---- Opportunity (2x2) ---- */
   .four-col{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;}
-  .four-col .card .num{font-size:14.5px;font-weight:800;color:var(--green-mint);margin-bottom:8px;}
-  .four-col .card .card-title{color:#fff;font-size:18px;}
-  .callout{margin-top:14px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 8px 8px 0;padding:13px 16px;font-size:15px;line-height:1.5;color:#C7D2DC;}
+  .four-col .card .num{font-size:22px;font-weight:800;color:var(--green-mint);margin-bottom:8px;}
+  .four-col .card .card-title{color:#fff;font-size:27px;}
+  .callout{margin-top:14px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 8px 8px 0;padding:13px 16px;font-size:22.5px;line-height:1.5;color:#DAE2EA;}
 
   /* ---- Business case ---- */
   .bc-left{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
   .bc-right{background:var(--navy);border-radius:14px;padding:20px 22px;color:#fff;margin-top:16px;}
-  .bc-right h4{font-size:19px;font-weight:800;margin-bottom:2px;}
+  .bc-right h4{font-size:28.5px;font-weight:800;margin-bottom:2px;}
   .calc-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);}
-  .calc-row label{font-size:15px;color:#B9C4D0;}
+  .calc-row label{font-size:22.5px;color:#B9C4D0;}
   .calc-row .inwrap{display:flex;align-items:center;gap:5px;}
-  .calc-row input{width:74px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:7px;color:#fff;font-family:inherit;font-size:15px;padding:6px 9px;text-align:right;}
-  .calc-row .unit{font-size:13px;color:#8A98A8;}
+  .calc-row input{width:74px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:7px;color:#fff;font-family:inherit;font-size:22.5px;padding:6px 9px;text-align:right;}
+  .calc-row .unit{font-size:19.5px;color:#8A98A8;}
   .calc-result{padding-top:14px;display:flex;justify-content:space-between;align-items:flex-end;}
-  .calc-result .rl{font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9FB0C3;line-height:1.35;max-width:150px;}
-  .calc-result .rv{font-size:31px;font-weight:800;color:var(--gold);text-align:right;}
-  .note-strip{margin-top:14px;border:1px solid var(--line-light);border-radius:9px;padding:11px 15px;font-size:14px;color:var(--slate-500);}
+  .calc-result .rl{font-size:19px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#C7D3E0;line-height:1.35;max-width:150px;}
+  .calc-result .rv{font-size:46.5px;font-weight:800;color:var(--gold);text-align:right;}
+  .note-strip{margin-top:14px;border:1px solid var(--line-light);border-radius:9px;padding:11px 15px;font-size:21px;color:var(--slate-500);}
 
   /* ---- Changes (stacked pairs) ---- */
   .change-rows{margin-top:14px;}
   .change-block{margin-bottom:12px;}
   .change-block:last-child{margin-bottom:0;}
-  .change-block .rowlabel{font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--green-mint);margin-bottom:7px;}
+  .change-block .rowlabel{font-size:19.5px;font-weight:800;letter-spacing:.04em;color:var(--green-mint);margin-bottom:7px;}
   .change-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .change-box{border-radius:10px;padding:11px 13px;border:1px solid var(--line-dark);background:rgba(255,255,255,.02);}
   .change-box.today .tag{color:#8A98A8;}
   .change-box.kova{background:rgba(91,43,232,.12);border-color:rgba(184,166,255,.3);}
-  .change-box .tag{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+  .change-box .tag{font-size:17px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
   .change-box.kova .tag{color:var(--green-mint);}
-  .change-box p{font-size:14px;line-height:1.4;color:#DCE3EA;}
+  .change-box p{font-size:21px;line-height:1.4;color:#DCE3EA;}
 
   /* ---- Handles (stacked cards) ---- */
   .handle-grid{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
   .handle-card{background:#FFFDF5;border:1px solid var(--line-light);border-radius:12px;padding:16px 18px;}
   .handle-card.accent{background:#F3F0FF;border-color:#D9CCFF;}
-  .handle-card h3{font-size:19px;font-weight:800;margin-bottom:6px;}
-  .handle-card p{font-size:15px;color:var(--slate-500);line-height:1.48;}
+  .handle-card h3{font-size:28.5px;font-weight:800;margin-bottom:6px;}
+  .handle-card p{font-size:22.5px;color:var(--slate-500);line-height:1.48;}
   .handle-card .bullets{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
   .example-strip{margin-top:12px;border:1px solid var(--line-light);border-radius:10px;padding:12px 16px;}
   .example-strip .card-label{margin-bottom:6px;}
-  .example-strip p{font-size:15px;font-style:italic;color:#333;line-height:1.45;}
+  .example-strip p{font-size:22.5px;font-style:italic;color:#333;line-height:1.45;}
 
   /* ---- Workflow (2x2 + boundary) ---- */
   .wf-steps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
   .wf-step-card{border:1px solid var(--line-light);border-radius:12px;padding:15px;}
-  .wf-step-card h3{font-size:17px;font-weight:700;margin-bottom:5px;}
-  .wf-step-card p{font-size:14px;color:var(--slate-500);line-height:1.42;}
+  .wf-step-card h3{font-size:25.5px;font-weight:700;margin-bottom:5px;}
+  .wf-step-card p{font-size:21px;color:var(--slate-500);line-height:1.42;}
   .boundary-panel{background:var(--navy);border-radius:12px;padding:17px 19px;margin-top:14px;}
-  .boundary-panel h3{font-size:19px;font-weight:800;color:#fff;margin-bottom:8px;}
-  .boundary-panel p{font-size:15px;line-height:1.5;color:#C7D2DC;}
+  .boundary-panel h3{font-size:28.5px;font-weight:800;color:#fff;margin-bottom:8px;}
+  .boundary-panel p{font-size:22.5px;line-height:1.5;color:#DAE2EA;}
 
   /* ---- Revenue (tags + conversation) ---- */
   .tag-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
-  .tag-pill{padding:8px 12px;border-radius:8px;border:1px solid rgba(184,166,255,.35);background:rgba(184,166,255,.07);font-weight:700;font-size:14px;color:var(--green-mint);}
+  .tag-pill{padding:8px 12px;border-radius:8px;border:1px solid rgba(184,166,255,.35);background:rgba(184,166,255,.07);font-weight:700;font-size:21px;color:var(--green-mint);}
   .conv-stack{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
   .conv-card{border:1px solid var(--line-dark);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,.02);}
   .conv-card .card-label{margin-bottom:5px;}
-  .conv-card p{font-size:14.5px;line-height:1.42;color:#E4EAF0;}
+  .conv-card p{font-size:22px;line-height:1.42;color:#E4EAF0;}
 
   /* ---- Rollout (phases) ---- */
   .phase-list{display:flex;flex-direction:column;gap:9px;margin-top:14px;}
   .phase-card{border:1px solid var(--line-light);border-radius:12px;padding:14px 16px;}
   .phase-card.active{background:#F3F0FF;border-color:#D9CCFF;}
-  .phase-card h3{font-size:18px;font-weight:800;margin-bottom:5px;}
-  .phase-card p{font-size:14.5px;color:var(--slate-500);line-height:1.45;}
+  .phase-card h3{font-size:27px;font-weight:800;margin-bottom:5px;}
+  .phase-card p{font-size:22px;color:var(--slate-500);line-height:1.45;}
 
   /* ---- Pricing (2x2) ---- */
   .price-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;}
   .price-card{border:1px solid var(--line-dark);border-radius:12px;padding:15px;background:rgba(255,255,255,.02);}
   .price-card.rec{background:rgba(91,43,232,.12);border:1px solid rgba(184,166,255,.5);}
   .price-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
-  .price-top b{font-size:17px;color:#fff;}
-  .price-badge{font-size:10px;font-weight:800;letter-spacing:.05em;color:var(--green-mint);}
-  .price-amt{font-size:23px;font-weight:800;color:var(--gold);}
-  .price-amt span{font-size:13px;font-weight:600;color:#9FB0C3;}
-  .price-desc{font-size:13px;color:#AEBAC7;line-height:1.42;margin:7px 0 9px;}
+  .price-top b{font-size:25.5px;color:#fff;}
+  .price-badge{font-size:15px;font-weight:800;letter-spacing:.05em;color:var(--green-mint);}
+  .price-amt{font-size:34.5px;font-weight:800;color:var(--gold);}
+  .price-amt span{font-size:19.5px;font-weight:600;color:#C7D3E0;}
+  .price-desc{font-size:19.5px;color:#D2DCE6;line-height:1.42;margin:7px 0 9px;}
   .price-meta{border-top:1px solid var(--line-dark);padding-top:7px;margin-top:3px;}
-  .price-meta .pl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8A98A8;margin-bottom:1px;}
-  .price-meta .pv{font-size:14px;color:#E4EAF0;margin-bottom:5px;}
+  .price-meta .pl{font-size:16.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8A98A8;margin-bottom:1px;}
+  .price-meta .pv{font-size:21px;color:#E4EAF0;margin-bottom:5px;}
 
   /* ---- Next steps ---- */
   .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
   .step-card{border:1px solid var(--line-dark);border-radius:12px;padding:16px;background:rgba(255,255,255,.02);}
-  .step-card h3{font-size:16px;font-weight:700;color:#fff;margin:9px 0 5px;}
-  .step-card p{font-size:13px;color:#AEBAC7;line-height:1.42;}
-  .ns-footnote{margin-top:18px;font-size:15.5px;color:#9FB0C3;line-height:1.5;}
+  .step-card h3{font-size:24px;font-weight:700;color:#fff;margin:9px 0 5px;}
+  .step-card p{font-size:19.5px;color:#D2DCE6;line-height:1.42;}
+  .ns-footnote{margin-top:18px;font-size:23px;color:#C7D3E0;line-height:1.5;}
   .contact-card{margin-top:16px;max-width:460px;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:12px;padding:16px 20px;}
-  .contact-card .crow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-dark);font-size:15.5px;}
+  .contact-card .crow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-dark);font-size:23px;}
   .contact-card .crow:last-child{border-bottom:none;}
   .contact-card .crow .k{color:var(--green-mint);font-weight:700;}
   .contact-card .crow .v{color:#fff;font-weight:700;}
@@ -422,6 +427,16 @@ insurance: {
   cover:{
     headline:'Quote, sell, and issue third-party motor cover on WhatsApp — nights, weekends, any time.',
     body:'Kova AI replies instantly from your approved policy and pricing information, sells and issues third-party motor cover directly in the conversation any hour of the day, and hands every claim or comprehensive-cover decision safely to your licensed team. Never gives coverage advice beyond approved terms. Never approves a claim.',
+    introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement and digital commerce platform that helps insurance companies transform how they communicate with, serve, and transact with their policyholders. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce customer service costs, increase response speed, and improve the overall customer experience across your digital channels.',
+    challengeHeading:'The Challenge Your Organisation Faces',
+    challengeBody:'In today’s digital-first environment, policyholders expect instant, round-the-clock responses — whether they are submitting a motor claim at midnight, requesting a quote for third-party cover on a weekend, or renewing a policy during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
+    challengeBullets:[
+      {label:'Rising support costs', body:'Scaling claims and customer service teams to meet growing demand requires significant investment in recruitment, training, and management — with each agent limited to handling one interaction at a time.'},
+      {label:'Policyholder attrition from slow response times', body:'Research consistently shows that customers who do not receive a response within minutes will seek alternatives. In a competitive insurance market, this directly impacts retention and premium revenue.'},
+      {label:'Fragmented digital channels', body:'Many insurers manage customer interactions across WhatsApp, website chat, email, and phone with no unified system — leading to inconsistent service quality, lost context, and operational inefficiency.'}
+    ],
+    solutionHeading:'How Kova AI Addresses These Challenges',
+    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp Business channel and website that engage policyholders in natural, accurate conversations — answering coverage and pricing enquiries, quoting and issuing third-party cover, collecting claim information, and routing complex claims and underwriting matters to your licensed team with full context.',
     stats:[{big:'24/7',label:'quotes, sales & renewals'},{big:'Instant issue',label:'third-party cover, any time'},{big:'Claims-safe',label:'claims still go to licensed staff'}],
     tags:['Never coverage advice','Policy-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
@@ -540,6 +555,16 @@ bank: {
   cover:{
     headline:'Turn the account messages already hitting your WhatsApp into served customers — day and night.',
     body:'Kova AI replies instantly from your approved product and rate information, captures account-opening and loan leads, and hands every dispute or fraud report safely to your compliance team. Never moves funds. Never confirms a balance without verification.',
+    introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement and digital commerce platform that helps banks and financial institutions transform how they communicate with, serve, and transact with their customers. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce customer service costs, increase response speed, and improve the overall customer experience across your digital channels.',
+    challengeHeading:'The Challenge Your Organisation Faces',
+    challengeBody:'In today’s digital-first environment, customers expect instant, round-the-clock responses — whether they are checking a balance at midnight, enquiring about a loan product on a weekend, or opening an account during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
+    challengeBullets:[
+      {label:'Rising support costs', body:'Scaling customer service and relationship management teams to meet growing demand requires significant investment in recruitment, training, and management — with each officer limited to handling one interaction at a time.'},
+      {label:'Customer attrition from slow response times', body:'Research consistently shows that customers who do not receive a response within minutes will seek alternatives. In competitive markets such as banking, this directly impacts retention and revenue.'},
+      {label:'Fragmented digital channels', body:'Many banks manage customer interactions across WhatsApp, website chat, email, and phone with no unified system — leading to inconsistent service quality, lost context, and operational inefficiency.'}
+    ],
+    solutionHeading:'How Kova AI Addresses These Challenges',
+    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp Business channel and website that engage customers in natural, accurate conversations — answering product and rate enquiries, opening accounts, capturing loan applications, processing standard transactions, and routing disputes and compliance matters to your team with full context.',
     stats:[{big:'24/7',label:'every message answered'},{big:'Fraud-safe',label:'disputes go to compliance'},{big:'Retail + SME',label:'one AI layer across demand'}],
     tags:['Never moves funds','Product-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
@@ -656,6 +681,16 @@ government: {
   cover:{
     headline:'Turn the citizen messages already hitting your WhatsApp into resolved enquiries — day and night.',
     body:'Kova AI replies instantly from your approved service information, captures applications and appointment requests, and hands every case-specific or sensitive enquiry safely to your officers. Never makes a determination. Never issues a document.',
+    introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement and digital commerce platform that helps government agencies transform how they communicate with, serve, and support citizens accessing public services. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce service delivery costs, increase response speed, and improve the overall citizen experience across your digital channels.',
+    challengeHeading:'The Challenge Your Organisation Faces',
+    challengeBody:'In today’s digital-first environment, citizens expect instant, round-the-clock responses — whether they are checking a permit application at midnight, enquiring about a public service on a weekend, or seeking information during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
+    challengeBullets:[
+      {label:'Rising support costs', body:'Scaling citizen support teams to meet growing demand requires significant investment in recruitment, training, and management — with each officer limited to handling one interaction at a time.'},
+      {label:'Citizen frustration from slow response times', body:'Citizens who do not receive a timely response often turn to phone calls, walk-in visits, or formal complaints — increasing operational burden and reducing public satisfaction with government services.'},
+      {label:'Fragmented digital channels', body:'Many agencies manage citizen interactions across WhatsApp, website chat, email, and phone with no unified system — leading to inconsistent service quality, lost context, and operational inefficiency.'}
+    ],
+    solutionHeading:'How Kova AI Addresses These Challenges',
+    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp channel and website that engage citizens in natural, accurate conversations — answering eligibility and requirement enquiries, guiding applicants through services, collecting required documents, and routing sensitive cases and determinations to your officers with full context.',
     stats:[{big:'24/7',label:'every message answered'},{big:'Case-safe',label:'sensitive matters go to officers'},{big:'Multi-service',label:'one AI layer across demand'}],
     tags:['Never makes determinations','Policy-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
@@ -792,7 +827,7 @@ function formatToday(){
   return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-const TOTAL_PAGES = 7;
+const TOTAL_PAGES = 11;
 function pageFoot(n){ return `<div class="pagenum">${n} / ${TOTAL_PAGES}</div>`; }
 function runner(proposalType, company){
   return `<div class="runner"><div class="r-left">KOVA <span>AI</span></div><div class="r-right">${esc(proposalType)} · ${company ? esc(company).toUpperCase() : 'PROPOSAL'}</div></div>`;
@@ -938,16 +973,18 @@ function pcNextSteps(d){
 }
 
 /* ---- Page 1: Cover letter (introductory only) ---- */
-function pageCoverLetter(ind, company, address, contactPerson, contactTitle){
+function pageCoverLetter1(ind, company, address, contactPerson, contactTitle, pageNum){
   const d = ind.cover;
   const companyLabel = company || '[Your Company Name]';
   const salutation = contactPerson ? `Dear ${esc(contactPerson)},` : (company ? `Dear ${esc(company)} Team,` : 'Dear Sir/Madam,');
 
   const toLines = [];
-  if(contactPerson) toLines.push(`<b>${esc(contactPerson)}</b>`);
+  if(contactPerson) toLines.push(esc(contactPerson));
   if(contactTitle) toLines.push(esc(contactTitle));
-  toLines.push(`<b>${esc(companyLabel)}</b>`);
+  toLines.push(esc(companyLabel));
   if(address) toLines.push(nl2br(address));
+
+  const intro = esc(d.introTemplate).replace('{{COMPANY}}', esc(companyLabel));
 
   return `<div class="page"><div class="page-pad">
     <div class="letter-head">
@@ -965,8 +1002,24 @@ function pageCoverLetter(ind, company, address, contactPerson, contactTitle){
     <div class="letter-re"><span>RE:</span> ${esc(d.headline)}</div>
     <div class="letter-salutation">${salutation}</div>
     <div class="letter-body">
-      <p>${esc(d.body)}</p>
-      <p>We look forward to the opportunity to support ${company ? esc(company) : 'your organisation'}. The pages that follow set out how this works in practice, the opportunity, the business case, and our commercial proposal in full.</p>
+      <p>${intro}</p>
+      <div class="letter-subhead">${esc(d.challengeHeading)}</div>
+      <p>${esc(d.challengeBody)}</p>
+    </div>
+    ${pageFoot(pageNum)}
+  </div></div>`;
+}
+
+function pageCoverLetter2(ind, company, rn, pageNum){
+  const d = ind.cover;
+  const bulletsHtml = d.challengeBullets.map(b=>`<li><b>${esc(b.label)}:</b> ${esc(b.body)}</li>`).join('');
+
+  return `<div class="page"><div class="page-pad">${rn}
+    <div class="letter-body">
+      <ul class="letter-bullets">${bulletsHtml}</ul>
+      <div class="letter-subhead">${esc(d.solutionHeading)}</div>
+      <p>${esc(d.solutionBody)}</p>
+      <p>We look forward to the opportunity to support ${company ? esc(company) : 'your organisation'}. The pages that follow set out the opportunity, the business case, and our commercial proposal in full.</p>
     </div>
     <div class="letter-closing">
       <p>Sincerely,</p>
@@ -976,7 +1029,7 @@ function pageCoverLetter(ind, company, address, contactPerson, contactTitle){
         <span>${esc(KOVA.signeeTitle)}, ${esc(KOVA.name)}</span>
       </div>
     </div>
-    ${pageFoot(1)}
+    ${pageFoot(pageNum)}
   </div></div>`;
 }
 
@@ -991,44 +1044,54 @@ function buildPages(){
   const contactTitle = state.contactTitle.trim();
   const rn = (n)=>runner(ind.proposalType, company);
 
-  const p1 = pageCoverLetter(ind, company, address, contactPerson, contactTitle);
-
-  const p2 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
-      ${panel(pcWhatIs(ind.whatIs), false)}
-      ${panel(pcChatDemo(ind.cover), false)}
-    </div>${pageFoot(2)}</div></div>`;
+  const p1 = pageCoverLetter1(ind, company, address, contactPerson, contactTitle, 1);
+  const p2 = pageCoverLetter2(ind, company, rn(), 2);
 
   const p3 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
-      ${panel(pcOpportunity(ind.opportunity), true)}
-      ${panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false)}
+      ${panel(pcWhatIs(ind.whatIs), false)}
     </div>${pageFoot(3)}</div></div>`;
 
   const p4 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
-      ${panel(pcChanges(ind.changes, company), true)}
-      ${panel(pcHandles(ind.handles), false)}
+      ${panel(pcChatDemo(ind.cover), false)}
     </div>${pageFoot(4)}</div></div>`;
 
   const p5 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
-      ${panel(pcWorkflow(ind.workflow), false)}
-      ${panel(pcRevenue(ind.revenue), true)}
+      ${panel(pcOpportunity(ind.opportunity), true)}
     </div>${pageFoot(5)}</div></div>`;
 
   const p6 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
-      ${panel(pcRollout(ind.rollout), false)}
-      ${panel(pcPricing(ind.pricingDesc, state.recommendedTier), true)}
+      ${panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false)}
     </div>${pageFoot(6)}</div></div>`;
 
   const p7 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
-      ${panel(pcNextSteps(ind.nextSteps), true)}
+      ${panel(pcChanges(ind.changes, company), true)}
     </div>${pageFoot(7)}</div></div>`;
 
-  return [p1,p2,p3,p4,p5,p6,p7];
+  const p8 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcHandles(ind.handles), false)}
+    </div>${pageFoot(8)}</div></div>`;
+
+  const p9 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcWorkflow(ind.workflow), false)}
+      ${panel(pcRevenue(ind.revenue), true)}
+    </div>${pageFoot(9)}</div></div>`;
+
+  const p10 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcRollout(ind.rollout), false)}
+      ${panel(pcPricing(ind.pricingDesc, state.recommendedTier), true)}
+    </div>${pageFoot(10)}</div></div>`;
+
+  const p11 = `<div class="page"><div class="page-pad">${rn()}<div class="panel-stack">
+      ${panel(pcNextSteps(ind.nextSteps), true)}
+    </div>${pageFoot(11)}</div></div>`;
+
+  return [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11];
 }
 
 const SLIDE_TITLES = [
-  '1 · Cover Letter','2 · What Kova Is + See It In Action','3 · The Opportunity + The Business Case',
-  '4 · What Changes + What Kova Handles','5 · Safe Workflow + Demand & Revenue',
-  '6 · Rollout + Pricing','7 · Next Steps'
+  '1 · Cover Letter','2 · Cover Letter (cont.)','3 · What Kova Is','4 · See It In Action',
+  '5 · The Opportunity','6 · The Business Case','7 · What Changes','8 · What Kova Handles',
+  '9 · Safe Workflow + Demand & Revenue','10 · Rollout + Pricing','11 · Next Steps'
 ];
 
 /* ============================================================
