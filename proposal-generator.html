@@ -95,194 +95,183 @@
 
   /* ---- preview column ---- */
   .preview-col{flex:1;padding:32px;display:flex;flex-direction:column;gap:28px;align-items:center;min-width:0;}
-  .preview-item{width:100%;max-width:1120px;}
+  .preview-item{width:100%;max-width:620px;}
   .preview-item .lbl{font-size:12.5px;font-weight:700;color:var(--app-sub);margin-bottom:8px;padding-left:2px;}
   .preview-frame{
-    width:100%;aspect-ratio:1600/900;border-radius:12px;overflow:hidden;
+    width:100%;aspect-ratio:1240/1754;border-radius:8px;overflow:hidden;
     box-shadow:0 1px 3px rgba(0,0,0,.08), 0 12px 30px -12px rgba(15,23,42,.18);
     position:relative;border:1px solid var(--app-border);
   }
-  .preview-frame .scaler{position:absolute;top:0;left:0;width:1600px;height:900px;transform-origin:top left;}
+  .preview-frame .scaler{position:absolute;top:0;left:0;width:1240px;height:1754px;transform-origin:top left;}
 
   /* ============================================================
-     SLIDE / PAGE SYSTEM  (native size 1600 x 900)
+     SLIDE / PAGE SYSTEM  (native size 1240 x 1754 — A4 @ ~150dpi)
      ============================================================ */
-  .page{width:1600px;height:900px;position:relative;overflow:hidden;font-family:'Geist',sans-serif;-webkit-font-smoothing:antialiased;}
+  .page{width:1240px;height:1754px;position:relative;overflow:hidden;font-family:'Geist',sans-serif;-webkit-font-smoothing:antialiased;}
   .page-light{background:var(--cream);color:var(--ink);}
   .page-dark{background:var(--navy);color:#fff;}
   .grid-bg::before{
     content:'';position:absolute;inset:0;pointer-events:none;
     background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
-    background-size:64px 64px;
+    background-size:62px 62px;
   }
-  .pad{padding:70px 84px;height:100%;position:relative;z-index:1;}
-  .eyebrow{font-size:15px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
+  .pad{padding:64px 68px;height:100%;position:relative;z-index:1;}
+  .eyebrow{font-size:14px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
   .page-dark .eyebrow{color:var(--green-mint);}
-  .headline{font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1.2;max-width:1220px;}
-  .headline.tight{max-width:980px;}
-  .body-copy{font-size:17px;line-height:1.65;color:var(--slate-600);max-width:900px;margin-top:16px;}
+  .headline{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.22;max-width:100%;}
+  .headline.tight{max-width:100%;}
+  .body-copy{font-size:15.5px;line-height:1.65;color:var(--slate-600);max-width:760px;margin-top:16px;}
   .page-dark .body-copy{color:#9FB0C3;}
-  .pagenum{position:absolute;right:40px;bottom:26px;font-size:14px;font-weight:600;color:#A2A9AE;z-index:2;}
+  .pagenum{position:absolute;right:36px;bottom:24px;font-size:13px;font-weight:600;color:#A2A9AE;z-index:2;}
   .page-dark .pagenum{color:#4E5E73;}
 
-  .card{background:#fff;border:1px solid var(--line-light);border-radius:14px;padding:24px 26px;}
+  .card{background:#fff;border:1px solid var(--line-light);border-radius:14px;padding:22px 24px;}
   .page-dark .card{background:rgba(255,255,255,.035);border-color:var(--line-dark);}
-  .card-label{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+  .card-label{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
   .page-dark .card-label{color:var(--green-mint);}
-  .card-title{font-size:19px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
-  .card-body{font-size:14.5px;line-height:1.55;color:var(--slate-500);}
+  .card-title{font-size:18px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card-body{font-size:14px;line-height:1.55;color:var(--slate-500);}
   .page-dark .card-body{color:#9FB0C3;}
   .card.accent{background:#F0FBF6;border-color:#BFE9D3;}
   .page-dark .card.accent{background:rgba(15,139,95,.14);border-color:rgba(117,212,157,.35);}
 
-  .badge-circle{width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
-  .bullets{list-style:none;margin-top:16px;padding:0;}
-  .bullets li{position:relative;padding-left:16px;font-size:14px;color:var(--slate-500);margin-bottom:8px;line-height:1.4;}
+  .badge-circle{width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+  .bullets{list-style:none;margin-top:14px;padding:0;}
+  .bullets li{position:relative;padding-left:16px;font-size:13.5px;color:var(--slate-500);margin-bottom:7px;line-height:1.4;}
   .page-dark .bullets li{color:#9FB0C3;}
   .bullets li::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--green);}
   .page-dark .bullets li::before{background:var(--green-mint);}
 
-  .pill{display:inline-flex;align-items:center;padding:9px 18px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:14px;font-weight:700;color:var(--ink);}
+  .pill{display:inline-flex;align-items:center;padding:8px 16px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:13.5px;font-weight:700;color:var(--ink);}
   .page-dark .pill{background:rgba(117,212,157,.08);border-color:rgba(117,212,157,.35);color:var(--green-mint);}
 
-  /* ---- Cover slide ---- */
-  .cover-grid{display:grid;grid-template-columns:47% 53%;height:100%;}
-  .cover-left{padding:64px 60px 60px 84px;display:flex;flex-direction:column;justify-content:center;}
-  .cover-tag{font-size:13.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:18px;}
-  .cover-wordmark{height:26px;margin-bottom:34px;}
-  .cover-headline{font-size:44px;font-weight:800;line-height:1.14;letter-spacing:-.02em;color:var(--ink);}
-  .cover-body{font-size:16.5px;line-height:1.6;color:var(--slate-600);margin-top:22px;max-width:520px;}
-  .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);margin-top:30px;padding-top:20px;gap:18px;}
-  .cover-stats .stat-big{font-size:21px;font-weight:800;color:var(--green);margin-bottom:4px;}
-  .cover-stats .stat-lbl{font-size:12.5px;color:var(--slate-500);line-height:1.35;}
-  .cover-tagstrip{position:absolute;left:0;right:53%;bottom:0;background:var(--navy);display:flex;}
-  .cover-tagstrip .tag-item{flex:1;padding:18px 20px;font-size:12.5px;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.12);line-height:1.35;}
-  .cover-right{background:var(--navy);height:100%;display:flex;align-items:center;justify-content:center;padding:44px;}
-  .chatmock{width:100%;height:100%;background:#fff;border-radius:18px;display:flex;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);}
-  .chat-inbox{width:34%;border-right:1px solid #EEEDE8;padding:20px 0;}
-  .chat-inbox .inbox-head{display:flex;justify-content:space-between;align-items:center;padding:0 18px 14px;border-bottom:1px solid #EEEDE8;margin-bottom:6px;}
-  .chat-inbox .inbox-head b{font-size:15px;color:var(--ink);}
-  .chat-inbox .live{font-size:10.5px;font-weight:800;color:var(--green);letter-spacing:.05em;}
-  .contact-row{padding:12px 18px;border-bottom:1px solid #F3F1EA;display:flex;gap:10px;}
-  .contact-row.active{background:#F7FAF8;}
-  .avatar{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
-  .contact-meta b{font-size:12.5px;color:var(--ink);display:block;}
-  .contact-meta span{font-size:11px;color:#8A9199;display:block;line-height:1.3;margin-top:2px;}
-  .chat-thread{flex:1;padding:20px 22px;display:flex;flex-direction:column;}
-  .chat-thread .thread-head{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid #EEEDE8;margin-bottom:16px;}
-  .chat-thread .thread-head b{font-size:14.5px;color:var(--ink);display:block;}
-  .chat-thread .thread-head span{font-size:11px;color:var(--green);font-weight:700;}
-  .msg{border-radius:12px;padding:13px 15px;font-size:13px;line-height:1.5;margin-bottom:12px;}
+  /* ---- Cover slide (single column, letterhead style) ---- */
+  .cover-wrap{padding:56px 68px 0;height:100%;display:flex;flex-direction:column;}
+  .cover-header{display:flex;align-items:center;margin-bottom:26px;}
+  .cover-wordmark{width:132px;height:30.5px;display:block;flex:none;align-self:flex-start;}
+  .cover-tag{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:18px;}
+  .cover-headline{font-size:33px;font-weight:800;line-height:1.18;letter-spacing:-.02em;color:var(--ink);}
+  .cover-body{font-size:15.5px;line-height:1.62;color:var(--slate-600);margin-top:18px;max-width:640px;}
+  .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);margin-top:28px;padding-top:18px;gap:16px;}
+  .cover-stats .stat-big{font-size:19px;font-weight:800;color:var(--green);margin-bottom:4px;}
+  .cover-stats .stat-lbl{font-size:12px;color:var(--slate-500);line-height:1.35;}
+  .chat-card{margin-top:30px;background:#fff;border:1px solid var(--line-light);border-radius:16px;overflow:hidden;box-shadow:0 16px 34px -18px rgba(11,18,32,.3);}
+  .chat-card .thread-head{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid #EEEDE8;background:#FCFBF7;}
+  .chat-card .thread-head b{font-size:14px;color:var(--ink);display:block;}
+  .chat-card .thread-head span{font-size:10.5px;color:var(--green);font-weight:700;}
+  .chat-card .thread-body{padding:18px 20px;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+  .msg{border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.48;margin-bottom:10px;}
   .msg-customer{background:#fff;border:1px solid #E9E7DF;color:#22262B;}
   .msg-kova{background:#F0FBF6;border:1px solid #C9EEDC;color:#1B3A2C;}
-  .msg-cards{display:flex;gap:8px;margin-top:10px;}
+  .msg-cards{display:flex;gap:8px;margin-top:9px;}
   .msg-card{flex:1;background:#fff;border:1px solid #D6EFE1;border-radius:8px;padding:8px 10px;}
-  .msg-card b{font-size:11.5px;display:block;color:var(--ink);}
-  .msg-card span{font-size:10.5px;color:var(--green);}
-  .handoff-btn{margin-top:10px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:11.5px;padding:8px 14px;border-radius:9999px;}
+  .msg-card b{font-size:11px;display:block;color:var(--ink);}
+  .msg-card span{font-size:10px;color:var(--green);}
+  .handoff-btn{margin-top:9px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:11px;padding:7px 13px;border-radius:9999px;}
+  .cover-tagstrip{margin-top:28px;border-radius:12px;overflow:hidden;display:flex;background:var(--navy);}
+  .cover-tagstrip .tag-item{flex:1;padding:15px 16px;font-size:11.5px;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.12);line-height:1.35;}
+  .cover-tagstrip .tag-item:last-child{border-right:none;}
 
   /* ---- What Kova Is (slide 2) ---- */
-  .whatis-grid{display:grid;grid-template-columns:1fr 320px;gap:40px;margin-top:8px;}
-  .side-card{background:#F0FBF6;border:1px solid #BFE9D3;border-radius:14px;padding:26px;height:fit-content;}
-  .side-card .card-label{margin-bottom:12px;}
-  .side-card p{font-size:14.5px;line-height:1.6;color:#22432F;}
-  .where-row{margin-top:22px;display:flex;align-items:center;gap:14px;}
+  .side-card{background:#F0FBF6;border:1px solid #BFE9D3;border-radius:14px;padding:24px;margin-top:22px;}
+  .side-card .card-label{margin-bottom:10px;}
+  .side-card p{font-size:14px;line-height:1.6;color:#22432F;}
+  .where-row{margin-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
   .where-row .card-label{margin:0;}
   .where-pills{display:flex;gap:10px;}
-  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px;}
+  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;}
 
-  /* ---- Opportunity (dark 4 card) ---- */
-  .four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px;}
-  .four-col .card .num{font-size:14px;font-weight:800;color:var(--green-mint);margin-bottom:14px;}
-  .four-col .card .card-title{color:#fff;font-size:19px;}
-  .callout{margin-top:22px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 10px 10px 0;padding:20px 26px;font-size:15.5px;line-height:1.55;color:#C7D2DC;}
+  /* ---- Opportunity (dark 2x2 card) ---- */
+  .four-col{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:26px;}
+  .four-col .card .num{font-size:13px;font-weight:800;color:var(--green-mint);margin-bottom:12px;}
+  .four-col .card .card-title{color:#fff;font-size:18px;}
+  .callout{margin-top:22px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 10px 10px 0;padding:18px 22px;font-size:14.5px;line-height:1.55;color:#C7D2DC;}
 
-  /* ---- Business case ---- */
-  .bc-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:30px;margin-top:28px;}
-  .bc-left{display:flex;flex-direction:column;gap:16px;}
-  .bc-right{background:var(--navy);border-radius:16px;padding:26px 28px;color:#fff;}
-  .bc-right h4{font-size:19px;font-weight:800;margin-bottom:4px;}
-  .calc-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.1);}
-  .calc-row label{font-size:14px;color:#B9C4D0;}
+  /* ---- Business case (stacked) ---- */
+  .bc-left{display:flex;flex-direction:column;gap:14px;margin-top:24px;}
+  .bc-right{background:var(--navy);border-radius:16px;padding:24px 26px;color:#fff;margin-top:20px;}
+  .bc-right h4{font-size:18px;font-weight:800;margin-bottom:2px;}
+  .calc-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+  .calc-row label{font-size:13.5px;color:#B9C4D0;}
   .calc-row .inwrap{display:flex;align-items:center;gap:6px;}
-  .calc-row input{width:80px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#fff;font-family:inherit;font-size:14px;padding:7px 10px;text-align:right;}
-  .calc-row .unit{font-size:12.5px;color:#8A98A8;}
-  .calc-result{padding-top:18px;display:flex;justify-content:space-between;align-items:flex-end;}
-  .calc-result .rl{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9FB0C3;line-height:1.4;max-width:140px;}
-  .calc-result .rv{font-size:34px;font-weight:800;color:var(--gold);text-align:right;}
-  .note-strip{margin-top:20px;border:1px solid var(--line-light);border-radius:10px;padding:14px 20px;font-size:13px;color:var(--slate-500);}
+  .calc-row input{width:80px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#fff;font-family:inherit;font-size:13.5px;padding:7px 10px;text-align:right;}
+  .calc-row .unit{font-size:12px;color:#8A98A8;}
+  .calc-result{padding-top:16px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .calc-result .rl{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9FB0C3;line-height:1.4;max-width:160px;}
+  .calc-result .rv{font-size:30px;font-weight:800;color:var(--gold);text-align:right;}
+  .note-strip{margin-top:18px;border:1px solid var(--line-light);border-radius:10px;padding:13px 18px;font-size:12.5px;color:var(--slate-500);}
 
-  /* ---- Changes (dark rows) ---- */
-  .change-rows{margin-top:26px;}
-  .change-row{display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line-dark);align-items:stretch;}
-  .change-row .rowlabel{font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--green-mint);display:flex;align-items:center;}
-  .change-box{border-radius:12px;padding:18px 20px;border:1px solid var(--line-dark);background:rgba(255,255,255,.02);}
+  /* ---- Changes (dark, stacked pairs) ---- */
+  .change-rows{margin-top:24px;}
+  .change-block{margin-bottom:20px;}
+  .change-block .rowlabel{font-size:12.5px;font-weight:800;letter-spacing:.04em;color:var(--green-mint);margin-bottom:10px;}
+  .change-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .change-box{border-radius:12px;padding:16px 18px;border:1px solid var(--line-dark);background:rgba(255,255,255,.02);}
   .change-box.today .tag{color:#8A98A8;}
   .change-box.kova{background:rgba(15,139,95,.12);border-color:rgba(117,212,157,.3);}
-  .change-box .tag{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+  .change-box .tag{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;}
   .change-box.kova .tag{color:var(--green-mint);}
-  .change-box p{font-size:14.5px;line-height:1.5;color:#DCE3EA;}
+  .change-box p{font-size:13.5px;line-height:1.48;color:#DCE3EA;}
 
-  /* ---- Handles (3 card inform/qualify/handoff) ---- */
-  .handle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px;}
-  .handle-card{background:#FFFDF5;border:1px solid var(--line-light);border-radius:14px;padding:28px;}
+  /* ---- Handles (stacked cards, Inform/Qualify/Hand off) ---- */
+  .handle-grid{display:flex;flex-direction:column;gap:14px;margin-top:24px;}
+  .handle-card{background:#FFFDF5;border:1px solid var(--line-light);border-radius:14px;padding:24px;}
   .handle-card.accent{background:#F0FBF6;border-color:#BFE9D3;}
-  .handle-card h3{font-size:24px;font-weight:800;margin-bottom:10px;}
-  .handle-card p{font-size:14.5px;color:var(--slate-500);line-height:1.55;}
-  .example-strip{margin-top:22px;border:1px solid var(--line-light);border-radius:12px;padding:18px 24px;}
+  .handle-card h3{font-size:21px;font-weight:800;margin-bottom:8px;}
+  .handle-card p{font-size:14px;color:var(--slate-500);line-height:1.55;}
+  .handle-card .bullets{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
+  .example-strip{margin-top:20px;border:1px solid var(--line-light);border-radius:12px;padding:16px 20px;}
   .example-strip .card-label{margin-bottom:8px;}
-  .example-strip p{font-size:15px;font-style:italic;color:#333;line-height:1.5;}
+  .example-strip p{font-size:14px;font-style:italic;color:#333;line-height:1.5;}
 
-  /* ---- Workflow (4 steps + boundary) ---- */
-  .wf-grid{display:grid;grid-template-columns:1fr 420px;gap:40px;height:100%;}
-  .wf-steps{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;align-content:start;}
-  .wf-step-card{border:1px solid var(--line-light);border-radius:14px;padding:24px;}
-  .wf-step-card h3{font-size:19px;font-weight:700;margin-bottom:8px;}
-  .wf-step-card p{font-size:14px;color:var(--slate-500);line-height:1.5;}
-  .boundary-panel{background:var(--navy);border-radius:16px;padding:32px;margin-top:28px;height:fit-content;}
-  .boundary-panel h3{font-size:26px;font-weight:800;color:#fff;margin-bottom:16px;}
-  .boundary-panel p{font-size:15px;line-height:1.65;color:#C7D2DC;}
+  /* ---- Workflow (2x2 steps + boundary below) ---- */
+  .wf-steps{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+  .wf-step-card{border:1px solid var(--line-light);border-radius:14px;padding:22px;}
+  .wf-step-card h3{font-size:17.5px;font-weight:700;margin-bottom:7px;}
+  .wf-step-card p{font-size:13.5px;color:var(--slate-500);line-height:1.5;}
+  .boundary-panel{background:var(--navy);border-radius:16px;padding:26px 28px;margin-top:22px;}
+  .boundary-panel h3{font-size:22px;font-weight:800;color:#fff;margin-bottom:12px;}
+  .boundary-panel p{font-size:14.5px;line-height:1.62;color:#C7D2DC;}
 
-  /* ---- Revenue (dark tags + conversation) ---- */
-  .rev-grid{display:grid;grid-template-columns:1fr 480px;gap:40px;margin-top:24px;}
-  .tag-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
-  .tag-pill{padding:12px 18px;border-radius:9px;border:1px solid rgba(117,212,157,.35);background:rgba(117,212,157,.07);font-weight:700;font-size:14px;color:var(--green-mint);}
-  .conv-stack{display:flex;flex-direction:column;gap:14px;}
-  .conv-card{border:1px solid var(--line-dark);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,.02);}
-  .conv-card .card-label{margin-bottom:8px;}
-  .conv-card p{font-size:14.5px;line-height:1.5;color:#E4EAF0;}
+  /* ---- Revenue (dark, tags + conversation stack) ---- */
+  .tag-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  .tag-pill{padding:11px 16px;border-radius:9px;border:1px solid rgba(117,212,157,.35);background:rgba(117,212,157,.07);font-weight:700;font-size:13.5px;color:var(--green-mint);}
+  .conv-stack{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
+  .conv-card{border:1px solid var(--line-dark);border-radius:12px;padding:16px 18px;background:rgba(255,255,255,.02);}
+  .conv-card .card-label{margin-bottom:7px;}
+  .conv-card p{font-size:14px;line-height:1.5;color:#E4EAF0;}
 
-  /* ---- Rollout (phases) ---- */
-  .roll-grid{display:grid;grid-template-columns:1fr 420px;gap:40px;}
-  .phase-list{display:flex;flex-direction:column;gap:16px;margin-top:26px;}
-  .phase-card{border:1px solid var(--line-light);border-radius:14px;padding:24px 26px;}
+  /* ---- Rollout (phases, note below) ---- */
+  .phase-list{display:flex;flex-direction:column;gap:14px;margin-top:24px;}
+  .phase-card{border:1px solid var(--line-light);border-radius:14px;padding:22px 24px;}
   .phase-card.active{background:#F0FBF6;border-color:#BFE9D3;}
-  .phase-card h3{font-size:22px;font-weight:800;margin-bottom:8px;}
-  .phase-card p{font-size:14.5px;color:var(--slate-500);line-height:1.55;}
-  .roll-note{background:var(--navy);border-radius:14px;padding:26px;margin-top:26px;color:#D7E0E9;font-size:15px;line-height:1.6;}
+  .phase-card h3{font-size:20px;font-weight:800;margin-bottom:7px;}
+  .phase-card p{font-size:14px;color:var(--slate-500);line-height:1.55;}
+  .roll-note{background:var(--navy);border-radius:14px;padding:22px 24px;margin-top:18px;color:#D7E0E9;font-size:14px;line-height:1.6;}
 
-  /* ---- Pricing ---- */
-  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;}
+  /* ---- Pricing (2x2 tiers) ---- */
+  .price-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:24px;}
   .price-card{border:1px solid var(--line-dark);border-radius:14px;padding:22px;background:rgba(255,255,255,.02);}
   .price-card.rec{background:rgba(15,139,95,.12);border:1px solid rgba(117,212,157,.5);}
-  .price-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-  .price-top b{font-size:18px;color:#fff;}
-  .price-badge{font-size:10px;font-weight:800;letter-spacing:.05em;color:var(--green-mint);}
-  .price-amt{font-size:28px;font-weight:800;color:var(--gold);}
-  .price-amt span{font-size:13px;font-weight:600;color:#9FB0C3;}
-  .price-desc{font-size:12.5px;color:#AEBAC7;line-height:1.5;margin:12px 0 14px;min-height:56px;}
-  .price-meta{border-top:1px solid var(--line-dark);padding-top:10px;margin-top:6px;}
-  .price-meta .pl{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8A98A8;margin-bottom:2px;}
-  .price-meta .pv{font-size:13.5px;color:#E4EAF0;margin-bottom:8px;}
-  .pricing-note{margin-top:24px;border:1px solid var(--line-dark);border-radius:10px;padding:14px 20px;font-size:13px;color:#9FB0C3;}
+  .price-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .price-top b{font-size:17px;color:#fff;}
+  .price-badge{font-size:9.5px;font-weight:800;letter-spacing:.05em;color:var(--green-mint);}
+  .price-amt{font-size:25px;font-weight:800;color:var(--gold);}
+  .price-amt span{font-size:12.5px;font-weight:600;color:#9FB0C3;}
+  .price-desc{font-size:12.5px;color:#AEBAC7;line-height:1.5;margin:10px 0 12px;min-height:38px;}
+  .price-meta{border-top:1px solid var(--line-dark);padding-top:10px;margin-top:4px;}
+  .price-meta .pl{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8A98A8;margin-bottom:2px;}
+  .price-meta .pv{font-size:13px;color:#E4EAF0;margin-bottom:7px;}
+  .pricing-note{margin-top:22px;border:1px solid var(--line-dark);border-radius:10px;padding:13px 18px;font-size:12.5px;color:#9FB0C3;}
 
   /* ---- Next steps ---- */
-  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px;}
-  .step-card{border:1px solid var(--line-dark);border-radius:14px;padding:26px;background:rgba(255,255,255,.02);}
-  .step-card h3{font-size:20px;font-weight:700;color:#fff;margin:14px 0 8px;}
-  .step-card p{font-size:14px;color:#AEBAC7;line-height:1.5;}
-  .ns-footnote{position:absolute;left:84px;bottom:70px;max-width:560px;font-size:14.5px;color:#9FB0C3;line-height:1.55;}
-  .contact-card{position:absolute;right:84px;bottom:70px;width:420px;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:14px;padding:22px 26px;}
+  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px;}
+  .step-card{border:1px solid var(--line-dark);border-radius:14px;padding:22px;background:rgba(255,255,255,.02);}
+  .step-card h3{font-size:16.5px;font-weight:700;color:#fff;margin:12px 0 7px;}
+  .step-card p{font-size:12.5px;color:#AEBAC7;line-height:1.48;}
+  .ns-footnote{margin-top:36px;max-width:100%;font-size:14px;color:#9FB0C3;line-height:1.55;}
+  .contact-card{margin-top:22px;max-width:460px;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:14px;padding:20px 24px;}
   .contact-card .crow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-dark);font-size:14px;}
   .contact-card .crow:last-child{border-bottom:none;}
   .contact-card .crow .k{color:var(--green-mint);font-weight:700;}
@@ -300,7 +289,7 @@
 <div class="app-header">
   <div>
     <h1>Kova <span>AI</span> — Enterprise Proposal Generator</h1>
-    <p>Same concept &amp; visuals as the pharmacy proposal, retargeted per industry. Fill in the details, then download.</p>
+    <p>A4 document format, same visual system as the pharmacy proposal, retargeted per industry. Fill in the details, then download.</p>
   </div>
   <div class="industry-toggle" id="industryToggle"></div>
 </div>
@@ -339,7 +328,7 @@
         <div class="rl" id="lbl-result">RECOVERED VALUE / MONTH</div>
         <div class="rv" id="calcResult">GHS 0</div>
       </div>
-      <div class="field-note">This populates the "Business Case" slide of the proposal, using the same estimation model as the original pharmacy proposal.</div>
+      <div class="field-note">This populates the "Business Case" page of the proposal, using the same estimation model as the original pharmacy proposal.</div>
     </div>
 
     <div class="field-group">
@@ -362,6 +351,12 @@
 
 <script>
 /* ============================================================
+   PAGE GEOMETRY — A4 portrait
+   ============================================================ */
+const PAGE_W = 1240;
+const PAGE_H = 1754;
+
+/* ============================================================
    CONTENT DATA — per industry
    ============================================================ */
 const PRICING_TIERS = [
@@ -383,32 +378,34 @@ insurance: {
     ent50:'For larger insurers with heavier client demand and broader product-line coverage.'
   },
   cover:{
-    headline:'Turn the policy messages already hitting your WhatsApp into protected clients — day and night.',
-    body:'Kova AI replies instantly from your approved policy and pricing information, captures quote requests and renewal reminders, and hands every claim safely to your licensed team. Never gives coverage advice. Never approves a claim.',
-    stats:[{big:'24/7',label:'every message answered'},{big:'Claims-safe',label:'claims go to licensed staff'},{big:'Quotes + renewals',label:'one AI layer across demand'}],
+    headline:'Quote, sell, and issue third-party motor cover on WhatsApp — nights, weekends, any time.',
+    body:'Kova AI replies instantly from your approved policy and pricing information, sells and issues third-party motor cover directly in the conversation any hour of the day, and hands every claim or comprehensive-cover decision safely to your licensed team. Never gives coverage advice beyond approved terms. Never approves a claim.',
+    stats:[{big:'24/7',label:'quotes, sales & renewals'},{big:'Instant issue',label:'third-party cover, any time'},{big:'Claims-safe',label:'claims still go to licensed staff'}],
     tags:['Never coverage advice','Policy-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
       contacts:[
-        {initial:'A',name:'Ama Serwaa',time:'10:42',preview:'Do you have a comprehensive motor policy for a 2019 Toyota?'},
+        {initial:'A',name:'Ama Serwaa',time:'10:42',preview:"It's Sunday night and I need third-party cover"},
         {initial:'K',name:'Kwame Boateng',time:'10:31',preview:'Can I get a quote for family health cover?'},
         {initial:'E',name:'Efua Owusu',time:'10:18',preview:'When is my premium due this month?'}
       ],
       activeName:'Ama Serwaa',
       messages:[
-        {from:'customer', text:'Do you have a comprehensive motor policy for a 2019 Toyota? What would the premium be?'},
-        {from:'kova', text:'Yes. Based on your vehicle details, here are our comprehensive motor plans and indicative premiums.', cards:[{title:'Motor Comprehensive',sub:'From GHS 1,200 / yr'},{title:'Third-Party Plus',sub:'From GHS 450 / yr'}]},
-        {from:'customer', text:'I was in a small accident yesterday, I need to file a claim.'},
+        {from:'customer', text:"It's Sunday night and I need third-party cover for a 2019 Toyota before tomorrow. Can you help right now?"},
+        {from:'kova', text:'Yes — third-party cover is available any time, including tonight. Here is your quote, and I can issue the policy immediately.', cards:[{title:'Third-Party Motor',sub:'GHS 450 / yr · Instant issue'},{title:'Third-Party Plus',sub:'GHS 650 / yr · Roadside included'}]},
+        {from:'customer', text:"I'll take Third-Party Plus. Can I pay now?"},
+        {from:'kova', text:'Payment received. Your policy is active immediately, and your certificate has been sent to this chat.', handoff:'Policy issued instantly'},
+        {from:'customer', text:'Separately — I was in a small accident yesterday on my other car, I need to file a claim.'},
         {from:'kova', text:'I am sorry to hear that. Claims require review by a licensed claims officer. I have logged your report and someone will call you within 2 hours.', handoff:'Claims handoff'}
       ]
     }
   },
   whatIs:{
     headline:'An assistant that talks to your clients — and knows where to stop.',
-    body:'Kova AI is a customer assistant for WhatsApp. It answers policy, pricing, coverage, and eligibility questions using only the product information you approve, collects quote and renewal requests, and the moment a conversation touches a claim, underwriting decision, or coverage dispute, it stops and hands over to your licensed team — with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget — so clients get one consistent experience wherever they reach you.',
+    body:'Kova AI is a customer assistant for WhatsApp. It answers policy, pricing, coverage, and eligibility questions using only the product information you approve, quotes and sells standardised products like third-party motor cover directly in the chat — any hour, including nights and weekends — and the moment a conversation touches a claim, underwriting decision, or coverage dispute, it stops and hands over to your licensed team, with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget — so clients get one consistent experience wherever they reach you.',
     simple:'It does not assess claims, interpret policy wording as advice, approve payouts, or make underwriting decisions. It handles the repetitive front desk so your agents and adjusters do not have to.',
     where:['WhatsApp','Website live chat'],
     cols:[
-      {label:'WHAT THE AI DOES', title:'Client concierge & intake', body:'Answers everyday questions, captures quote requests, and qualifies demand — instantly, around the clock.'},
+      {label:'WHAT THE AI DOES', title:'Client concierge, intake & direct sales', body:'Answers everyday questions, quotes and sells third-party cover instantly, and qualifies demand for other products — any hour, around the clock.'},
       {label:'WHAT YOUR PEOPLE DO', title:'Claims & underwriting judgment', body:'Adjusters and underwriters keep full control of claims decisions, risk approvals, and anything sensitive.'},
       {label:'WHAT THE SYSTEM DOES', title:'Policy, compliance & handoff', body:'Kova works only from your approved data and routes the right cases to the right people.'}
     ]
@@ -418,15 +415,15 @@ insurance: {
     items:[
       {n:'01',title:"They're on WhatsApp",body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or branch visits. It is already where your clients reach out.'},
       {n:'02',title:'They expect speed',body:'Clients expect a reply within 10–30 minutes, and most buy from the first insurer to respond with a clear quote. Slow replies mean lost policies.'},
-      {n:'03',title:'After-hours is dead air',body:'Accidents and renewal deadlines do not wait for office hours, but the call centre is closed and messages pile up unanswered until morning.'},
+      {n:'03',title:'After-hours is dead air',body:'Accidents and renewal deadlines do not wait for office hours, but the call centre is closed and simple sales like third-party cover sit unanswered until morning instead of closing on the spot.'},
       {n:'04',title:'Staff are stretched',body:'The same coverage and premium questions repeat all day, pulling adjusters and agents away from claims and underwriting.'}
     ],
     callout:'The demand is not the problem — it is already in your phone. The problem is that the slice arriving after hours, or while agents are on calls, quietly goes to a competitor.'
   },
   businessCase:{
-    headline:'Kova only has to protect a handful of policies a month to pay for itself.',
+    headline:'Kova only has to sell a handful of third-party policies a month to pay for itself.',
     cards:[
-      {label:'CAPTURED DEMAND',title:'Policies you are losing today',body:'Quote requests answered instantly after hours or during a rush become bound policies instead of lost leads.'},
+      {label:'CAPTURED DEMAND',title:'Policies you are losing today',body:'Third-party quotes are answered and sold instantly — any hour, weekends included — turning after-hours messages into bound policies instead of lost leads.'},
       {label:'RECOVERED TIME',title:'Hours back for your team',body:'Routine coverage and premium questions are handled automatically, so agents and adjusters focus on claims and underwriting.'},
       {label:'RETAINED CLIENTS',title:'Renewals, not lapses',body:'Missed renewal reminders are a leading cause of policy lapse. Always-on nudges keep clients covered.'}
     ],
@@ -437,7 +434,7 @@ insurance: {
     headline:'From missed messages to protected clients — in the first launch phase.',
     body:'Same policies, same underwriting rules. The difference is that every message now gets a fast, consistent answer, and your agents only step in where they are truly needed.',
     rows:[
-      {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The client has already bought a policy elsewhere.', kova:'Answered in seconds. Quote captured and a callback scheduled.'},
+      {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The client has already bought a policy elsewhere.', kova:'Answered and sold in seconds. Third-party cover issued on the spot.'},
       {label:"CLAIMS OFFICER'S DAY", today:'Interrupted by repeated "what does my policy cover" chats.', kova:'A cleaner queue — only claims and real underwriting calls.'},
       {label:'RENEWAL DEMAND', today:'Lost whenever no one follows up before the policy lapses.', kova:'Renewal reminders sent automatically, and clients re-engaged while intent is high.'}
     ]
@@ -445,9 +442,9 @@ insurance: {
   handles:{
     headline:'A client-facing assistant around your team, not instead of it.',
     cols:[
-      {title:'Inform', body:'Use approved policy data to answer product, premium, coverage, and eligibility questions.', bullets:['Motor, health & life plans','Premiums & payment options','Branch & agent locations']},
+      {title:'Inform & Sell', body:'Use approved policy data to answer product, premium, and eligibility questions — and complete simple sales like third-party motor cover directly in the chat, any time of day.', bullets:['Motor, health & life plans','Third-party cover — instant quote, sale & issue','Branch & agent locations']},
       {title:'Qualify', body:'Collect client intent before a team member steps in.', bullets:['Type of cover needed','Vehicle, property or health details','New business or renewal']},
-      {title:'Hand off', accent:true, body:'Escalate anything that needs human review, with context already captured.', bullets:['Claim notifications','Underwriting & risk questions','Final policy approval']}
+      {title:'Hand off', accent:true, body:'Escalate anything that needs human review, with context already captured.', bullets:['Claim notifications','Underwriting & risk questions','Final approval for comprehensive & complex cover']}
     ],
     example:'"I can help with approved policy details and quotes. This claim needs adjuster review, so I will log your report and have a claims officer call you shortly."'
   },
@@ -749,14 +746,9 @@ function fmtGHS(n){ return 'GHS ' + Math.round(n).toLocaleString('en-US'); }
 
 function pageFoot(n){ return `<div class="pagenum">${n} / 11</div>`; }
 
-/* ---- Slide 1: Cover ---- */
+/* ---- Page 1: Cover ---- */
 function slideCover(d, company, proposalType){
   const companyLabel = company ? company.toUpperCase() : '[YOUR COMPANY NAME]';
-  const contacts = d.chat.contacts.map((c,i)=>`
-    <div class="contact-row ${i===0?'active':''}">
-      <div class="avatar">${esc(c.initial)}</div>
-      <div class="contact-meta"><b>${esc(c.name)}</b><span>${esc(c.preview)}</span></div>
-    </div>`).join('');
   const messages = d.chat.messages.map(m=>{
     if(m.from==='customer'){
       return `<div class="msg msg-customer">${esc(m.text)}</div>`;
@@ -769,55 +761,41 @@ function slideCover(d, company, proposalType){
   const tags = d.tags.map(t=>`<div class="tag-item">${esc(t)}</div>`).join('');
 
   return `<div class="page page-light">
-    <div class="cover-grid">
-      <div class="cover-left">
-        <div class="cover-tag">${esc(proposalType)} · PREPARED FOR ${companyLabel}</div>
-        <img class="cover-wordmark" src="kova-wordmark-light.png" alt="Kova AI">
-        <div class="cover-headline">${esc(d.headline)}</div>
-        <div class="cover-body">${esc(d.body)}</div>
-        <div class="cover-stats">${stats}</div>
+    <div class="cover-wrap">
+      <div class="cover-header"><img class="cover-wordmark" src="kova-wordmark-light.png" alt="Kova AI"></div>
+      <div class="cover-tag">${esc(proposalType)} · PREPARED FOR ${companyLabel}</div>
+      <div class="cover-headline">${esc(d.headline)}</div>
+      <div class="cover-body">${esc(d.body)}</div>
+      <div class="cover-stats">${stats}</div>
+      <div class="chat-card">
+        <div class="thread-head"><div class="avatar">${esc(d.chat.contacts[0].initial)}</div><div><b>${esc(d.chat.activeName)}</b><span>ONLINE NOW</span></div></div>
+        <div class="thread-body">${messages}</div>
       </div>
-      <div class="cover-right">
-        <div class="chatmock">
-          <div class="chat-inbox">
-            <div class="inbox-head"><b>Inbox</b><span class="live">LIVE</span></div>
-            ${contacts}
-          </div>
-          <div class="chat-thread">
-            <div class="thread-head"><div class="avatar">${esc(d.chat.contacts[0].initial)}</div><div><b>${esc(d.chat.activeName)}</b><span>ONLINE NOW</span></div></div>
-            ${messages}
-          </div>
-        </div>
-      </div>
+      <div class="cover-tagstrip">${tags}</div>
     </div>
-    <div class="cover-tagstrip">${tags}</div>
     ${pageFoot(1)}
   </div>`;
 }
 
-/* ---- Slide 2: What Kova Is ---- */
+/* ---- Page 2: What Kova Is ---- */
 function slideWhatIs(d){
   const cols = d.cols.map(c=>`<div class="card"><div class="card-label">${esc(c.label)}</div><div class="card-title">${esc(c.title)}</div><div class="card-body">${esc(c.body)}</div></div>`).join('');
   const pills = d.where.map(w=>`<span class="pill">${esc(w)}</span>`).join('');
   return `<div class="page page-light"><div class="pad">
     <div class="eyebrow">WHAT KOVA AI IS</div>
     <div class="headline tight">${esc(d.headline)}</div>
-    <div class="whatis-grid">
-      <div>
-        <div class="body-copy">${esc(d.body)}</div>
-        <div class="where-row"><div class="card-label">WHERE IT WORKS</div><div class="where-pills">${pills}</div></div>
-      </div>
-      <div class="side-card">
-        <div class="card-label">THE SIMPLE VERSION</div>
-        <p>${esc(d.simple)}</p>
-      </div>
+    <div class="body-copy">${esc(d.body)}</div>
+    <div class="where-row"><div class="card-label">WHERE IT WORKS</div><div class="where-pills">${pills}</div></div>
+    <div class="side-card">
+      <div class="card-label">THE SIMPLE VERSION</div>
+      <p>${esc(d.simple)}</p>
     </div>
     <div class="three-col">${cols}</div>
     ${pageFoot(2)}
   </div></div>`;
 }
 
-/* ---- Slide 3: Opportunity ---- */
+/* ---- Page 3: Opportunity ---- */
 function slideOpportunity(d){
   const items = d.items.map(it=>`<div class="card"><div class="num">${esc(it.n)}</div><div class="card-title">${esc(it.title)}</div><div class="card-body">${esc(it.body)}</div></div>`).join('');
   return `<div class="page page-dark grid-bg"><div class="pad">
@@ -829,23 +807,21 @@ function slideOpportunity(d){
   </div></div>`;
 }
 
-/* ---- Slide 4: Business case ---- */
+/* ---- Page 4: Business case ---- */
 function slideBusinessCase(d, calc, calcState){
   const cards = d.cards.map(c=>`<div class="card"><div class="card-label">${esc(c.label)}</div><div class="card-title">${esc(c.title)}</div><div class="card-body">${esc(c.body)}</div></div>`).join('');
   const result = computeCalc(calcState);
   return `<div class="page page-light"><div class="pad">
     <div class="eyebrow">THE BUSINESS CASE</div>
     <div class="headline tight">${esc(d.headline)}</div>
-    <div class="bc-grid">
-      <div class="bc-left">${cards}</div>
-      <div class="bc-right">
-        <h4>What it could mean for you</h4>
-        <div class="calc-row"><label>${esc(calc.messagesLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.messages}"></div></div>
-        <div class="calc-row"><label>${esc(calc.shareLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.share}"><span class="unit">%</span></div></div>
-        <div class="calc-row"><label>${esc(calc.extraLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.extra}"></div></div>
-        <div class="calc-row"><label>${esc(calc.avgLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.avg}"></div></div>
-        <div class="calc-result"><div class="rl">${esc(calc.resultLabel)}</div><div class="rv">${fmtGHS(result)}</div></div>
-      </div>
+    <div class="bc-left">${cards}</div>
+    <div class="bc-right">
+      <h4>What it could mean for you</h4>
+      <div class="calc-row"><label>${esc(calc.messagesLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.messages}"></div></div>
+      <div class="calc-row"><label>${esc(calc.shareLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.share}"><span class="unit">%</span></div></div>
+      <div class="calc-row"><label>${esc(calc.extraLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.extra}"></div></div>
+      <div class="calc-row"><label>${esc(calc.avgLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.avg}"></div></div>
+      <div class="calc-result"><div class="rl">${esc(calc.resultLabel)}</div><div class="rv">${fmtGHS(result)}</div></div>
     </div>
     <div class="note-strip">${esc(CONTENT[state.industry].businessCase.note)}</div>
     ${pageFoot(4)}
@@ -853,13 +829,15 @@ function slideBusinessCase(d, calc, calcState){
 }
 function computeCalc(c){ return (Number(c.extra)||0) * (Number(c.avg)||0) * 30; }
 
-/* ---- Slide 5: What changes ---- */
+/* ---- Page 5: What changes ---- */
 function slideChanges(d, company){
   const rows = d.rows.map(r=>`
-    <div class="change-row">
+    <div class="change-block">
       <div class="rowlabel">${esc(r.label)}</div>
-      <div class="change-box today"><div class="tag">TODAY</div><p>${esc(r.today)}</p></div>
-      <div class="change-box kova"><div class="tag">WITH KOVA</div><p>${esc(r.kova)}</p></div>
+      <div class="change-pair">
+        <div class="change-box today"><div class="tag">TODAY</div><p>${esc(r.today)}</p></div>
+        <div class="change-box kova"><div class="tag">WITH KOVA</div><p>${esc(r.kova)}</p></div>
+      </div>
     </div>`).join('');
   return `<div class="page page-dark grid-bg"><div class="pad">
     <div class="eyebrow">WHAT CHANGES FOR ${company ? esc(company).toUpperCase() : 'YOUR ORGANISATION'}</div>
@@ -870,7 +848,7 @@ function slideChanges(d, company){
   </div></div>`;
 }
 
-/* ---- Slide 6: What Kova handles ---- */
+/* ---- Page 6: What Kova handles ---- */
 function slideHandles(d){
   const cols = d.cols.map(c=>`
     <div class="handle-card ${c.accent?'accent':''}">
@@ -887,61 +865,51 @@ function slideHandles(d){
   </div></div>`;
 }
 
-/* ---- Slide 7: Safe workflow ---- */
+/* ---- Page 7: Safe workflow ---- */
 function slideWorkflow(d){
   const steps = d.steps.map(s=>`<div class="wf-step-card"><div class="badge-circle">${s.n}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></div>`).join('');
   return `<div class="page page-light"><div class="pad">
     <div class="eyebrow">${esc(d.eyebrow)}</div>
     <div class="headline tight">${esc(d.headline)}</div>
-    <div class="wf-grid">
-      <div><div class="wf-steps">${steps}</div></div>
-      <div class="boundary-panel"><h3>${esc(d.boundaryTitle)}</h3><p>${esc(d.boundaryBody)}</p></div>
-    </div>
+    <div class="wf-steps">${steps}</div>
+    <div class="boundary-panel"><h3>${esc(d.boundaryTitle)}</h3><p>${esc(d.boundaryBody)}</p></div>
     ${pageFoot(7)}
   </div></div>`;
 }
 
-/* ---- Slide 8: Revenue / demand breadth ---- */
+/* ---- Page 8: Revenue / demand breadth ---- */
 function slideRevenue(d){
   const tags = d.tags.map(t=>`<div class="tag-pill">${esc(t)}</div>`).join('');
   return `<div class="page page-dark grid-bg"><div class="pad">
     <div class="eyebrow">${esc(d.eyebrow)}</div>
     <div class="headline tight">${esc(d.headline)}</div>
-    <div class="rev-grid">
-      <div>
-        <div class="body-copy">${esc(d.body)}</div>
-        <div class="tag-grid">${tags}</div>
-      </div>
-      <div class="conv-stack">
-        <div class="conv-card"><div class="card-label">CUSTOMER ASKS</div><p>${esc(d.ask)}</p></div>
-        <div class="conv-card"><div class="card-label">KOVA RESPONDS</div><p>${esc(d.respond)}</p></div>
-        <div class="conv-card"><div class="card-label">TEAM RECEIVES</div><p>${esc(d.receives)}</p></div>
-      </div>
+    <div class="body-copy">${esc(d.body)}</div>
+    <div class="tag-grid">${tags}</div>
+    <div class="conv-stack">
+      <div class="conv-card"><div class="card-label">CUSTOMER ASKS</div><p>${esc(d.ask)}</p></div>
+      <div class="conv-card"><div class="card-label">KOVA RESPONDS</div><p>${esc(d.respond)}</p></div>
+      <div class="conv-card"><div class="card-label">TEAM RECEIVES</div><p>${esc(d.receives)}</p></div>
     </div>
     ${pageFoot(8)}
   </div></div>`;
 }
 
-/* ---- Slide 9: Rollout ---- */
+/* ---- Page 9: Rollout ---- */
 function slideRollout(d){
   return `<div class="page page-light"><div class="pad">
     <div class="eyebrow">LOW-RISK ROLLOUT</div>
     <div class="headline tight">${esc(d.headline)}</div>
-    <div class="roll-grid">
-      <div>
-        <div class="phase-list">
-          <div class="phase-card active"><div class="card-label">PHASE 1</div><h3>${esc(d.phase1.title)}</h3><p>${esc(d.phase1.body)}</p></div>
-          <div class="phase-card"><div class="card-label">PHASE 2</div><h3>${esc(d.phase2.title)}</h3><p>${esc(d.phase2.body)}</p></div>
-          <div class="phase-card"><div class="card-label">OPTIONAL</div><h3>${esc(d.optional.title)}</h3><p>${esc(d.optional.body)}</p></div>
-        </div>
-      </div>
-      <div><div class="roll-note">${esc(d.note)}</div></div>
+    <div class="phase-list">
+      <div class="phase-card active"><div class="card-label">PHASE 1</div><h3>${esc(d.phase1.title)}</h3><p>${esc(d.phase1.body)}</p></div>
+      <div class="phase-card"><div class="card-label">PHASE 2</div><h3>${esc(d.phase2.title)}</h3><p>${esc(d.phase2.body)}</p></div>
+      <div class="phase-card"><div class="card-label">OPTIONAL</div><h3>${esc(d.optional.title)}</h3><p>${esc(d.optional.body)}</p></div>
     </div>
+    <div class="roll-note">${esc(d.note)}</div>
     ${pageFoot(9)}
   </div></div>`;
 }
 
-/* ---- Slide 10: Pricing ---- */
+/* ---- Page 10: Pricing ---- */
 function slidePricing(descMap, recommendedKey){
   const cards = PRICING_TIERS.map(t=>{
     const rec = t.key===recommendedKey;
@@ -966,11 +934,11 @@ function slidePricing(descMap, recommendedKey){
   </div></div>`;
 }
 
-/* ---- Slide 11: Next steps ---- */
+/* ---- Page 11: Next steps ---- */
 function slideNextSteps(d){
   const steps = d.steps.map(s=>`<div class="step-card"><div class="badge-circle">${s.n}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></div>`).join('');
   return `<div class="page page-dark grid-bg"><div class="pad">
-    <img class="cover-wordmark" src="kova-wordmark-dark.png" alt="Kova AI" style="margin-bottom:26px;">
+    <img class="cover-wordmark" src="kova-wordmark-dark.png" alt="Kova AI" style="margin-bottom:24px;">
     <div class="eyebrow">NEXT STEPS</div>
     <div class="headline tight">${esc(d.headline)}</div>
     <div class="steps-row">${steps}</div>
@@ -1017,7 +985,7 @@ const SLIDE_TITLES = [
 function renderAll(){
   const slides = buildSlides();
 
-  // hidden capture area (native 1600x900, used for PDF export)
+  // hidden capture area (native A4 px, used for PDF export)
   const capEl = document.getElementById('captureArea');
   capEl.innerHTML = slides.map((html,i)=>`<div id="cap-${i+1}">${html}</div>`).join('');
 
@@ -1036,7 +1004,7 @@ function scalePreviews(){
   document.querySelectorAll('.preview-frame').forEach(frame=>{
     const scaler = frame.querySelector('.scaler');
     const w = frame.clientWidth;
-    const s = w / 1600;
+    const s = w / PAGE_W;
     scaler.style.transform = `scale(${s})`;
   });
 }
@@ -1105,7 +1073,7 @@ function renderTierSelect(){
 }
 
 /* ============================================================
-   PDF DOWNLOAD
+   PDF DOWNLOAD  (A4 portrait)
    ============================================================ */
 async function downloadPdf(){
   const btn = document.getElementById('downloadBtn');
@@ -1113,15 +1081,15 @@ async function downloadPdf(){
   btn.disabled = true;
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({orientation:'landscape', unit:'px', format:[1600,900], hotfixes:['px_scaling']});
+  const doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
 
   for(let i=1; i<=11; i++){
-    status.textContent = `Rendering slide ${i} of 11...`;
+    status.textContent = `Rendering page ${i} of 11...`;
     const el = document.getElementById('cap-' + i);
-    const canvas = await html2canvas(el, {width:1600, height:900, scale:2, useCORS:true, backgroundColor:null});
+    const canvas = await html2canvas(el, {width:PAGE_W, height:PAGE_H, scale:2, useCORS:true, backgroundColor:null});
     const img = canvas.toDataURL('image/jpeg', 0.92);
-    if(i > 1) doc.addPage([1600,900], 'landscape');
-    doc.addImage(img, 'JPEG', 0, 0, 1600, 900);
+    if(i > 1) doc.addPage('a4', 'portrait');
+    doc.addImage(img, 'JPEG', 0, 0, 210, 297);
   }
 
   const company = state.companyName.trim();
