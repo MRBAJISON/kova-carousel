@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kova AI — Enterprise Proposal Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="vendor/html2canvas.min.js"></script>
+<script src="vendor/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --cream:#FFFDF8;
+    --navy:#071427;
+    --navy-2:#0B1B32;
+    --ink:#0B1220;
+    --green:#0F8B5F;
+    --green-mint:#75D49D;
+    --gold:#FFF3A0;
+    --slate-600:#4B5768;
+    --slate-500:#5C6773;
+    --slate-400:#94A3B8;
+    --line-light:#E7E1D3;
+    --line-dark:rgba(255,255,255,.09);
+    --app-bg:#F1F4F8;
+    --app-panel:#FFFFFF;
+    --app-ink:#0F172A;
+    --app-sub:#64748B;
+    --app-border:#E2E8F0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Geist',system-ui,-apple-system,sans-serif;
+    background:var(--app-bg);
+    color:var(--app-ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ APP CHROME ============ */
+  .app-header{
+    background:#fff;border-bottom:1px solid var(--app-border);
+    padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:50;
+  }
+  .app-header h1{font-size:19px;font-weight:800;letter-spacing:-.01em;}
+  .app-header h1 span{color:var(--green);}
+  .app-header p{font-size:13px;color:var(--app-sub);margin-top:2px;}
+  .industry-toggle{display:flex;background:#F1F4F8;border:1px solid var(--app-border);border-radius:12px;padding:4px;gap:4px;}
+  .industry-toggle button{
+    border:none;background:transparent;padding:10px 20px;border-radius:9px;font-family:inherit;
+    font-size:14px;font-weight:700;color:var(--app-sub);cursor:pointer;transition:.15s;white-space:nowrap;
+  }
+  .industry-toggle button.active{background:var(--ink);color:#fff;}
+  .industry-toggle button:not(.active):hover{color:var(--app-ink);}
+
+  .app-body{display:flex;align-items:flex-start;}
+
+  /* ---- sidebar / form ---- */
+  .sidebar{
+    width:360px;min-width:360px;background:#fff;border-right:1px solid var(--app-border);
+    height:calc(100vh - 73px);overflow-y:auto;position:sticky;top:73px;padding:24px 24px 120px;
+  }
+  .field-group{margin-bottom:26px;}
+  .field-group h3{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--app-sub);margin-bottom:12px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--app-ink);margin-bottom:6px;}
+  .field input[type=text], .field input[type=number]{
+    width:100%;padding:10px 12px;border:1px solid var(--app-border);border-radius:8px;
+    font-family:inherit;font-size:14px;color:var(--app-ink);background:#F8FAFC;
+  }
+  .field input:focus{outline:none;border-color:var(--green);background:#fff;}
+  .field-note{font-size:11.5px;color:var(--app-sub);margin-top:4px;line-height:1.4;}
+  .result-box{
+    margin-top:6px;background:var(--navy);border-radius:12px;padding:16px 18px;color:#fff;
+  }
+  .result-box .rl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9FB0C3;margin-bottom:6px;}
+  .result-box .rv{font-size:26px;font-weight:800;color:var(--gold);}
+  .tier-select{display:flex;flex-direction:column;gap:8px;}
+  .tier-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--app-border);border-radius:8px;cursor:pointer;font-size:13px;}
+  .tier-opt.active{border-color:var(--green);background:#F0FBF6;}
+  .tier-opt input{accent-color:var(--green);}
+  .download-bar{
+    position:sticky;bottom:0;background:#fff;border-top:1px solid var(--app-border);
+    padding:16px 0 4px;margin-top:8px;
+  }
+  #downloadBtn{
+    width:100%;background:var(--green);color:#fff;border:none;border-radius:10px;
+    padding:15px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;
+  }
+  #downloadBtn:hover{background:#0C7350;}
+  #downloadBtn:disabled{opacity:.55;cursor:default;}
+  #dlStatus{font-size:12.5px;color:var(--app-sub);margin-top:8px;text-align:center;min-height:16px;}
+
+  /* ---- preview column ---- */
+  .preview-col{flex:1;padding:32px;display:flex;flex-direction:column;gap:28px;align-items:center;min-width:0;}
+  .preview-item{width:100%;max-width:1120px;}
+  .preview-item .lbl{font-size:12.5px;font-weight:700;color:var(--app-sub);margin-bottom:8px;padding-left:2px;}
+  .preview-frame{
+    width:100%;aspect-ratio:1600/900;border-radius:12px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,.08), 0 12px 30px -12px rgba(15,23,42,.18);
+    position:relative;border:1px solid var(--app-border);
+  }
+  .preview-frame .scaler{position:absolute;top:0;left:0;width:1600px;height:900px;transform-origin:top left;}
+
+  /* ============================================================
+     SLIDE / PAGE SYSTEM  (native size 1600 x 900)
+     ============================================================ */
+  .page{width:1600px;height:900px;position:relative;overflow:hidden;font-family:'Geist',sans-serif;-webkit-font-smoothing:antialiased;}
+  .page-light{background:var(--cream);color:var(--ink);}
+  .page-dark{background:var(--navy);color:#fff;}
+  .grid-bg::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+    background-size:64px 64px;
+  }
+  .pad{padding:70px 84px;height:100%;position:relative;z-index:1;}
+  .eyebrow{font-size:15px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
+  .page-dark .eyebrow{color:var(--green-mint);}
+  .headline{font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1.2;max-width:1220px;}
+  .headline.tight{max-width:980px;}
+  .body-copy{font-size:17px;line-height:1.65;color:var(--slate-600);max-width:900px;margin-top:16px;}
+  .page-dark .body-copy{color:#9FB0C3;}
+  .pagenum{position:absolute;right:40px;bottom:26px;font-size:14px;font-weight:600;color:#A2A9AE;z-index:2;}
+  .page-dark .pagenum{color:#4E5E73;}
+
+  .card{background:#fff;border:1px solid var(--line-light);border-radius:14px;padding:24px 26px;}
+  .page-dark .card{background:rgba(255,255,255,.035);border-color:var(--line-dark);}
+  .card-label{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+  .page-dark .card-label{color:var(--green-mint);}
+  .card-title{font-size:19px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card-body{font-size:14.5px;line-height:1.55;color:var(--slate-500);}
+  .page-dark .card-body{color:#9FB0C3;}
+  .card.accent{background:#F0FBF6;border-color:#BFE9D3;}
+  .page-dark .card.accent{background:rgba(15,139,95,.14);border-color:rgba(117,212,157,.35);}
+
+  .badge-circle{width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .bullets{list-style:none;margin-top:16px;padding:0;}
+  .bullets li{position:relative;padding-left:16px;font-size:14px;color:var(--slate-500);margin-bottom:8px;line-height:1.4;}
+  .page-dark .bullets li{color:#9FB0C3;}
+  .bullets li::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--green);}
+  .page-dark .bullets li::before{background:var(--green-mint);}
+
+  .pill{display:inline-flex;align-items:center;padding:9px 18px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:14px;font-weight:700;color:var(--ink);}
+  .page-dark .pill{background:rgba(117,212,157,.08);border-color:rgba(117,212,157,.35);color:var(--green-mint);}
+
+  /* ---- Cover slide ---- */
+  .cover-grid{display:grid;grid-template-columns:47% 53%;height:100%;}
+  .cover-left{padding:64px 60px 60px 84px;display:flex;flex-direction:column;justify-content:center;}
+  .cover-tag{font-size:13.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:18px;}
+  .cover-wordmark{height:26px;margin-bottom:34px;}
+  .cover-headline{font-size:44px;font-weight:800;line-height:1.14;letter-spacing:-.02em;color:var(--ink);}
+  .cover-body{font-size:16.5px;line-height:1.6;color:var(--slate-600);margin-top:22px;max-width:520px;}
+  .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);margin-top:30px;padding-top:20px;gap:18px;}
+  .cover-stats .stat-big{font-size:21px;font-weight:800;color:var(--green);margin-bottom:4px;}
+  .cover-stats .stat-lbl{font-size:12.5px;color:var(--slate-500);line-height:1.35;}
+  .cover-tagstrip{position:absolute;left:0;right:53%;bottom:0;background:var(--navy);display:flex;}
+  .cover-tagstrip .tag-item{flex:1;padding:18px 20px;font-size:12.5px;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.12);line-height:1.35;}
+  .cover-right{background:var(--navy);height:100%;display:flex;align-items:center;justify-content:center;padding:44px;}
+  .chatmock{width:100%;height:100%;background:#fff;border-radius:18px;display:flex;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);}
+  .chat-inbox{width:34%;border-right:1px solid #EEEDE8;padding:20px 0;}
+  .chat-inbox .inbox-head{display:flex;justify-content:space-between;align-items:center;padding:0 18px 14px;border-bottom:1px solid #EEEDE8;margin-bottom:6px;}
+  .chat-inbox .inbox-head b{font-size:15px;color:var(--ink);}
+  .chat-inbox .live{font-size:10.5px;font-weight:800;color:var(--green);letter-spacing:.05em;}
+  .contact-row{padding:12px 18px;border-bottom:1px solid #F3F1EA;display:flex;gap:10px;}
+  .contact-row.active{background:#F7FAF8;}
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+  .contact-meta b{font-size:12.5px;color:var(--ink);display:block;}
+  .contact-meta span{font-size:11px;color:#8A9199;display:block;line-height:1.3;margin-top:2px;}
+  .chat-thread{flex:1;padding:20px 22px;display:flex;flex-direction:column;}
+  .chat-thread .thread-head{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid #EEEDE8;margin-bottom:16px;}
+  .chat-thread .thread-head b{font-size:14.5px;color:var(--ink);display:block;}
+  .chat-thread .thread-head span{font-size:11px;color:var(--green);font-weight:700;}
+  .msg{border-radius:12px;padding:13px 15px;font-size:13px;line-height:1.5;margin-bottom:12px;}
+  .msg-customer{background:#fff;border:1px solid #E9E7DF;color:#22262B;}
+  .msg-kova{background:#F0FBF6;border:1px solid #C9EEDC;color:#1B3A2C;}
+  .msg-cards{display:flex;gap:8px;margin-top:10px;}
+  .msg-card{flex:1;background:#fff;border:1px solid #D6EFE1;border-radius:8px;padding:8px 10px;}
+  .msg-card b{font-size:11.5px;display:block;color:var(--ink);}
+  .msg-card span{font-size:10.5px;color:var(--green);}
+  .handoff-btn{margin-top:10px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:11.5px;padding:8px 14px;border-radius:9999px;}
+
+  /* ---- What Kova Is (slide 2) ---- */
+  .whatis-grid{display:grid;grid-template-columns:1fr 320px;gap:40px;margin-top:8px;}
+  .side-card{background:#F0FBF6;border:1px solid #BFE9D3;border-radius:14px;padding:26px;height:fit-content;}
+  .side-card .card-label{margin-bottom:12px;}
+  .side-card p{font-size:14.5px;line-height:1.6;color:#22432F;}
+  .where-row{margin-top:22px;display:flex;align-items:center;gap:14px;}
+  .where-row .card-label{margin:0;}
+  .where-pills{display:flex;gap:10px;}
+  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:26px;}
+
+  /* ---- Opportunity (dark 4 card) ---- */
+  .four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px;}
+  .four-col .card .num{font-size:14px;font-weight:800;color:var(--green-mint);margin-bottom:14px;}
+  .four-col .card .card-title{color:#fff;font-size:19px;}
+  .callout{margin-top:22px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 10px 10px 0;padding:20px 26px;font-size:15.5px;line-height:1.55;color:#C7D2DC;}
+
+  /* ---- Business case ---- */
+  .bc-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:30px;margin-top:28px;}
+  .bc-left{display:flex;flex-direction:column;gap:16px;}
+  .bc-right{background:var(--navy);border-radius:16px;padding:26px 28px;color:#fff;}
+  .bc-right h4{font-size:19px;font-weight:800;margin-bottom:4px;}
+  .calc-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+  .calc-row label{font-size:14px;color:#B9C4D0;}
+  .calc-row .inwrap{display:flex;align-items:center;gap:6px;}
+  .calc-row input{width:80px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#fff;font-family:inherit;font-size:14px;padding:7px 10px;text-align:right;}
+  .calc-row .unit{font-size:12.5px;color:#8A98A8;}
+  .calc-result{padding-top:18px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .calc-result .rl{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9FB0C3;line-height:1.4;max-width:140px;}
+  .calc-result .rv{font-size:34px;font-weight:800;color:var(--gold);text-align:right;}
+  .note-strip{margin-top:20px;border:1px solid var(--line-light);border-radius:10px;padding:14px 20px;font-size:13px;color:var(--slate-500);}
+
+  /* ---- Changes (dark rows) ---- */
+  .change-rows{margin-top:26px;}
+  .change-row{display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line-dark);align-items:stretch;}
+  .change-row .rowlabel{font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--green-mint);display:flex;align-items:center;}
+  .change-box{border-radius:12px;padding:18px 20px;border:1px solid var(--line-dark);background:rgba(255,255,255,.02);}
+  .change-box.today .tag{color:#8A98A8;}
+  .change-box.kova{background:rgba(15,139,95,.12);border-color:rgba(117,212,157,.3);}
+  .change-box .tag{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+  .change-box.kova .tag{color:var(--green-mint);}
+  .change-box p{font-size:14.5px;line-height:1.5;color:#DCE3EA;}
+
+  /* ---- Handles (3 card inform/qualify/handoff) ---- */
+  .handle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px;}
+  .handle-card{background:#FFFDF5;border:1px solid var(--line-light);border-radius:14px;padding:28px;}
+  .handle-card.accent{background:#F0FBF6;border-color:#BFE9D3;}
+  .handle-card h3{font-size:24px;font-weight:800;margin-bottom:10px;}
+  .handle-card p{font-size:14.5px;color:var(--slate-500);line-height:1.55;}
+  .example-strip{margin-top:22px;border:1px solid var(--line-light);border-radius:12px;padding:18px 24px;}
+  .example-strip .card-label{margin-bottom:8px;}
+  .example-strip p{font-size:15px;font-style:italic;color:#333;line-height:1.5;}
+
+  /* ---- Workflow (4 steps + boundary) ---- */
+  .wf-grid{display:grid;grid-template-columns:1fr 420px;gap:40px;height:100%;}
+  .wf-steps{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;align-content:start;}
+  .wf-step-card{border:1px solid var(--line-light);border-radius:14px;padding:24px;}
+  .wf-step-card h3{font-size:19px;font-weight:700;margin-bottom:8px;}
+  .wf-step-card p{font-size:14px;color:var(--slate-500);line-height:1.5;}
+  .boundary-panel{background:var(--navy);border-radius:16px;padding:32px;margin-top:28px;height:fit-content;}
+  .boundary-panel h3{font-size:26px;font-weight:800;color:#fff;margin-bottom:16px;}
+  .boundary-panel p{font-size:15px;line-height:1.65;color:#C7D2DC;}
+
+  /* ---- Revenue (dark tags + conversation) ---- */
+  .rev-grid{display:grid;grid-template-columns:1fr 480px;gap:40px;margin-top:24px;}
+  .tag-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
+  .tag-pill{padding:12px 18px;border-radius:9px;border:1px solid rgba(117,212,157,.35);background:rgba(117,212,157,.07);font-weight:700;font-size:14px;color:var(--green-mint);}
+  .conv-stack{display:flex;flex-direction:column;gap:14px;}
+  .conv-card{border:1px solid var(--line-dark);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,.02);}
+  .conv-card .card-label{margin-bottom:8px;}
+  .conv-card p{font-size:14.5px;line-height:1.5;color:#E4EAF0;}
+
+  /* ---- Rollout (phases) ---- */
+  .roll-grid{display:grid;grid-template-columns:1fr 420px;gap:40px;}
+  .phase-list{display:flex;flex-direction:column;gap:16px;margin-top:26px;}
+  .phase-card{border:1px solid var(--line-light);border-radius:14px;padding:24px 26px;}
+  .phase-card.active{background:#F0FBF6;border-color:#BFE9D3;}
+  .phase-card h3{font-size:22px;font-weight:800;margin-bottom:8px;}
+  .phase-card p{font-size:14.5px;color:var(--slate-500);line-height:1.55;}
+  .roll-note{background:var(--navy);border-radius:14px;padding:26px;margin-top:26px;color:#D7E0E9;font-size:15px;line-height:1.6;}
+
+  /* ---- Pricing ---- */
+  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;}
+  .price-card{border:1px solid var(--line-dark);border-radius:14px;padding:22px;background:rgba(255,255,255,.02);}
+  .price-card.rec{background:rgba(15,139,95,.12);border:1px solid rgba(117,212,157,.5);}
+  .price-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .price-top b{font-size:18px;color:#fff;}
+  .price-badge{font-size:10px;font-weight:800;letter-spacing:.05em;color:var(--green-mint);}
+  .price-amt{font-size:28px;font-weight:800;color:var(--gold);}
+  .price-amt span{font-size:13px;font-weight:600;color:#9FB0C3;}
+  .price-desc{font-size:12.5px;color:#AEBAC7;line-height:1.5;margin:12px 0 14px;min-height:56px;}
+  .price-meta{border-top:1px solid var(--line-dark);padding-top:10px;margin-top:6px;}
+  .price-meta .pl{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8A98A8;margin-bottom:2px;}
+  .price-meta .pv{font-size:13.5px;color:#E4EAF0;margin-bottom:8px;}
+  .pricing-note{margin-top:24px;border:1px solid var(--line-dark);border-radius:10px;padding:14px 20px;font-size:13px;color:#9FB0C3;}
+
+  /* ---- Next steps ---- */
+  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px;}
+  .step-card{border:1px solid var(--line-dark);border-radius:14px;padding:26px;background:rgba(255,255,255,.02);}
+  .step-card h3{font-size:20px;font-weight:700;color:#fff;margin:14px 0 8px;}
+  .step-card p{font-size:14px;color:#AEBAC7;line-height:1.5;}
+  .ns-footnote{position:absolute;left:84px;bottom:70px;max-width:560px;font-size:14.5px;color:#9FB0C3;line-height:1.55;}
+  .contact-card{position:absolute;right:84px;bottom:70px;width:420px;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:14px;padding:22px 26px;}
+  .contact-card .crow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-dark);font-size:14px;}
+  .contact-card .crow:last-child{border-bottom:none;}
+  .contact-card .crow .k{color:var(--green-mint);font-weight:700;}
+  .contact-card .crow .v{color:#fff;font-weight:700;}
+
+  @media (max-width: 980px){
+    .app-body{flex-direction:column;}
+    .sidebar{width:100%;min-width:0;position:relative;top:0;height:auto;}
+    .preview-col{padding:20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div>
+    <h1>Kova <span>AI</span> — Enterprise Proposal Generator</h1>
+    <p>Same concept &amp; visuals as the pharmacy proposal, retargeted per industry. Fill in the details, then download.</p>
+  </div>
+  <div class="industry-toggle" id="industryToggle"></div>
+</div>
+
+<div class="app-body">
+
+  <div class="sidebar">
+
+    <div class="field-group">
+      <h3>Company Details</h3>
+      <div class="field">
+        <label for="companyName">Company / agency name</label>
+        <input type="text" id="companyName" placeholder="e.g. Star Life Assurance">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <h3>ROI Calculator</h3>
+      <div class="field">
+        <label id="lbl-messages" for="in-messages">Messages / day</label>
+        <input type="number" id="in-messages" min="0">
+      </div>
+      <div class="field">
+        <label id="lbl-share" for="in-share">Share Kova answers instantly (%)</label>
+        <input type="number" id="in-share" min="0" max="100">
+      </div>
+      <div class="field">
+        <label id="lbl-extra" for="in-extra">Extra conversions / day</label>
+        <input type="number" id="in-extra" min="0">
+      </div>
+      <div class="field">
+        <label id="lbl-avg" for="in-avg">Average value (GHS)</label>
+        <input type="number" id="in-avg" min="0">
+      </div>
+      <div class="result-box">
+        <div class="rl" id="lbl-result">RECOVERED VALUE / MONTH</div>
+        <div class="rv" id="calcResult">GHS 0</div>
+      </div>
+      <div class="field-note">This populates the "Business Case" slide of the proposal, using the same estimation model as the original pharmacy proposal.</div>
+    </div>
+
+    <div class="field-group">
+      <h3>Recommended pricing tier</h3>
+      <div class="tier-select" id="tierSelect"></div>
+    </div>
+
+    <div class="download-bar">
+      <button id="downloadBtn" onclick="downloadPdf()">Download Proposal PDF</button>
+      <div id="dlStatus"></div>
+    </div>
+  </div>
+
+  <div class="preview-col" id="previewCol"></div>
+
+</div>
+
+<!-- Hidden full-resolution capture area (used for PDF export) -->
+<div id="captureArea" style="position:absolute;left:-99999px;top:0;"></div>
+
+<script>
+/* ============================================================
+   CONTENT DATA — per industry
+   ============================================================ */
+const PRICING_TIERS = [
+  {key:'business', name:'Business', badge:'ENTRY OPTION', price:2400, credits:'5,000 / month', conversations:'1.5k–3k / month', daily:'50–100 / day'},
+  {key:'ent10', name:'Enterprise 10', badge:'RECOMMENDED', price:4800, credits:'10,000 / month', conversations:'3k–6k / month', daily:'100–200 / day'},
+  {key:'ent25', name:'Enterprise 25', badge:'MID VOLUME', price:9600, credits:'25,000 / month', conversations:'8k–16k / month', daily:'260–525 / day'},
+  {key:'ent50', name:'Enterprise 50', badge:'HIGH VOLUME', price:18000, credits:'50,000 / month', conversations:'16k–32k / month', daily:'525–1,050 / day'},
+];
+
+const CONTENT = {
+
+/* ================= INSURANCE ================= */
+insurance: {
+  label:'Insurance', proposalType:'INSURANCE PROPOSAL',
+  pricingDesc:{
+    business:'For a smaller agency or a light-volume pilot before moving into Enterprise usage.',
+    ent10:'For a focused AI launch across your highest-volume quote and policy-intake questions.',
+    ent25:'Best fit for full retail and group-cover support across a growing branch network.',
+    ent50:'For larger insurers with heavier client demand and broader product-line coverage.'
+  },
+  cover:{
+    headline:'Turn the policy messages already hitting your WhatsApp into protected clients — day and night.',
+    body:'Kova AI replies instantly from your approved policy and pricing information, captures quote requests and renewal reminders, and hands every claim safely to your licensed team. Never gives coverage advice. Never approves a claim.',
+    stats:[{big:'24/7',label:'every message answered'},{big:'Claims-safe',label:'claims go to licensed staff'},{big:'Quotes + renewals',label:'one AI layer across demand'}],
+    tags:['Never coverage advice','Policy-approved answers','Smart human handoffs','Private & confidential'],
+    chat:{
+      contacts:[
+        {initial:'A',name:'Ama Serwaa',time:'10:42',preview:'Do you have a comprehensive motor policy for a 2019 Toyota?'},
+        {initial:'K',name:'Kwame Boateng',time:'10:31',preview:'Can I get a quote for family health cover?'},
+        {initial:'E',name:'Efua Owusu',time:'10:18',preview:'When is my premium due this month?'}
+      ],
+      activeName:'Ama Serwaa',
+      messages:[
+        {from:'customer', text:'Do you have a comprehensive motor policy for a 2019 Toyota? What would the premium be?'},
+        {from:'kova', text:'Yes. Based on your vehicle details, here are our comprehensive motor plans and indicative premiums.', cards:[{title:'Motor Comprehensive',sub:'From GHS 1,200 / yr'},{title:'Third-Party Plus',sub:'From GHS 450 / yr'}]},
+        {from:'customer', text:'I was in a small accident yesterday, I need to file a claim.'},
+        {from:'kova', text:'I am sorry to hear that. Claims require review by a licensed claims officer. I have logged your report and someone will call you within 2 hours.', handoff:'Claims handoff'}
+      ]
+    }
+  },
+  whatIs:{
+    headline:'An assistant that talks to your clients — and knows where to stop.',
+    body:'Kova AI is a customer assistant for WhatsApp. It answers policy, pricing, coverage, and eligibility questions using only the product information you approve, collects quote and renewal requests, and the moment a conversation touches a claim, underwriting decision, or coverage dispute, it stops and hands over to your licensed team — with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget — so clients get one consistent experience wherever they reach you.',
+    simple:'It does not assess claims, interpret policy wording as advice, approve payouts, or make underwriting decisions. It handles the repetitive front desk so your agents and adjusters do not have to.',
+    where:['WhatsApp','Website live chat'],
+    cols:[
+      {label:'WHAT THE AI DOES', title:'Client concierge & intake', body:'Answers everyday questions, captures quote requests, and qualifies demand — instantly, around the clock.'},
+      {label:'WHAT YOUR PEOPLE DO', title:'Claims & underwriting judgment', body:'Adjusters and underwriters keep full control of claims decisions, risk approvals, and anything sensitive.'},
+      {label:'WHAT THE SYSTEM DOES', title:'Policy, compliance & handoff', body:'Kova works only from your approved data and routes the right cases to the right people.'}
+    ]
+  },
+  opportunity:{
+    headline:'Your policyholders are already messaging you. Most of that demand never becomes a protected client.',
+    items:[
+      {n:'01',title:"They're on WhatsApp",body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or branch visits. It is already where your clients reach out.'},
+      {n:'02',title:'They expect speed',body:'Clients expect a reply within 10–30 minutes, and most buy from the first insurer to respond with a clear quote. Slow replies mean lost policies.'},
+      {n:'03',title:'After-hours is dead air',body:'Accidents and renewal deadlines do not wait for office hours, but the call centre is closed and messages pile up unanswered until morning.'},
+      {n:'04',title:'Staff are stretched',body:'The same coverage and premium questions repeat all day, pulling adjusters and agents away from claims and underwriting.'}
+    ],
+    callout:'The demand is not the problem — it is already in your phone. The problem is that the slice arriving after hours, or while agents are on calls, quietly goes to a competitor.'
+  },
+  businessCase:{
+    headline:'Kova only has to protect a handful of policies a month to pay for itself.',
+    cards:[
+      {label:'CAPTURED DEMAND',title:'Policies you are losing today',body:'Quote requests answered instantly after hours or during a rush become bound policies instead of lost leads.'},
+      {label:'RECOVERED TIME',title:'Hours back for your team',body:'Routine coverage and premium questions are handled automatically, so agents and adjusters focus on claims and underwriting.'},
+      {label:'RETAINED CLIENTS',title:'Renewals, not lapses',body:'Missed renewal reminders are a leading cause of policy lapse. Always-on nudges keep clients covered.'}
+    ],
+    calc:{messagesLabel:'Client messages / day',messagesDefault:80,shareLabel:'Share Kova answers instantly (%)',shareDefault:55,extraLabel:'Extra policies bound / day',extraDefault:1,avgLabel:'Average annual premium (GHS)',avgDefault:1400,resultLabel:'NEW PREMIUM WRITTEN / MONTH'},
+    note:'Illustrative estimate using industry benchmarks for response speed, 24/7 availability, and conversational commerce. Your team sets the real inputs with each client.'
+  },
+  changes:{
+    headline:'From missed messages to protected clients — in the first launch phase.',
+    body:'Same policies, same underwriting rules. The difference is that every message now gets a fast, consistent answer, and your agents only step in where they are truly needed.',
+    rows:[
+      {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The client has already bought a policy elsewhere.', kova:'Answered in seconds. Quote captured and a callback scheduled.'},
+      {label:"CLAIMS OFFICER'S DAY", today:'Interrupted by repeated "what does my policy cover" chats.', kova:'A cleaner queue — only claims and real underwriting calls.'},
+      {label:'RENEWAL DEMAND', today:'Lost whenever no one follows up before the policy lapses.', kova:'Renewal reminders sent automatically, and clients re-engaged while intent is high.'}
+    ]
+  },
+  handles:{
+    headline:'A client-facing assistant around your team, not instead of it.',
+    cols:[
+      {title:'Inform', body:'Use approved policy data to answer product, premium, coverage, and eligibility questions.', bullets:['Motor, health & life plans','Premiums & payment options','Branch & agent locations']},
+      {title:'Qualify', body:'Collect client intent before a team member steps in.', bullets:['Type of cover needed','Vehicle, property or health details','New business or renewal']},
+      {title:'Hand off', accent:true, body:'Escalate anything that needs human review, with context already captured.', bullets:['Claim notifications','Underwriting & risk questions','Final policy approval']}
+    ],
+    example:'"I can help with approved policy details and quotes. This claim needs adjuster review, so I will log your report and have a claims officer call you shortly."'
+  },
+  workflow:{
+    eyebrow:'CLAIMS-SAFE WORKFLOW',
+    headline:'The AI reduces intake work without making coverage or claims decisions.',
+    steps:[
+      {n:1,title:'Client asks',body:'The client asks for a quote, coverage question, or reports an incident.'},
+      {n:2,title:'System checks policy',body:'Kova uses policy flags to identify claims, underwriting, or regulated questions.'},
+      {n:3,title:'AI collects context',body:'It gathers incident details, the policy number, and documents needed.'},
+      {n:4,title:'Human reviews',body:'The adjuster or underwriter receives a clean handoff and remains responsible for the decision.'}
+    ],
+    boundaryTitle:'Clear boundary',
+    boundaryBody:'Kova does not assess claims, interpret coverage as advice, approve payouts, or override underwriting rules. It communicates only from approved product data and routes regulated cases to licensed staff.'
+  },
+  revenue:{
+    eyebrow:'PRODUCT LINE & RENEWAL REVENUE',
+    headline:'Client demand is broader than claims.',
+    body:'Many clients arrive through WhatsApp with high intent but low patience. Kova captures that demand across your product lines, keeps renewals on track, and routes regulated matters correctly.',
+    tags:['Motor','Health','Life','Property','SME & group cover','Renewals'],
+    ask:'"Can I renew my health policy for my family, and add my new car to my motor cover?"',
+    respond:'"I can check your renewal options and share our motor add-on quotes."',
+    receives:'Intent, policy numbers, client contact, and any handoff notes in one place.'
+  },
+  rollout:{
+    headline:'Start with AI conversations first. Connect systems only where it creates value.',
+    phase1:{title:'AI concierge', body:'WhatsApp conversations, policy-approved responses, claims-safe intake, staff handoff, and conversation analytics. If you have a website, the same AI also runs there as a live chat widget.'},
+    phase2:{title:'Operations connection', body:'Sync policy catalog, premium schedules, claims status, and client records where the existing system supports it.'},
+    optional:{title:'Kova commerce tools', body:'Payment collection, premium reminders, and full policy-servicing workflows are available if you want a broader platform later.'},
+    note:'Standard setup can be included. Custom integrations are scoped only after we confirm which workflows need to connect to your policy admin system.'
+  },
+  nextSteps:{
+    headline:'Start with a low-risk pilot. See it working on your real conversations.',
+    steps:[
+      {n:1,title:'30-minute setup call', body:'We load your approved policy and product information and set the handoff rules with your team.'},
+      {n:2,title:'Go live on WhatsApp', body:'Kova starts answering real client messages within days, not months.'},
+      {n:3,title:'Review the numbers together', body:'After 2–4 weeks we look at captured demand and decide the rollout together.'}
+    ],
+    footnote:'No long lock-in. No setup fee on the standard first phase. Your licensed agents and adjusters stay in control of every claim and policy decision.'
+  }
+},
+
+/* ================= BANK ================= */
+bank: {
+  label:'Bank', proposalType:'BANKING PROPOSAL',
+  pricingDesc:{
+    business:'For a smaller branch network or a light-volume pilot before moving into Enterprise usage.',
+    ent10:'For a focused AI launch across your highest-volume retail and loan-intake questions.',
+    ent25:'Best fit for full retail and SME coverage across a growing branch network.',
+    ent50:'For larger banks with heavier customer demand and broader product coverage.'
+  },
+  cover:{
+    headline:'Turn the account messages already hitting your WhatsApp into served customers — day and night.',
+    body:'Kova AI replies instantly from your approved product and rate information, captures account-opening and loan leads, and hands every dispute or fraud report safely to your compliance team. Never moves funds. Never confirms a balance without verification.',
+    stats:[{big:'24/7',label:'every message answered'},{big:'Fraud-safe',label:'disputes go to compliance'},{big:'Retail + SME',label:'one AI layer across demand'}],
+    tags:['Never moves funds','Product-approved answers','Smart human handoffs','Private & confidential'],
+    chat:{
+      contacts:[
+        {initial:'K',name:'Kojo Mensah',time:'10:42',preview:'Do you have a savings account with no minimum balance?'},
+        {initial:'A',name:'Abena Nyarko',time:'10:31',preview:'Can I check my loan eligibility?'},
+        {initial:'S',name:'Sam Owusu',time:'10:18',preview:'Someone used my card without permission'}
+      ],
+      activeName:'Kojo Mensah',
+      messages:[
+        {from:'customer', text:'Do you have a savings account with no minimum balance?'},
+        {from:'kova', text:'Yes. Our Flexi Save account has zero minimum balance and 8% p.a. interest. I can start your application.', cards:[{title:'Flexi Save',sub:'8% p.a. · No minimum'},{title:'SME Business Account',sub:'For registered businesses'}]},
+        {from:'customer', text:'I think someone used my card without my permission.'},
+        {from:'kova', text:'I am sorry to hear that. This needs immediate review by our fraud team. I have flagged your card and a specialist will call you within 30 minutes.', handoff:'Fraud team handoff'}
+      ]
+    }
+  },
+  whatIs:{
+    headline:'An assistant that talks to your customers — and knows where to stop.',
+    body:'Kova AI is a customer assistant for WhatsApp. It answers product, rate, branch, and eligibility questions using only the information you approve, collects account-opening and loan leads, and the moment a conversation touches a transaction dispute, fraud report, or account-specific balance, it stops and hands over to your team — with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
+    simple:'It does not move funds, confirm balances without verification, approve loans, or give financial advice. It handles the repetitive front desk so your relationship officers do not have to.',
+    where:['WhatsApp','Website live chat'],
+    cols:[
+      {label:'WHAT THE AI DOES', title:'Retail concierge & intake', body:'Answers everyday questions, captures leads, and qualifies demand — instantly, around the clock.'},
+      {label:'WHAT YOUR PEOPLE DO', title:'Disputes & compliance judgment', body:'Compliance and credit officers keep full control of dispute resolution, KYC, and anything regulated.'},
+      {label:'WHAT THE SYSTEM DOES', title:'Product, policy & handoff', body:'Kova works only from your approved data and routes the right cases to the right people.'}
+    ]
+  },
+  opportunity:{
+    headline:'Your customers are already messaging you. Most of that demand never becomes a served customer.',
+    items:[
+      {n:'01',title:"They're on WhatsApp",body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or branch visits. It is already where your customers reach out.'},
+      {n:'02',title:'They expect speed',body:'Customers expect a reply within 10–30 minutes, and most open an account with the first bank to respond. Slow replies mean lost customers.'},
+      {n:'03',title:'After-hours is dead air',body:'Salary-day questions and urgent card issues do not wait for banking hours, but the branch is closed and messages pile up unanswered until morning.'},
+      {n:'04',title:'Staff are stretched',body:'The same balance and rate questions repeat all day, pulling relationship officers away from onboarding and credit decisions.'}
+    ],
+    callout:'The demand is not the problem — it is already in your phone. The problem is that the slice arriving after hours, or while officers are on calls, quietly goes to a competitor.'
+  },
+  businessCase:{
+    headline:'Kova only has to convert a handful of leads a month to pay for itself.',
+    cards:[
+      {label:'CAPTURED DEMAND',title:'Customers you are losing today',body:'Messages answered instantly after banking hours become account openings and loan leads instead of lost customers.'},
+      {label:'RECOVERED TIME',title:'Hours back for your team',body:'Routine product and rate questions are handled automatically, so officers focus on onboarding and credit decisions.'},
+      {label:'RETAINED CUSTOMERS',title:'Loyalty, not churn',body:'Customers who wait too long for a reply switch banks. Always-on replies keep them engaged.'}
+    ],
+    calc:{messagesLabel:'Customer messages / day',messagesDefault:100,shareLabel:'Share Kova answers instantly (%)',shareDefault:55,extraLabel:'Extra accounts/loans opened / day',extraDefault:1,avgLabel:'Average first-year value per customer (GHS)',avgDefault:800,resultLabel:'NEW CUSTOMER VALUE / MONTH'},
+    note:'Illustrative estimate using industry benchmarks for response speed, 24/7 availability, and conversational commerce. Your team sets the real inputs with each customer.'
+  },
+  changes:{
+    headline:'From missed messages to served customers — in the first launch phase.',
+    body:'Same products, same compliance rules. The difference is that every message now gets a fast, consistent answer, and your officers only step in where they are truly needed.',
+    rows:[
+      {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The customer has already opened an account elsewhere.', kova:'Answered in seconds. Application started and documents requested.'},
+      {label:"OFFICER'S DAY", today:'Interrupted by repeated "what is your interest rate" chats.', kova:'A cleaner queue — only disputes and real credit decisions.'},
+      {label:'ACCOUNT-OPENING DEMAND', today:'Lost in phone queues and branch lines.', kova:'Captured on WhatsApp while intent and attention are high.'}
+    ]
+  },
+  handles:{
+    headline:'A customer-facing assistant around your team, not instead of it.',
+    cols:[
+      {title:'Inform', body:'Use approved product data to answer rate, eligibility, and branch questions.', bullets:['Savings, current & SME accounts','Loan products & rates','Branch & ATM locations']},
+      {title:'Qualify', body:'Collect customer intent before a team member steps in.', bullets:['Loan amount & purpose','KYC documents ready','New or existing customer']},
+      {title:'Hand off', accent:true, body:'Escalate anything that needs human review, with context already captured.', bullets:['Dispute & fraud reports','KYC & compliance questions','Final credit approval']}
+    ],
+    example:"\"I can help with approved product details and rates. This needs your relationship officer's review, so I will collect your documents and have someone call you before we proceed.\""
+  },
+  workflow:{
+    eyebrow:'DISPUTE-SAFE WORKFLOW',
+    headline:'The AI reduces intake work without making credit or compliance decisions.',
+    steps:[
+      {n:1,title:'Customer asks',body:'The customer asks for a product, rate, or reports a transaction issue.'},
+      {n:2,title:'System checks policy',body:'Kova uses account flags to identify disputes, fraud, or regulated requests.'},
+      {n:3,title:'AI collects context',body:'It gathers KYC documents, loan purpose, and account details.'},
+      {n:4,title:'Human reviews',body:'The relationship officer or compliance team receives a clean handoff and remains responsible for approval.'}
+    ],
+    boundaryTitle:'Clear boundary',
+    boundaryBody:'Kova does not move funds, disclose balances without verification, approve credit, or override compliance policy. It communicates only from approved product data and routes regulated cases to the team.'
+  },
+  revenue:{
+    eyebrow:'PRODUCT LINE & ACCOUNT GROWTH',
+    headline:'Customer demand is broader than one product.',
+    body:'Many customers arrive through WhatsApp with high intent but low patience. Kova captures that demand across your product lines, supports SME and retail customers, and routes regulated matters correctly.',
+    tags:['Savings','Current','Loans','Cards','SME banking','Mobile money'],
+    ask:'"Can I open a savings account and also check if I qualify for a salary loan?"',
+    respond:'"I can start your account application and share our salary loan eligibility criteria."',
+    receives:'Intent, product interest, KYC status, and any handoff notes in one place.'
+  },
+  rollout:{
+    headline:'Start with AI conversations first. Connect systems only where it creates value.',
+    phase1:{title:'AI concierge', body:'WhatsApp conversations, product-approved responses, fraud-safe intake, staff handoff, and conversation analytics. If you have a website, the same AI also runs there as a live chat widget.'},
+    phase2:{title:'Operations connection', body:'Sync product catalog, rates, branch data, and customer records where the existing core banking system supports it.'},
+    optional:{title:'Kova commerce tools', body:'Payment collection, statement requests, and full servicing workflows are available if you want a broader platform later.'},
+    note:'Standard setup can be included. Custom integrations to core banking or KYC systems are scoped only after we confirm which workflows need to connect.'
+  },
+  nextSteps:{
+    headline:'Start with a low-risk pilot. See it working on your real conversations.',
+    steps:[
+      {n:1,title:'30-minute setup call', body:'We load your approved product and rate information and set the handoff rules with your team.'},
+      {n:2,title:'Go live on WhatsApp', body:'Kova starts answering real customer messages within days, not months.'},
+      {n:3,title:'Review the numbers together', body:'After 2–4 weeks we look at captured demand and decide the rollout together.'}
+    ],
+    footnote:'No long lock-in. No setup fee on the standard first phase. Your compliance and credit teams stay in control of every approval.'
+  }
+},
+
+/* ================= GOVERNMENT ================= */
+government: {
+  label:'Government', proposalType:'GOVERNMENT SERVICES PROPOSAL',
+  pricingDesc:{
+    business:'For a single department or a light-volume pilot before moving into Enterprise usage.',
+    ent10:'For a focused AI launch across your highest-volume service and status-check questions.',
+    ent25:'Best fit for full multi-service coverage across a growing agency network.',
+    ent50:'For larger agencies with heavier citizen demand and broader service coverage.'
+  },
+  cover:{
+    headline:'Turn the citizen messages already hitting your WhatsApp into resolved enquiries — day and night.',
+    body:'Kova AI replies instantly from your approved service information, captures applications and appointment requests, and hands every case-specific or sensitive enquiry safely to your officers. Never makes a determination. Never issues a document.',
+    stats:[{big:'24/7',label:'every message answered'},{big:'Case-safe',label:'sensitive matters go to officers'},{big:'Multi-service',label:'one AI layer across demand'}],
+    tags:['Never makes determinations','Policy-approved answers','Smart human handoffs','Private & confidential'],
+    chat:{
+      contacts:[
+        {initial:'N',name:'Nii Armah',time:'10:42',preview:'How do I renew my business operating permit?'},
+        {initial:'P',name:'Patience Asare',time:'10:31',preview:'Can I book an appointment at the registry?'},
+        {initial:'D',name:'David Osei',time:'10:18',preview:'My application has been pending for 3 weeks'}
+      ],
+      activeName:'Nii Armah',
+      messages:[
+        {from:'customer', text:'How do I renew my business operating permit? What documents do I need?'},
+        {from:'kova', text:'Here are the requirements, and I can help you start your renewal application.', cards:[{title:'Business Permit Renewal',sub:'Documents required'},{title:'Application Status',sub:'Track your reference number'}]},
+        {from:'customer', text:'My application has been pending for 3 weeks, can you check what is wrong?'},
+        {from:'kova', text:'I am sorry for the delay. This needs review by a case officer. I have logged your reference number and someone will follow up within 2 business days.', handoff:'Case officer handoff'}
+      ]
+    }
+  },
+  whatIs:{
+    headline:'An assistant that talks to citizens — and knows where to stop.',
+    body:'Kova AI is a citizen assistant for WhatsApp. It answers service, eligibility, requirement, and status questions using only the information you approve, collects applications and appointment requests, and the moment a conversation touches a case decision, a complaint, or a sensitive matter, it stops and hands over to your officers — with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
+    simple:'It does not approve applications, issue permits or certificates, make legal or eligibility determinations, or override agency policy. It handles the repetitive front desk so your officers do not have to.',
+    where:['WhatsApp','Website live chat'],
+    cols:[
+      {label:'WHAT THE AI DOES', title:'Citizen concierge & intake', body:'Answers everyday questions, captures applications, and qualifies requests — instantly, around the clock.'},
+      {label:'WHAT YOUR PEOPLE DO', title:'Determinations & case judgment', body:'Officers keep full control of approvals, eligibility decisions, and anything sensitive.'},
+      {label:'WHAT THE SYSTEM DOES', title:'Service catalog, policy & handoff', body:'Kova works only from your approved data and routes the right cases to the right people.'}
+    ]
+  },
+  opportunity:{
+    headline:'Citizens are already messaging you. Most of that demand never becomes a resolved enquiry.',
+    items:[
+      {n:'01',title:"They're on WhatsApp",body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or counter visits. It is already where citizens reach out.'},
+      {n:'02',title:'They expect speed',body:'Citizens expect a reply within 10–30 minutes. Slow replies mean repeat calls, walk-ins, and complaints.'},
+      {n:'03',title:'After-hours is dead air',body:'Deadlines and urgent questions do not wait for office hours, but the counter is closed and messages pile up unanswered until morning.'},
+      {n:'04',title:'Staff are stretched',body:'The same "what documents do I need" and "what is my status" questions repeat all day, pulling officers away from casework.'}
+    ],
+    callout:'The demand is not the problem — it is already in your phone. The problem is that the slice arriving after hours, or while the counter is busy, quietly becomes a queue, a complaint, or a missed deadline.'
+  },
+  businessCase:{
+    headline:'Kova only has to deflect a fraction of routine enquiries to pay for itself.',
+    cards:[
+      {label:'CAPTURED DEMAND',title:'Enquiries you are missing today',body:'Messages answered instantly after office hours become resolved enquiries instead of walk-in queues or repeat calls.'},
+      {label:'RECOVERED TIME',title:'Hours back for your officers',body:'Routine "what documents, what status, where" questions are handled automatically, so officers focus on casework and decisions.'},
+      {label:'FASTER SERVICE',title:'Shorter queues, fewer complaints',body:'Citizens who cannot get a fast answer file complaints or return to the counter repeatedly. Always-on replies reduce both.'}
+    ],
+    calc:{messagesLabel:'Citizen messages / day',messagesDefault:150,shareLabel:'Share Kova answers instantly (%)',shareDefault:60,extraLabel:'Enquiries deflected from counter / day',extraDefault:60,avgLabel:'Average cost per counter enquiry (GHS)',avgDefault:25,resultLabel:'COST AVOIDED / MONTH'},
+    note:'Illustrative estimate using public-sector benchmarks for cost per counter or call-centre interaction. Your team sets the real inputs for your agency.'
+  },
+  changes:{
+    headline:'From missed messages to resolved enquiries — in the first launch phase.',
+    body:'Same services, same eligibility rules. The difference is that every message now gets a fast, consistent answer, and your officers only step in where they are truly needed.',
+    rows:[
+      {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The citizen joins the counter queue instead.', kova:'Answered in seconds. Requirements shared and application started.'},
+      {label:"OFFICER'S DAY", today:'Interrupted by repeated "what documents do I need" questions.', kova:'A cleaner queue — only cases and real decisions.'},
+      {label:'SERVICE REQUEST DEMAND', today:'Lost in phone queues and walk-in lines.', kova:'Captured on WhatsApp while intent and attention are high.'}
+    ]
+  },
+  handles:{
+    headline:'A citizen-facing assistant around your officers, not instead of them.',
+    cols:[
+      {title:'Inform', body:'Use approved service data to answer eligibility, requirement, fee, and status questions.', bullets:['Permits & licenses','Registrations & renewals','Fees & payment channels']},
+      {title:'Qualify', body:'Collect applicant intent and documents before an officer steps in.', bullets:['Service or department needed','Required documents checklist','New application or status check']},
+      {title:'Hand off', accent:true, body:'Escalate anything that needs officer review, with context already captured.', bullets:['Application decisions','Complaints & appeals','Final approval or issuance']}
+    ],
+    example:'"I can help with approved requirements and application steps. This needs officer review, so I will log your case reference and have someone follow up."'
+  },
+  workflow:{
+    eyebrow:'CASE-SAFE WORKFLOW',
+    headline:'The AI reduces intake work without making determinations.',
+    steps:[
+      {n:1,title:'Citizen asks',body:'The citizen asks for a service, requirement, or status update.'},
+      {n:2,title:'System checks policy',body:'Kova uses service flags to identify cases needing officer review.'},
+      {n:3,title:'AI collects context',body:'It gathers application details and the required documents.'},
+      {n:4,title:'Human reviews',body:'The officer receives a clean handoff and remains responsible for the decision.'}
+    ],
+    boundaryTitle:'Clear boundary',
+    boundaryBody:'Kova does not approve applications, issue documents, make legal determinations, or override agency policy. It communicates only from approved service information and routes sensitive cases to officers.'
+  },
+  revenue:{
+    eyebrow:'SERVICE DEMAND & CASELOAD',
+    headline:'Service demand is broader than one department.',
+    body:'Many citizens arrive through WhatsApp with high intent but low patience. Kova captures that demand across your service lines, keeps applications moving, and routes sensitive matters correctly.',
+    tags:['Permits & licenses','Registrations','Tax & fees','Utilities','Social services','Appointments'],
+    ask:'"Can I check my business permit renewal status and also book an appointment at the registry?"',
+    respond:'"I can check your application status and help you book the next available appointment."',
+    receives:'Intent, service type, reference number, and any handoff notes in one place.'
+  },
+  rollout:{
+    headline:'Start with AI conversations first. Connect systems only where it creates value.',
+    phase1:{title:'AI concierge', body:'WhatsApp conversations, service-approved responses, sensitive-case-safe intake, officer handoff, and conversation analytics. If you have a website, the same AI also runs there as a live chat widget.'},
+    phase2:{title:'Operations connection', body:'Sync service catalog, application status, appointment slots, and citizen records where the existing system supports it.'},
+    optional:{title:'Kova commerce tools', body:'Fee payment collection and full case-servicing workflows are available if the agency wants a broader platform later.'},
+    note:'Standard setup can be included. Custom integrations to case-management or registry systems are scoped only after we confirm which workflows need to connect.'
+  },
+  nextSteps:{
+    headline:'Start with a low-risk pilot. See it working on your real conversations.',
+    steps:[
+      {n:1,title:'30-minute setup call', body:'We load your approved service and requirement information and set the handoff rules with your team.'},
+      {n:2,title:'Go live on WhatsApp', body:'Kova starts answering real citizen messages within days, not months.'},
+      {n:3,title:'Review the numbers together', body:'After 2–4 weeks we look at captured demand and decide the rollout together.'}
+    ],
+    footnote:'No long lock-in. No setup fee on the standard first phase. Your officers stay in control of every determination and approval.'
+  }
+}
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  industry:'insurance',
+  companyName:'',
+  recommendedTier:'ent10',
+  calc:{}
+};
+
+function initCalc(){
+  const c = CONTENT[state.industry].businessCase.calc;
+  state.calc = {messages:c.messagesDefault, share:c.shareDefault, extra:c.extraDefault, avg:c.avgDefault};
+}
+initCalc();
+
+/* ============================================================
+   TEMPLATE HELPERS
+   ============================================================ */
+function esc(s){ return (s===undefined||s===null) ? '' : String(s); }
+function fmtGHS(n){ return 'GHS ' + Math.round(n).toLocaleString('en-US'); }
+
+function pageFoot(n){ return `<div class="pagenum">${n} / 11</div>`; }
+
+/* ---- Slide 1: Cover ---- */
+function slideCover(d, company, proposalType){
+  const companyLabel = company ? company.toUpperCase() : '[YOUR COMPANY NAME]';
+  const contacts = d.chat.contacts.map((c,i)=>`
+    <div class="contact-row ${i===0?'active':''}">
+      <div class="avatar">${esc(c.initial)}</div>
+      <div class="contact-meta"><b>${esc(c.name)}</b><span>${esc(c.preview)}</span></div>
+    </div>`).join('');
+  const messages = d.chat.messages.map(m=>{
+    if(m.from==='customer'){
+      return `<div class="msg msg-customer">${esc(m.text)}</div>`;
+    }
+    const cards = m.cards ? `<div class="msg-cards">${m.cards.map(c=>`<div class="msg-card"><b>${esc(c.title)}</b><span>${esc(c.sub)}</span></div>`).join('')}</div>` : '';
+    const handoff = m.handoff ? `<div class="handoff-btn">${esc(m.handoff)}</div>` : '';
+    return `<div class="msg msg-kova">${esc(m.text)}${cards}${handoff}</div>`;
+  }).join('');
+  const stats = d.stats.map(s=>`<div><div class="stat-big">${esc(s.big)}</div><div class="stat-lbl">${esc(s.label)}</div></div>`).join('');
+  const tags = d.tags.map(t=>`<div class="tag-item">${esc(t)}</div>`).join('');
+
+  return `<div class="page page-light">
+    <div class="cover-grid">
+      <div class="cover-left">
+        <div class="cover-tag">${esc(proposalType)} · PREPARED FOR ${companyLabel}</div>
+        <img class="cover-wordmark" src="kova-wordmark-light.png" alt="Kova AI">
+        <div class="cover-headline">${esc(d.headline)}</div>
+        <div class="cover-body">${esc(d.body)}</div>
+        <div class="cover-stats">${stats}</div>
+      </div>
+      <div class="cover-right">
+        <div class="chatmock">
+          <div class="chat-inbox">
+            <div class="inbox-head"><b>Inbox</b><span class="live">LIVE</span></div>
+            ${contacts}
+          </div>
+          <div class="chat-thread">
+            <div class="thread-head"><div class="avatar">${esc(d.chat.contacts[0].initial)}</div><div><b>${esc(d.chat.activeName)}</b><span>ONLINE NOW</span></div></div>
+            ${messages}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cover-tagstrip">${tags}</div>
+    ${pageFoot(1)}
+  </div>`;
+}
+
+/* ---- Slide 2: What Kova Is ---- */
+function slideWhatIs(d){
+  const cols = d.cols.map(c=>`<div class="card"><div class="card-label">${esc(c.label)}</div><div class="card-title">${esc(c.title)}</div><div class="card-body">${esc(c.body)}</div></div>`).join('');
+  const pills = d.where.map(w=>`<span class="pill">${esc(w)}</span>`).join('');
+  return `<div class="page page-light"><div class="pad">
+    <div class="eyebrow">WHAT KOVA AI IS</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="whatis-grid">
+      <div>
+        <div class="body-copy">${esc(d.body)}</div>
+        <div class="where-row"><div class="card-label">WHERE IT WORKS</div><div class="where-pills">${pills}</div></div>
+      </div>
+      <div class="side-card">
+        <div class="card-label">THE SIMPLE VERSION</div>
+        <p>${esc(d.simple)}</p>
+      </div>
+    </div>
+    <div class="three-col">${cols}</div>
+    ${pageFoot(2)}
+  </div></div>`;
+}
+
+/* ---- Slide 3: Opportunity ---- */
+function slideOpportunity(d){
+  const items = d.items.map(it=>`<div class="card"><div class="num">${esc(it.n)}</div><div class="card-title">${esc(it.title)}</div><div class="card-body">${esc(it.body)}</div></div>`).join('');
+  return `<div class="page page-dark grid-bg"><div class="pad">
+    <div class="eyebrow">THE OPPORTUNITY</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="four-col">${items}</div>
+    <div class="callout">${esc(d.callout)}</div>
+    ${pageFoot(3)}
+  </div></div>`;
+}
+
+/* ---- Slide 4: Business case ---- */
+function slideBusinessCase(d, calc, calcState){
+  const cards = d.cards.map(c=>`<div class="card"><div class="card-label">${esc(c.label)}</div><div class="card-title">${esc(c.title)}</div><div class="card-body">${esc(c.body)}</div></div>`).join('');
+  const result = computeCalc(calcState);
+  return `<div class="page page-light"><div class="pad">
+    <div class="eyebrow">THE BUSINESS CASE</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="bc-grid">
+      <div class="bc-left">${cards}</div>
+      <div class="bc-right">
+        <h4>What it could mean for you</h4>
+        <div class="calc-row"><label>${esc(calc.messagesLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.messages}"></div></div>
+        <div class="calc-row"><label>${esc(calc.shareLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.share}"><span class="unit">%</span></div></div>
+        <div class="calc-row"><label>${esc(calc.extraLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.extra}"></div></div>
+        <div class="calc-row"><label>${esc(calc.avgLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.avg}"></div></div>
+        <div class="calc-result"><div class="rl">${esc(calc.resultLabel)}</div><div class="rv">${fmtGHS(result)}</div></div>
+      </div>
+    </div>
+    <div class="note-strip">${esc(CONTENT[state.industry].businessCase.note)}</div>
+    ${pageFoot(4)}
+  </div></div>`;
+}
+function computeCalc(c){ return (Number(c.extra)||0) * (Number(c.avg)||0) * 30; }
+
+/* ---- Slide 5: What changes ---- */
+function slideChanges(d, company){
+  const rows = d.rows.map(r=>`
+    <div class="change-row">
+      <div class="rowlabel">${esc(r.label)}</div>
+      <div class="change-box today"><div class="tag">TODAY</div><p>${esc(r.today)}</p></div>
+      <div class="change-box kova"><div class="tag">WITH KOVA</div><p>${esc(r.kova)}</p></div>
+    </div>`).join('');
+  return `<div class="page page-dark grid-bg"><div class="pad">
+    <div class="eyebrow">WHAT CHANGES FOR ${company ? esc(company).toUpperCase() : 'YOUR ORGANISATION'}</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="body-copy">${esc(d.body)}</div>
+    <div class="change-rows">${rows}</div>
+    ${pageFoot(5)}
+  </div></div>`;
+}
+
+/* ---- Slide 6: What Kova handles ---- */
+function slideHandles(d){
+  const cols = d.cols.map(c=>`
+    <div class="handle-card ${c.accent?'accent':''}">
+      <h3>${esc(c.title)}</h3>
+      <p>${esc(c.body)}</p>
+      <ul class="bullets">${c.bullets.map(b=>`<li>${esc(b)}</li>`).join('')}</ul>
+    </div>`).join('');
+  return `<div class="page page-light"><div class="pad">
+    <div class="eyebrow">WHAT KOVA HANDLES</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="handle-grid">${cols}</div>
+    <div class="example-strip"><div class="card-label">EXAMPLE RESPONSE</div><p>${esc(d.example)}</p></div>
+    ${pageFoot(6)}
+  </div></div>`;
+}
+
+/* ---- Slide 7: Safe workflow ---- */
+function slideWorkflow(d){
+  const steps = d.steps.map(s=>`<div class="wf-step-card"><div class="badge-circle">${s.n}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></div>`).join('');
+  return `<div class="page page-light"><div class="pad">
+    <div class="eyebrow">${esc(d.eyebrow)}</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="wf-grid">
+      <div><div class="wf-steps">${steps}</div></div>
+      <div class="boundary-panel"><h3>${esc(d.boundaryTitle)}</h3><p>${esc(d.boundaryBody)}</p></div>
+    </div>
+    ${pageFoot(7)}
+  </div></div>`;
+}
+
+/* ---- Slide 8: Revenue / demand breadth ---- */
+function slideRevenue(d){
+  const tags = d.tags.map(t=>`<div class="tag-pill">${esc(t)}</div>`).join('');
+  return `<div class="page page-dark grid-bg"><div class="pad">
+    <div class="eyebrow">${esc(d.eyebrow)}</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="rev-grid">
+      <div>
+        <div class="body-copy">${esc(d.body)}</div>
+        <div class="tag-grid">${tags}</div>
+      </div>
+      <div class="conv-stack">
+        <div class="conv-card"><div class="card-label">CUSTOMER ASKS</div><p>${esc(d.ask)}</p></div>
+        <div class="conv-card"><div class="card-label">KOVA RESPONDS</div><p>${esc(d.respond)}</p></div>
+        <div class="conv-card"><div class="card-label">TEAM RECEIVES</div><p>${esc(d.receives)}</p></div>
+      </div>
+    </div>
+    ${pageFoot(8)}
+  </div></div>`;
+}
+
+/* ---- Slide 9: Rollout ---- */
+function slideRollout(d){
+  return `<div class="page page-light"><div class="pad">
+    <div class="eyebrow">LOW-RISK ROLLOUT</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="roll-grid">
+      <div>
+        <div class="phase-list">
+          <div class="phase-card active"><div class="card-label">PHASE 1</div><h3>${esc(d.phase1.title)}</h3><p>${esc(d.phase1.body)}</p></div>
+          <div class="phase-card"><div class="card-label">PHASE 2</div><h3>${esc(d.phase2.title)}</h3><p>${esc(d.phase2.body)}</p></div>
+          <div class="phase-card"><div class="card-label">OPTIONAL</div><h3>${esc(d.optional.title)}</h3><p>${esc(d.optional.body)}</p></div>
+        </div>
+      </div>
+      <div><div class="roll-note">${esc(d.note)}</div></div>
+    </div>
+    ${pageFoot(9)}
+  </div></div>`;
+}
+
+/* ---- Slide 10: Pricing ---- */
+function slidePricing(descMap, recommendedKey){
+  const cards = PRICING_TIERS.map(t=>{
+    const rec = t.key===recommendedKey;
+    const badge = rec ? 'RECOMMENDED' : t.badge;
+    return `<div class="price-card ${rec?'rec':''}">
+      <div class="price-top"><b>${esc(t.name)}</b><span class="price-badge">${esc(badge)}</span></div>
+      <div class="price-amt">${fmtGHS(t.price)}<span> / month</span></div>
+      <div class="price-desc">${esc(descMap[t.key])}</div>
+      <div class="price-meta">
+        <div class="pl">CREDITS</div><div class="pv">${esc(t.credits)}</div>
+        <div class="pl">CONVERSATIONS</div><div class="pv">${esc(t.conversations)}</div>
+        <div class="pl">DAILY RANGE</div><div class="pv">${esc(t.daily)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div class="page page-dark grid-bg"><div class="pad">
+    <div class="eyebrow">COMMERCIAL PROPOSAL</div>
+    <div class="headline tight">Four pricing options, with ${esc(PRICING_TIERS.find(t=>t.key===recommendedKey).name)} as the recommended starting point.</div>
+    <div class="price-grid">${cards}</div>
+    <div class="pricing-note">Estimates assume AI customer conversations with typical catalog lookup, intake, and handoff usage. No one-time setup fee for the standard first phase.</div>
+    ${pageFoot(10)}
+  </div></div>`;
+}
+
+/* ---- Slide 11: Next steps ---- */
+function slideNextSteps(d){
+  const steps = d.steps.map(s=>`<div class="step-card"><div class="badge-circle">${s.n}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></div>`).join('');
+  return `<div class="page page-dark grid-bg"><div class="pad">
+    <img class="cover-wordmark" src="kova-wordmark-dark.png" alt="Kova AI" style="margin-bottom:26px;">
+    <div class="eyebrow">NEXT STEPS</div>
+    <div class="headline tight">${esc(d.headline)}</div>
+    <div class="steps-row">${steps}</div>
+    <div class="ns-footnote">${esc(d.footnote)}</div>
+    <div class="contact-card">
+      <div class="crow"><span class="k">Contact</span><span class="v">Isaiah Baji</span></div>
+      <div class="crow"><span class="k">WhatsApp</span><span class="v">0547605037</span></div>
+      <div class="crow"><span class="k">Email</span><span class="v">sales@trykovaai.com</span></div>
+    </div>
+    ${pageFoot(11)}
+  </div></div>`;
+}
+
+/* ============================================================
+   BUILD ALL SLIDES
+   ============================================================ */
+function buildSlides(){
+  const ind = CONTENT[state.industry];
+  const company = state.companyName.trim();
+  return [
+    slideCover(ind.cover, company, ind.proposalType),
+    slideWhatIs(ind.whatIs),
+    slideOpportunity(ind.opportunity),
+    slideBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc),
+    slideChanges(ind.changes, company),
+    slideHandles(ind.handles),
+    slideWorkflow(ind.workflow),
+    slideRevenue(ind.revenue),
+    slideRollout(ind.rollout),
+    slidePricing(ind.pricingDesc, state.recommendedTier),
+    slideNextSteps(ind.nextSteps)
+  ];
+}
+
+const SLIDE_TITLES = [
+  '1 · Cover','2 · What Kova AI Is','3 · The Opportunity','4 · The Business Case',
+  '5 · What Changes','6 · What Kova Handles','7 · Safe Workflow','8 · Demand & Revenue',
+  '9 · Rollout Plan','10 · Pricing','11 · Next Steps'
+];
+
+/* ============================================================
+   RENDER APP
+   ============================================================ */
+function renderAll(){
+  const slides = buildSlides();
+
+  // hidden capture area (native 1600x900, used for PDF export)
+  const capEl = document.getElementById('captureArea');
+  capEl.innerHTML = slides.map((html,i)=>`<div id="cap-${i+1}">${html}</div>`).join('');
+
+  // visible scaled preview
+  const previewCol = document.getElementById('previewCol');
+  previewCol.innerHTML = slides.map((html,i)=>`
+    <div class="preview-item">
+      <div class="lbl">${SLIDE_TITLES[i]}</div>
+      <div class="preview-frame"><div class="scaler" id="prev-${i+1}">${html}</div></div>
+    </div>`).join('');
+
+  requestAnimationFrame(scalePreviews);
+}
+
+function scalePreviews(){
+  document.querySelectorAll('.preview-frame').forEach(frame=>{
+    const scaler = frame.querySelector('.scaler');
+    const w = frame.clientWidth;
+    const s = w / 1600;
+    scaler.style.transform = `scale(${s})`;
+  });
+}
+window.addEventListener('resize', scalePreviews);
+
+/* ---- industry toggle ---- */
+function renderToggle(){
+  const el = document.getElementById('industryToggle');
+  const keys = ['insurance','bank','government'];
+  el.innerHTML = keys.map(k=>`<button data-k="${k}" class="${state.industry===k?'active':''}">${CONTENT[k].label}</button>`).join('');
+  el.querySelectorAll('button').forEach(btn=>{
+    btn.onclick = ()=>{
+      state.industry = btn.dataset.k;
+      initCalc();
+      renderToggle();
+      renderCalcFields();
+      renderAll();
+    };
+  });
+}
+
+/* ---- calculator fields ---- */
+function renderCalcFields(){
+  const c = CONTENT[state.industry].businessCase.calc;
+  document.getElementById('lbl-messages').textContent = c.messagesLabel;
+  document.getElementById('lbl-share').textContent = c.shareLabel;
+  document.getElementById('lbl-extra').textContent = c.extraLabel;
+  document.getElementById('lbl-avg').textContent = c.avgLabel;
+  document.getElementById('lbl-result').textContent = c.resultLabel;
+  document.getElementById('in-messages').value = state.calc.messages;
+  document.getElementById('in-share').value = state.calc.share;
+  document.getElementById('in-extra').value = state.calc.extra;
+  document.getElementById('in-avg').value = state.calc.avg;
+  updateCalcResult();
+}
+function updateCalcResult(){
+  document.getElementById('calcResult').textContent = fmtGHS(computeCalc(state.calc));
+}
+
+['in-messages','in-share','in-extra','in-avg'].forEach(id=>{
+  document.addEventListener('input', e=>{
+    if(e.target.id !== id) return;
+    const key = {'in-messages':'messages','in-share':'share','in-extra':'extra','in-avg':'avg'}[id];
+    state.calc[key] = e.target.value;
+    updateCalcResult();
+    renderAll();
+  });
+});
+
+document.getElementById('companyName').addEventListener('input', e=>{
+  state.companyName = e.target.value;
+  renderAll();
+});
+
+/* ---- pricing tier selector ---- */
+function renderTierSelect(){
+  const el = document.getElementById('tierSelect');
+  el.innerHTML = PRICING_TIERS.map(t=>`
+    <label class="tier-opt ${state.recommendedTier===t.key?'active':''}">
+      <input type="radio" name="tier" value="${t.key}" ${state.recommendedTier===t.key?'checked':''}>
+      ${esc(t.name)} — GHS ${t.price.toLocaleString('en-US')}/mo
+    </label>`).join('');
+  el.querySelectorAll('input').forEach(inp=>{
+    inp.onchange = ()=>{ state.recommendedTier = inp.value; renderTierSelect(); renderAll(); };
+  });
+}
+
+/* ============================================================
+   PDF DOWNLOAD
+   ============================================================ */
+async function downloadPdf(){
+  const btn = document.getElementById('downloadBtn');
+  const status = document.getElementById('dlStatus');
+  btn.disabled = true;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({orientation:'landscape', unit:'px', format:[1600,900], hotfixes:['px_scaling']});
+
+  for(let i=1; i<=11; i++){
+    status.textContent = `Rendering slide ${i} of 11...`;
+    const el = document.getElementById('cap-' + i);
+    const canvas = await html2canvas(el, {width:1600, height:900, scale:2, useCORS:true, backgroundColor:null});
+    const img = canvas.toDataURL('image/jpeg', 0.92);
+    if(i > 1) doc.addPage([1600,900], 'landscape');
+    doc.addImage(img, 'JPEG', 0, 0, 1600, 900);
+  }
+
+  const company = state.companyName.trim();
+  const safeName = company ? company.replace(/[^a-z0-9]+/gi,'_').replace(/^_+|_+$/g,'') : CONTENT[state.industry].label;
+  status.textContent = 'Saving PDF...';
+  doc.save(`${safeName}_x_Kova_AI_Proposal.pdf`);
+  status.textContent = 'Done — check your downloads.';
+  btn.disabled = false;
+  setTimeout(()=>{ status.textContent=''; }, 4000);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderToggle();
+renderCalcFields();
+renderTierSelect();
+renderAll();
+</script>
+</body>
+</html>
