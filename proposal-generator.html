@@ -136,15 +136,16 @@
   .eyebrow{font-size:calc(23px * var(--font-scale));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
   .panel-dark .eyebrow{color:var(--green-mint);}
   .headline{font-size:calc(46.5px * var(--font-scale));font-weight:800;letter-spacing:-.015em;line-height:1.22;}
-  .body-copy{font-size:calc(26px * var(--font-scale));line-height:1.6;color:var(--slate-600);max-width:760px;margin-top:12px;}
+  .body-copy{font-size:calc(26px * var(--font-scale));line-height:1.6;color:var(--slate-600);max-width:760px;margin-top:12px;text-align:justify;}
   .panel-dark .body-copy{color:#C7D3E0;}
+  .page p{text-align:justify;}
 
   .card{background:#fff;border:1px solid var(--line-light);border-radius:12px;padding:18px 20px;}
   .panel-dark .card{background:rgba(255,255,255,.035);border-color:var(--line-dark);}
   .card-label{font-size:calc(19.5px * var(--font-scale));font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
   .panel-dark .card-label{color:var(--green-mint);}
   .card-title{font-size:calc(28.5px * var(--font-scale));font-weight:700;margin-bottom:6px;letter-spacing:-.01em;}
-  .card-body{font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:var(--slate-500);}
+  .card-body{font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:var(--slate-500);text-align:justify;}
   .panel-dark .card-body{color:#C7D3E0;}
   .card.accent{background:#F3F0FF;border-color:#D9CCFF;}
   .panel-dark .card.accent{background:rgba(91,43,232,.14);border-color:rgba(184,166,255,.35);}
@@ -456,18 +457,18 @@ insurance: {
     ent50:'For larger insurers with heavier client demand and broader product-line coverage.'
   },
   cover:{
-    headline:'Quote, sell, and issue third-party motor cover on WhatsApp — nights, weekends, any time.',
+    headline:'Quote, sell, and issue third-party motor cover on WhatsApp, nights, weekends, any time.',
     body:'Kova AI replies instantly from your approved policy and pricing information, sells and issues third-party motor cover directly in the conversation any hour of the day, and hands every claim or comprehensive-cover decision safely to your licensed team. Never gives coverage advice beyond approved terms. Never approves a claim.',
     introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement and digital commerce platform that helps insurance companies transform how they communicate with, serve, and transact with their policyholders. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce customer service costs, increase response speed, and improve the overall customer experience across your digital channels.',
     challengeHeading:'The Challenge Your Organisation Faces',
-    challengeBody:'In today’s digital-first environment, policyholders expect instant, round-the-clock responses — whether they are submitting a motor claim at midnight, requesting a quote for third-party cover on a weekend, or renewing a policy during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
+    challengeBody:'In today’s digital-first environment, policyholders expect instant, round-the-clock responses: whether they are submitting a motor claim at midnight, requesting a quote for third-party cover on a weekend, or renewing a policy during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
     challengeBullets:[
-      {label:'Rising support costs', body:'Scaling claims and customer service teams to meet growing demand requires significant investment in recruitment, training, and management — with each agent limited to handling one interaction at a time.'},
+      {label:'Rising support costs', body:'Scaling claims and customer service teams to meet growing demand requires significant investment in recruitment, training, and management, with each agent limited to handling one interaction at a time.'},
       {label:'Policyholder attrition from slow response times', body:'Research consistently shows that customers who do not receive a response within minutes will seek alternatives. In a competitive insurance market, this directly impacts retention and premium revenue.'},
-      {label:'Fragmented digital channels', body:'Many insurers manage customer interactions across WhatsApp, website chat, email, and phone with no unified system — leading to inconsistent service quality, lost context, and operational inefficiency.'}
+      {label:'Fragmented digital channels', body:'Many insurers manage customer interactions across WhatsApp, website chat, email, and phone with no unified system, leading to inconsistent service quality, lost context, and operational inefficiency.'}
     ],
     solutionHeading:'How Kova AI Addresses These Challenges',
-    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp Business channel and website that engage policyholders in natural, accurate conversations — answering coverage and pricing enquiries, quoting and issuing third-party cover, collecting claim information, and routing complex claims and underwriting matters to your licensed team with full context.',
+    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp Business channel and website that engage policyholders in natural, accurate conversations, answering coverage and pricing enquiries, quoting and issuing third-party cover, collecting claim information, and routing complex claims and underwriting matters to your licensed team with full context.',
     stats:[{big:'24/7',label:'quotes, sales & renewals'},{big:'Instant issue',label:'third-party cover, any time'},{big:'Claims-safe',label:'claims still go to licensed staff'}],
     tags:['Never coverage advice','Policy-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
@@ -479,21 +480,21 @@ insurance: {
       activeName:'Ama Serwaa',
       messages:[
         {from:'customer', text:"It's Sunday night and I need third-party cover for a 2019 Toyota before tomorrow. Can you help right now?"},
-        {from:'kova', text:'Yes — third-party cover is available any time, including tonight. Here is your quote, and I can issue the policy immediately.', cards:[{title:'Third-Party Motor',sub:'GHS 450 / yr · Instant issue'},{title:'Third-Party Plus',sub:'GHS 650 / yr · Roadside included'}]},
+        {from:'kova', text:'Yes, third-party cover is available any time, including tonight. Here is your quote, and I can issue the policy immediately.', cards:[{title:'Third-Party Motor',sub:'GHS 450 / yr · Instant issue'},{title:'Third-Party Plus',sub:'GHS 650 / yr · Roadside included'}]},
         {from:'customer', text:"I'll take Third-Party Plus. Can I pay now?"},
         {from:'kova', text:'Payment received. Your policy is active immediately, and your certificate has been sent to this chat.', handoff:'Policy issued instantly'},
-        {from:'customer', text:'Separately — I was in a small accident yesterday on my other car, I need to file a claim.'},
+        {from:'customer', text:'Separately, I was in a small accident yesterday on my other car, I need to file a claim.'},
         {from:'kova', text:'I am sorry to hear that. Claims require review by a licensed claims officer. I have logged your report and someone will call you within 2 hours.', handoff:'Claims handoff'}
       ]
     }
   },
   whatIs:{
-    headline:'An assistant that talks to your clients — and knows where to stop.',
-    body:'Kova AI is a customer assistant for WhatsApp. It answers policy, pricing, coverage, and eligibility questions using only the product information you approve, quotes and sells standardised products like third-party motor cover directly in the chat — any hour, including nights and weekends — and the moment a conversation touches a claim, underwriting decision, or coverage dispute, it stops and hands over to your licensed team, with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
+    headline:'An assistant that talks to your clients and knows where to stop.',
+    body:'Kova AI is a customer assistant for WhatsApp. It answers policy, pricing, coverage, and eligibility questions using only the product information you approve, quotes and sells standardised products like third-party motor cover directly in the chat, any hour, including nights and weekends, and the moment a conversation touches a claim, underwriting decision, or coverage dispute, it stops and hands over to your licensed team, with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
     simple:'It does not assess claims, interpret policy wording as advice, approve payouts, or make underwriting decisions. It handles the repetitive front desk so your agents and adjusters do not have to.',
     where:['WhatsApp','Website live chat'],
     cols:[
-      {label:'WHAT THE AI DOES', title:'Client concierge, intake & direct sales', body:'Answers everyday questions, quotes and sells third-party cover instantly, and qualifies demand for other products — any hour, around the clock.'},
+      {label:'WHAT THE AI DOES', title:'Client concierge, intake & direct sales', body:'Answers everyday questions, quotes and sells third-party cover instantly, and qualifies demand for other products, any hour, around the clock.'},
       {label:'WHAT YOUR PEOPLE DO', title:'Claims & underwriting judgment', body:'Adjusters and underwriters keep full control of claims decisions, risk approvals, and anything sensitive.'},
       {label:'WHAT THE SYSTEM DOES', title:'Policy, compliance & handoff', body:'Kova works only from your approved data and routes the right cases to the right people.'}
     ]
@@ -506,12 +507,12 @@ insurance: {
       {n:'03',title:'After-hours is dead air',body:'Accidents and renewal deadlines do not wait for office hours, but the call centre is closed and simple sales like third-party cover sit unanswered until morning instead of closing on the spot.'},
       {n:'04',title:'Staff are stretched',body:'The same coverage and premium questions repeat all day, pulling adjusters and agents away from claims and underwriting.'}
     ],
-    callout:'The demand is not the problem — it is already in your phone. The problem is that the slice arriving after hours, or while agents are on calls, quietly goes to a competitor.'
+    callout:'The demand is not the problem: it is already in your phone. The problem is that the slice arriving after hours, or while agents are on calls, quietly goes to a competitor.'
   },
   businessCase:{
     headline:'Kova only has to sell a handful of third-party policies a month to pay for itself.',
     cards:[
-      {label:'CAPTURED DEMAND',title:'Policies you are losing today',body:'Third-party quotes are answered and sold instantly — any hour, weekends included — turning after-hours messages into bound policies instead of lost leads.'},
+      {label:'CAPTURED DEMAND',title:'Policies you are losing today',body:'Third-party quotes are answered and sold instantly, any hour, weekends included, turning after-hours messages into bound policies instead of lost leads.'},
       {label:'RECOVERED TIME',title:'Hours back for your team',body:'Routine coverage and premium questions are handled automatically, so agents and adjusters focus on claims and underwriting.'},
       {label:'RETAINED CLIENTS',title:'Renewals, not lapses',body:'Missed renewal reminders are a leading cause of policy lapse. Always-on nudges keep clients covered.'}
     ],
@@ -519,18 +520,18 @@ insurance: {
     note:'Illustrative estimate using industry benchmarks for response speed, 24/7 availability, and conversational commerce. Your team sets the real inputs with each client.'
   },
   changes:{
-    headline:'From missed messages to protected clients — in the first launch phase.',
+    headline:'From missed messages to protected clients in the first launch phase.',
     body:'Same policies, same underwriting rules. The difference is that every message now gets a fast, consistent answer, and your agents only step in where they are truly needed.',
     rows:[
       {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The client has already bought a policy elsewhere.', kova:'Answered and sold in seconds. Third-party cover issued on the spot.'},
-      {label:"CLAIMS OFFICER'S DAY", today:'Interrupted by repeated "what does my policy cover" chats.', kova:'A cleaner queue — only claims and real underwriting calls.'},
+      {label:"CLAIMS OFFICER'S DAY", today:'Interrupted by repeated "what does my policy cover" chats.', kova:'A cleaner queue: only claims and real underwriting calls.'},
       {label:'RENEWAL DEMAND', today:'Lost whenever no one follows up before the policy lapses.', kova:'Renewal reminders sent automatically, and clients re-engaged while intent is high.'}
     ]
   },
   handles:{
     headline:'A client-facing assistant around your team, not instead of it.',
     cols:[
-      {title:'Inform & Sell', body:'Use approved policy data to answer product, premium, and eligibility questions — and complete simple sales like third-party motor cover directly in the chat, any time of day.', bullets:['Motor, health & life plans','Third-party cover — instant quote, sale & issue','Branch & agent locations']},
+      {title:'Inform & Sell', body:'Use approved policy data to answer product, premium, and eligibility questions, and complete simple sales like third-party motor cover directly in the chat, any time of day.', bullets:['Motor, health & life plans','Third-party cover: instant quote, sale & issue','Branch & agent locations']},
       {title:'Qualify', body:'Collect client intent before a team member steps in.', bullets:['Type of cover needed','Vehicle, property or health details','New business or renewal']},
       {title:'Hand off', accent:true, body:'Escalate anything that needs human review, with context already captured.', bullets:['Claim notifications','Underwriting & risk questions','Final approval for comprehensive & complex cover']}
     ],
@@ -584,18 +585,18 @@ bank: {
     ent50:'For larger banks with heavier customer demand and broader product coverage.'
   },
   cover:{
-    headline:'Turn the account messages already hitting your WhatsApp into served customers — day and night.',
+    headline:'Turn the account messages already hitting your WhatsApp into served customers, day and night.',
     body:'Kova AI replies instantly from your approved product and rate information, captures account-opening and loan leads, and hands every dispute or fraud report safely to your compliance team. Never moves funds. Never confirms a balance without verification.',
     introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement and digital commerce platform that helps banks and financial institutions transform how they communicate with, serve, and transact with their customers. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce customer service costs, increase response speed, and improve the overall customer experience across your digital channels.',
     challengeHeading:'The Challenge Your Organisation Faces',
-    challengeBody:'In today’s digital-first environment, customers expect instant, round-the-clock responses — whether they are checking a balance at midnight, enquiring about a loan product on a weekend, or opening an account during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
+    challengeBody:'In today’s digital-first environment, customers expect instant, round-the-clock responses: whether they are checking a balance at midnight, enquiring about a loan product on a weekend, or opening an account during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
     challengeBullets:[
-      {label:'Rising support costs', body:'Scaling customer service and relationship management teams to meet growing demand requires significant investment in recruitment, training, and management — with each officer limited to handling one interaction at a time.'},
+      {label:'Rising support costs', body:'Scaling customer service and relationship management teams to meet growing demand requires significant investment in recruitment, training, and management, with each officer limited to handling one interaction at a time.'},
       {label:'Customer attrition from slow response times', body:'Research consistently shows that customers who do not receive a response within minutes will seek alternatives. In competitive markets such as banking, this directly impacts retention and revenue.'},
-      {label:'Fragmented digital channels', body:'Many banks manage customer interactions across WhatsApp, website chat, email, and phone with no unified system — leading to inconsistent service quality, lost context, and operational inefficiency.'}
+      {label:'Fragmented digital channels', body:'Many banks manage customer interactions across WhatsApp, website chat, email, and phone with no unified system, leading to inconsistent service quality, lost context, and operational inefficiency.'}
     ],
     solutionHeading:'How Kova AI Addresses These Challenges',
-    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp Business channel and website that engage customers in natural, accurate conversations — answering product and rate enquiries, opening accounts, capturing loan applications, processing standard transactions, and routing disputes and compliance matters to your team with full context.',
+    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp Business channel and website that engage customers in natural, accurate conversations, answering product and rate enquiries, opening accounts, capturing loan applications, processing standard transactions, and routing disputes and compliance matters to your team with full context.',
     stats:[{big:'24/7',label:'every message answered'},{big:'Fraud-safe',label:'disputes go to compliance'},{big:'Retail + SME',label:'one AI layer across demand'}],
     tags:['Never moves funds','Product-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
@@ -614,12 +615,12 @@ bank: {
     }
   },
   whatIs:{
-    headline:'An assistant that talks to your customers — and knows where to stop.',
-    body:'Kova AI is a customer assistant for WhatsApp. It answers product, rate, branch, and eligibility questions using only the information you approve, collects account-opening and loan leads, and the moment a conversation touches a transaction dispute, fraud report, or account-specific balance, it stops and hands over to your team — with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
+    headline:'An assistant that talks to your customers and knows where to stop.',
+    body:'Kova AI is a customer assistant for WhatsApp. It answers product, rate, branch, and eligibility questions using only the information you approve, collects account-opening and loan leads, and the moment a conversation touches a transaction dispute, fraud report, or account-specific balance, it stops and hands over to your team, with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
     simple:'It does not move funds, confirm balances without verification, approve loans, or give financial advice. It handles the repetitive front desk so your relationship officers do not have to.',
     where:['WhatsApp','Website live chat'],
     cols:[
-      {label:'WHAT THE AI DOES', title:'Retail concierge & intake', body:'Answers everyday questions, captures leads, and qualifies demand — instantly, around the clock.'},
+      {label:'WHAT THE AI DOES', title:'Retail concierge & intake', body:'Answers everyday questions, captures leads, and qualifies demand, instantly, around the clock.'},
       {label:'WHAT YOUR PEOPLE DO', title:'Disputes & compliance judgment', body:'Compliance and credit officers keep full control of dispute resolution, KYC, and anything regulated.'},
       {label:'WHAT THE SYSTEM DOES', title:'Product, policy & handoff', body:'Kova works only from your approved data and routes the right cases to the right people.'}
     ]
@@ -632,7 +633,7 @@ bank: {
       {n:'03',title:'After-hours is dead air',body:'Salary-day questions and urgent card issues do not wait for banking hours, but the branch is closed and messages pile up unanswered until morning.'},
       {n:'04',title:'Staff are stretched',body:'The same balance and rate questions repeat all day, pulling relationship officers away from onboarding and credit decisions.'}
     ],
-    callout:'The demand is not the problem — it is already in your phone. The problem is that the slice arriving after hours, or while officers are on calls, quietly goes to a competitor.'
+    callout:'The demand is not the problem: it is already in your phone. The problem is that the slice arriving after hours, or while officers are on calls, quietly goes to a competitor.'
   },
   businessCase:{
     headline:'Kova only has to convert a handful of leads a month to pay for itself.',
@@ -645,11 +646,11 @@ bank: {
     note:'Illustrative estimate using industry benchmarks for response speed, 24/7 availability, and conversational commerce. Your team sets the real inputs with each customer.'
   },
   changes:{
-    headline:'From missed messages to served customers — in the first launch phase.',
+    headline:'From missed messages to served customers in the first launch phase.',
     body:'Same products, same compliance rules. The difference is that every message now gets a fast, consistent answer, and your officers only step in where they are truly needed.',
     rows:[
       {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The customer has already opened an account elsewhere.', kova:'Answered in seconds. Application started and documents requested.'},
-      {label:"OFFICER'S DAY", today:'Interrupted by repeated "what is your interest rate" chats.', kova:'A cleaner queue — only disputes and real credit decisions.'},
+      {label:"OFFICER'S DAY", today:'Interrupted by repeated "what is your interest rate" chats.', kova:'A cleaner queue: only disputes and real credit decisions.'},
       {label:'ACCOUNT-OPENING DEMAND', today:'Lost in phone queues and branch lines.', kova:'Captured on WhatsApp while intent and attention are high.'}
     ]
   },
@@ -710,18 +711,18 @@ government: {
     ent50:'For larger agencies with heavier citizen demand and broader service coverage.'
   },
   cover:{
-    headline:'Turn the citizen messages already hitting your WhatsApp into resolved enquiries — day and night.',
+    headline:'Turn the citizen messages already hitting your WhatsApp into resolved enquiries, day and night.',
     body:'Kova AI replies instantly from your approved service information, captures applications and appointment requests, and hands every case-specific or sensitive enquiry safely to your officers. Never makes a determination. Never issues a document.',
     introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement and digital commerce platform that helps government agencies transform how they communicate with, serve, and support citizens accessing public services. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce service delivery costs, increase response speed, and improve the overall citizen experience across your digital channels.',
     challengeHeading:'The Challenge Your Organisation Faces',
-    challengeBody:'In today’s digital-first environment, citizens expect instant, round-the-clock responses — whether they are checking a permit application at midnight, enquiring about a public service on a weekend, or seeking information during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
+    challengeBody:'In today’s digital-first environment, citizens expect instant, round-the-clock responses: whether they are checking a permit application at midnight, enquiring about a public service on a weekend, or seeking information during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
     challengeBullets:[
-      {label:'Rising support costs', body:'Scaling citizen support teams to meet growing demand requires significant investment in recruitment, training, and management — with each officer limited to handling one interaction at a time.'},
-      {label:'Citizen frustration from slow response times', body:'Citizens who do not receive a timely response often turn to phone calls, walk-in visits, or formal complaints — increasing operational burden and reducing public satisfaction with government services.'},
-      {label:'Fragmented digital channels', body:'Many agencies manage citizen interactions across WhatsApp, website chat, email, and phone with no unified system — leading to inconsistent service quality, lost context, and operational inefficiency.'}
+      {label:'Rising support costs', body:'Scaling citizen support teams to meet growing demand requires significant investment in recruitment, training, and management, with each officer limited to handling one interaction at a time.'},
+      {label:'Citizen frustration from slow response times', body:'Citizens who do not receive a timely response often turn to phone calls, walk-in visits, or formal complaints, increasing operational burden and reducing public satisfaction with government services.'},
+      {label:'Fragmented digital channels', body:'Many agencies manage citizen interactions across WhatsApp, website chat, email, and phone with no unified system, leading to inconsistent service quality, lost context, and operational inefficiency.'}
     ],
     solutionHeading:'How Kova AI Addresses These Challenges',
-    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp channel and website that engage citizens in natural, accurate conversations — answering eligibility and requirement enquiries, guiding applicants through services, collecting required documents, and routing sensitive cases and determinations to your officers with full context.',
+    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp channel and website that engage citizens in natural, accurate conversations, answering eligibility and requirement enquiries, guiding applicants through services, collecting required documents, and routing sensitive cases and determinations to your officers with full context.',
     stats:[{big:'24/7',label:'every message answered'},{big:'Case-safe',label:'sensitive matters go to officers'},{big:'Multi-service',label:'one AI layer across demand'}],
     tags:['Never makes determinations','Policy-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
@@ -740,12 +741,12 @@ government: {
     }
   },
   whatIs:{
-    headline:'An assistant that talks to citizens — and knows where to stop.',
-    body:'Kova AI is a citizen assistant for WhatsApp. It answers service, eligibility, requirement, and status questions using only the information you approve, collects applications and appointment requests, and the moment a conversation touches a case decision, a complaint, or a sensitive matter, it stops and hands over to your officers — with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
+    headline:'An assistant that talks to citizens and knows where to stop.',
+    body:'Kova AI is a citizen assistant for WhatsApp. It answers service, eligibility, requirement, and status questions using only the information you approve, collects applications and appointment requests, and the moment a conversation touches a case decision, a complaint, or a sensitive matter, it stops and hands over to your officers, with the context already gathered. If you have a website, the same assistant runs there too as a live chat widget.',
     simple:'It does not approve applications, issue permits or certificates, make legal or eligibility determinations, or override agency policy. It handles the repetitive front desk so your officers do not have to.',
     where:['WhatsApp','Website live chat'],
     cols:[
-      {label:'WHAT THE AI DOES', title:'Citizen concierge & intake', body:'Answers everyday questions, captures applications, and qualifies requests — instantly, around the clock.'},
+      {label:'WHAT THE AI DOES', title:'Citizen concierge & intake', body:'Answers everyday questions, captures applications, and qualifies requests, instantly, around the clock.'},
       {label:'WHAT YOUR PEOPLE DO', title:'Determinations & case judgment', body:'Officers keep full control of approvals, eligibility decisions, and anything sensitive.'},
       {label:'WHAT THE SYSTEM DOES', title:'Service catalog, policy & handoff', body:'Kova works only from your approved data and routes the right cases to the right people.'}
     ]
@@ -758,7 +759,7 @@ government: {
       {n:'03',title:'After-hours is dead air',body:'Deadlines and urgent questions do not wait for office hours, but the counter is closed and messages pile up unanswered until morning.'},
       {n:'04',title:'Staff are stretched',body:'The same "what documents do I need" and "what is my status" questions repeat all day, pulling officers away from casework.'}
     ],
-    callout:'The demand is not the problem — it is already in your phone. The problem is that the slice arriving after hours, or while the counter is busy, quietly becomes a queue, a complaint, or a missed deadline.'
+    callout:'The demand is not the problem: it is already in your phone. The problem is that the slice arriving after hours, or while the counter is busy, quietly becomes a queue, a complaint, or a missed deadline.'
   },
   businessCase:{
     headline:'Kova only has to deflect a fraction of routine enquiries to pay for itself.',
@@ -771,11 +772,11 @@ government: {
     note:'Illustrative estimate using public-sector benchmarks for cost per counter or call-centre interaction. Your team sets the real inputs for your agency.'
   },
   changes:{
-    headline:'From missed messages to resolved enquiries — in the first launch phase.',
+    headline:'From missed messages to resolved enquiries in the first launch phase.',
     body:'Same services, same eligibility rules. The difference is that every message now gets a fast, consistent answer, and your officers only step in where they are truly needed.',
     rows:[
       {label:'AFTER-HOURS MESSAGE', today:'Seen tomorrow. The citizen joins the counter queue instead.', kova:'Answered in seconds. Requirements shared and application started.'},
-      {label:"OFFICER'S DAY", today:'Interrupted by repeated "what documents do I need" questions.', kova:'A cleaner queue — only cases and real decisions.'},
+      {label:"OFFICER'S DAY", today:'Interrupted by repeated "what documents do I need" questions.', kova:'A cleaner queue: only cases and real decisions.'},
       {label:'SERVICE REQUEST DEMAND', today:'Lost in phone queues and walk-in lines.', kova:'Captured on WhatsApp while intent and attention are high.'}
     ]
   },
