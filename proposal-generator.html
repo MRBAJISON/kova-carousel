@@ -713,7 +713,7 @@ government: {
   cover:{
     headline:'Turn the citizen messages already hitting your WhatsApp into resolved enquiries, day and night.',
     body:'Kova AI replies instantly from your approved service information, captures applications and appointment requests, and hands every case-specific or sensitive enquiry safely to your officers. Never makes a determination. Never issues a document.',
-    introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement and digital commerce platform that helps government agencies transform how they communicate with, serve, and support citizens accessing public services. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce service delivery costs, increase response speed, and improve the overall citizen experience across your digital channels.',
+    introTemplate:'I am writing to introduce Kova AI, an AI-powered citizen engagement and public service delivery platform that helps government agencies transform how they communicate with, serve, and support citizens accessing public services. We believe our platform presents a compelling opportunity for {{COMPANY}} to significantly reduce service delivery costs, shorten response times, and improve the overall citizen experience, while meeting the data protection and accountability standards public-sector deployments require.',
     challengeHeading:'The Challenge Your Organisation Faces',
     challengeBody:'In today’s digital-first environment, citizens expect instant, round-the-clock responses: whether they are checking a permit application at midnight, enquiring about a public service on a weekend, or seeking information during a public holiday. Meeting this expectation through traditional staffing models is both costly and operationally unsustainable.',
     challengeBullets:[
@@ -722,7 +722,7 @@ government: {
       {label:'Fragmented digital channels', body:'Many agencies manage citizen interactions across WhatsApp, website chat, email, and phone with no unified system, leading to inconsistent service quality, lost context, and operational inefficiency.'}
     ],
     solutionHeading:'How Kova AI Addresses These Challenges',
-    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp channel and website that engage citizens in natural, accurate conversations, answering eligibility and requirement enquiries, guiding applicants through services, collecting required documents, and routing sensitive cases and determinations to your officers with full context.',
+    solutionBody:'Kova AI deploys intelligent AI agents across your WhatsApp channel and website that engage citizens in natural, accurate conversations, answering eligibility and requirement enquiries, guiding applicants through services, collecting required documents, and routing sensitive cases and determinations to your officers with full context. The platform is built for public-sector requirements from the outset, with in-region data hosting, a full audit trail, and handling that is compliant with Ghana’s Data Protection Act, 2012 (Act 843).',
     stats:[{big:'24/7',label:'every message answered'},{big:'Case-safe',label:'sensitive matters go to officers'},{big:'Multi-service',label:'one AI layer across demand'}],
     tags:['Never makes determinations','Policy-approved answers','Smart human handoffs','Private & confidential'],
     chat:{
@@ -810,11 +810,24 @@ government: {
     respond:'"I can check your application status and help you book the next available appointment."',
     receives:'Intent, service type, reference number, and any handoff notes in one place.'
   },
+  compliance:{
+    eyebrow:'COMPLIANCE, DATA & SCOPE',
+    headline:'Built for public-sector data and procurement standards, not bolted on afterward.',
+    body:'Government deployments carry a different bar than commercial ones. Kova AI is designed to meet it directly, with data handling, access control, and accountability built into the platform from day one.',
+    rows:[
+      {req:'Data must remain sovereign and auditable', approach:'Hosted in-region, with a full, exportable audit trail of every conversation and handoff. Your agency retains ownership of all data.'},
+      {req:'Must comply with national data protection law', approach:'Handled under Ghana’s Data Protection Act, 2012 (Act 843), including registration and compliant processing of personal data.'},
+      {req:'Must be accessible without new apps or high-end devices', approach:'Runs on WhatsApp, already installed on citizens’ phones, over low-bandwidth connections, with no app to download or provision.'},
+      {req:'AI must never make a binding determination', approach:'Kova AI never approves, denies, or issues. Every determination stays with your officers, with full context handed over.'},
+      {req:'Agency needs full visibility and control', approach:'Role-based access for your team, complete conversation logs, and the ability to export or delete data on request.'}
+    ],
+    tags:['Ghana Data Protection Act 2012 (Act 843)','In-region hosting','End-to-end encryption','Role-based access','Full audit trail','Multi-language support']
+  },
   rollout:{
     headline:'Start with AI conversations first. Connect systems only where it creates value.',
     phase1:{title:'AI concierge', body:'WhatsApp conversations, service-approved responses, sensitive-case-safe intake, officer handoff, and conversation analytics. If you have a website, the same AI also runs there as a live chat widget.'},
     phase2:{title:'Operations connection', body:'Sync service catalog, application status, appointment slots, and citizen records where the existing system supports it.'},
-    optional:{title:'Kova commerce tools', body:'Fee payment collection and full case-servicing workflows are available if the agency wants a broader platform later.'}
+    optional:{title:'Extended digital services', body:'Fee payment collection and full case-servicing workflows are available if the agency wants a broader platform later.'}
   },
   nextSteps:{
     headline:'Start with a low-risk pilot. See it working on your real conversations.',
@@ -965,6 +978,21 @@ function pcRevenue(d){
       <div class="conv-card"><div class="card-label">TEAM RECEIVES</div><p>${esc(d.receives)}</p></div>
     </div>`;
 }
+function pcCompliance(d){
+  const rows = d.rows.map(r=>`
+    <div class="change-block">
+      <div class="change-pair">
+        <div class="change-box today"><div class="tag">REQUIREMENT</div><p>${esc(r.req)}</p></div>
+        <div class="change-box kova"><div class="tag">OUR APPROACH</div><p>${esc(r.approach)}</p></div>
+      </div>
+    </div>`).join('');
+  const tags = d.tags.map(t=>`<div class="tag-pill">${esc(t)}</div>`).join('');
+  return `<div class="eyebrow">${esc(d.eyebrow)}</div>
+    <div class="headline">${esc(d.headline)}</div>
+    <div class="body-copy">${esc(d.body)}</div>
+    <div class="change-rows">${rows}</div>
+    <div class="tag-grid">${tags}</div>`;
+}
 function pcRollout(d){
   return `<div class="eyebrow">LOW-RISK ROLLOUT</div>
     <div class="headline">${esc(d.headline)}</div>
@@ -1107,19 +1135,25 @@ function buildLetterItems(ind, company, address, contactPerson, contactTitle){
 }
 
 function buildContentItems(ind, company){
-  return [
+  const items = [
     {html: panel(pcWhatIs(ind.whatIs), false), label:'What Kova Is'},
     {html: panel(pcChatDemo(ind.cover), false), label:'See It In Action'},
     {html: panel(pcOpportunity(ind.opportunity), true), label:'The Opportunity'},
     {html: panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false), label:'The Business Case'},
     {html: panel(pcChanges(ind.changes, company), true), label:'What Changes'},
     {html: panel(pcHandles(ind.handles), false), label:'What Kova Handles'},
-    {html: panel(pcWorkflow(ind.workflow), false), label:'Safe Workflow'},
+    {html: panel(pcWorkflow(ind.workflow), false), label:'Safe Workflow'}
+  ];
+  if(ind.compliance){
+    items.push({html: panel(pcCompliance(ind.compliance), true), label:'Compliance & Scope'});
+  }
+  items.push(
     {html: panel(pcRevenue(ind.revenue), true), label:'Demand & Revenue'},
     {html: panel(pcRollout(ind.rollout), false), label:'Rollout'},
     {html: panel(pcPricing(ind.pricingDesc, state.recommendedTier), true), label:'Pricing'},
     {html: panel(pcNextSteps(ind.nextSteps), true), label:'Next Steps'}
-  ];
+  );
+  return items;
 }
 
 /* ============================================================
