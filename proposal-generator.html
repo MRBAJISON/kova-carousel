@@ -1059,7 +1059,7 @@ function packExact(items, assemble, budget){
 function buildLetterPrefix(ind, company, address, contactPerson, contactTitle){
   const d = ind.cover;
   const companyLabel = company || '[Your Company Name]';
-  const salutation = contactPerson ? `Dear ${esc(contactPerson)},` : (company ? `Dear ${esc(company)} Team,` : 'Dear Sir/Madam,');
+  const salutation = 'Dear Sir/Madam,';
   const toLines = [];
   if(contactPerson) toLines.push(esc(contactPerson));
   if(contactTitle) toLines.push(esc(contactTitle));
