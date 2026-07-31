@@ -1137,12 +1137,21 @@ function buildPages(){
   const budget = PAGE_H - PAGE_PAD_V;
   const rn = runner(ind.proposalType, company);
 
-  // Letter: first block (prefix+intro) always alone on page 1 (no runner there),
-  // remaining letter blocks pack into as few following pages as fit (each gets the runner).
+  // Letter: page 1 has no runner (the letterhead serves as its header) and is packed
+  // as full as it can go before spilling to the next page; remaining blocks pack into
+  // as few following pages as fit (each of those gets the runner).
   const letterItems = buildLetterItems(ind, company, address, contactPerson, contactTitle);
-  const letterPage1Group = [letterItems[0]];
+  const assembleLetterFirst = group => group.map(it=>it.html).join('');
   const assembleLetterCont = group => rn + group.map(it=>it.html).join('');
-  const restLetterPages = packExact(letterItems.slice(1), assembleLetterCont, budget);
+  const letterPage1Group = [];
+  for(const item of letterItems){
+    const trial = [...letterPage1Group, item];
+    const h = measureHTML(assembleLetterFirst(trial));
+    if(letterPage1Group.length > 0 && h > budget) break;
+    letterPage1Group.push(item);
+  }
+  const remainingLetterItems = letterItems.slice(letterPage1Group.length);
+  const restLetterPages = remainingLetterItems.length ? packExact(remainingLetterItems, assembleLetterCont, budget) : [];
   const letterGroups = [letterPage1Group, ...restLetterPages];
 
   const contentItems = buildContentItems(ind, company);
