@@ -399,11 +399,6 @@
       <div class="field-note">This populates the "Business Case" page of the proposal, using the same estimation model as the original pharmacy proposal.</div>
     </div>
 
-    <div class="field-group">
-      <h3>Recommended pricing tier</h3>
-      <div class="tier-select" id="tierSelect"></div>
-    </div>
-
     <div class="download-bar">
       <button id="downloadBtn" onclick="downloadPdf()">Download Proposal PDF</button>
       <div id="dlStatus"></div>
@@ -438,24 +433,11 @@ const KOVA = {
 /* ============================================================
    CONTENT DATA — per industry
    ============================================================ */
-const PRICING_TIERS = [
-  {key:'business', name:'Business', badge:'ENTRY OPTION', price:2400, credits:'5,000 / month', conversations:'1.5k–3k / month', daily:'50–100 / day'},
-  {key:'ent10', name:'Enterprise 10', badge:'RECOMMENDED', price:4800, credits:'10,000 / month', conversations:'3k–6k / month', daily:'100–200 / day'},
-  {key:'ent25', name:'Enterprise 25', badge:'MID VOLUME', price:9600, credits:'25,000 / month', conversations:'8k–16k / month', daily:'260–525 / day'},
-  {key:'ent50', name:'Enterprise 50', badge:'HIGH VOLUME', price:18000, credits:'50,000 / month', conversations:'16k–32k / month', daily:'525–1,050 / day'},
-];
-
 const CONTENT = {
 
 /* ================= INSURANCE ================= */
 insurance: {
   label:'Insurance', proposalType:'INSURANCE PROPOSAL',
-  pricingDesc:{
-    business:'For a smaller agency or a light-volume pilot before moving into Enterprise usage.',
-    ent10:'For a focused AI launch across your highest-volume quote and policy-intake questions.',
-    ent25:'Best fit for full retail and group-cover support across a growing branch network.',
-    ent50:'For larger insurers with heavier client demand and broader product-line coverage.'
-  },
   cover:{
     headline:'Quote, sell, and issue third-party motor cover on WhatsApp, nights, weekends, any time.',
     body:'Kova AI replies instantly from your approved policy and pricing information, sells and issues third-party motor cover directly in the conversation any hour of the day, and hands every claim or comprehensive-cover decision safely to your licensed team. Never gives coverage advice beyond approved terms. Never approves a claim.',
@@ -578,12 +560,6 @@ insurance: {
 /* ================= BANK ================= */
 bank: {
   label:'Bank', proposalType:'BANKING PROPOSAL',
-  pricingDesc:{
-    business:'For a smaller branch network or a light-volume pilot before moving into Enterprise usage.',
-    ent10:'For a focused AI launch across your highest-volume retail and loan-intake questions.',
-    ent25:'Best fit for full retail and SME coverage across a growing branch network.',
-    ent50:'For larger banks with heavier customer demand and broader product coverage.'
-  },
   cover:{
     headline:'Turn the account messages already hitting your WhatsApp into served customers, day and night.',
     body:'Kova AI replies instantly from your approved product and rate information, captures account-opening and loan leads, and hands every dispute or fraud report safely to your compliance team. Never moves funds. Never confirms a balance without verification.',
@@ -704,12 +680,6 @@ bank: {
 /* ================= GOVERNMENT ================= */
 government: {
   label:'Government', proposalType:'GOVERNMENT SERVICES PROPOSAL',
-  pricingDesc:{
-    business:'For a single department or a light-volume pilot before moving into Enterprise usage.',
-    ent10:'For a focused AI launch across your highest-volume service and status-check questions.',
-    ent25:'Best fit for full multi-service coverage across a growing agency network.',
-    ent50:'For larger agencies with heavier citizen demand and broader service coverage.'
-  },
   cover:{
     headline:'Turn the citizen messages already hitting your WhatsApp into resolved enquiries, day and night.',
     body:'Kova AI replies instantly from your approved service information, captures applications and appointment requests, and hands every case-specific or sensitive enquiry safely to your officers. Never makes a determination. Never issues a document.',
@@ -850,7 +820,6 @@ const state = {
   companyAddress:'',
   contactPerson:'',
   contactTitle:'',
-  recommendedTier:'ent10',
   fontFamily:"'Times New Roman',Times,Georgia,serif",
   fontScale:1,
   calc:{}
@@ -1002,24 +971,6 @@ function pcRollout(d){
       <div class="phase-card"><div class="card-label">OPTIONAL</div><h3>${esc(d.optional.title)}</h3><p>${esc(d.optional.body)}</p></div>
     </div>`;
 }
-function pcPricing(descMap, recommendedKey){
-  const cards = PRICING_TIERS.map(t=>{
-    const rec = t.key===recommendedKey;
-    const badge = rec ? 'RECOMMENDED' : t.badge;
-    return `<div class="price-card ${rec?'rec':''}">
-      <div class="price-top"><b>${esc(t.name)}</b><span class="price-badge">${esc(badge)}</span></div>
-      <div class="price-amt">${fmtGHS(t.price)}<span> / month</span></div>
-      <div class="price-desc">${esc(descMap[t.key])}</div>
-      <div class="price-meta">
-        <div class="pl">CREDITS</div><div class="pv">${esc(t.credits)}</div>
-        <div class="pl">DAILY RANGE</div><div class="pv">${esc(t.daily)}</div>
-      </div>
-    </div>`;
-  }).join('');
-  return `<div class="eyebrow">COMMERCIAL PROPOSAL</div>
-    <div class="headline">Four pricing options, with ${esc(PRICING_TIERS.find(t=>t.key===recommendedKey).name)} recommended.</div>
-    <div class="price-grid">${cards}</div>`;
-}
 function pcNextSteps(d){
   const steps = d.steps.map(s=>`<div class="step-card"><div class="badge-circle">${s.n}</div><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></div>`).join('');
   return `<div class="eyebrow">NEXT STEPS</div>
@@ -1150,7 +1101,6 @@ function buildContentItems(ind, company){
   items.push(
     {html: panel(pcRevenue(ind.revenue), true), label:'Demand & Revenue'},
     {html: panel(pcRollout(ind.rollout), false), label:'Rollout'},
-    {html: panel(pcPricing(ind.pricingDesc, state.recommendedTier), true), label:'Pricing'},
     {html: panel(pcNextSteps(ind.nextSteps), true), label:'Next Steps'}
   );
   return items;
@@ -1289,19 +1239,6 @@ document.getElementById('contactTitle').addEventListener('input', e=>{ state.con
 document.getElementById('fontFamily').addEventListener('change', e=>{ state.fontFamily = e.target.value; renderAll(); });
 document.getElementById('fontScale').addEventListener('change', e=>{ state.fontScale = parseFloat(e.target.value); renderAll(); });
 
-/* ---- pricing tier selector ---- */
-function renderTierSelect(){
-  const el = document.getElementById('tierSelect');
-  el.innerHTML = PRICING_TIERS.map(t=>`
-    <label class="tier-opt ${state.recommendedTier===t.key?'active':''}">
-      <input type="radio" name="tier" value="${t.key}" ${state.recommendedTier===t.key?'checked':''}>
-      ${esc(t.name)} — GHS ${t.price.toLocaleString('en-US')}/mo
-    </label>`).join('');
-  el.querySelectorAll('input').forEach(inp=>{
-    inp.onchange = ()=>{ state.recommendedTier = inp.value; renderTierSelect(); renderAll(); };
-  });
-}
-
 /* ============================================================
    PDF DOWNLOAD  (A4 portrait)
    ============================================================ */
@@ -1337,7 +1274,6 @@ async function downloadPdf(){
    ============================================================ */
 renderToggle();
 renderCalcFields();
-renderTierSelect();
 renderAll();
 </script>
 </body>
