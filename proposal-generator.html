@@ -157,8 +157,8 @@
   .bullets li::before{content:'';position:absolute;left:0;top:6px;width:4px;height:4px;border-radius:50%;background:var(--green);}
   .panel-dark .bullets li::before{background:var(--green-mint);}
 
-  .pill{display:inline-flex;align-items:center;padding:6px 13px;border-radius:9999px;border:1px solid var(--line-light);background:#fff;font-size:calc(22px * var(--font-scale));font-weight:700;color:var(--ink);}
-  .panel-dark .pill{background:rgba(184,166,255,.08);border-color:rgba(184,166,255,.35);color:var(--green-mint);}
+  .pill{display:inline-flex;align-items:center;padding:6px 15px;border-radius:9999px;border:1.5px solid var(--green);background:transparent;font-size:calc(22px * var(--font-scale));font-weight:700;color:var(--green);}
+  .panel-dark .pill{border-color:var(--green-mint);color:var(--green-mint);}
 
   /* ---- Cover (page 1, full-bleed) + chat mockup (also used by "See It In Action") ---- */
   .page.cover-page{background:var(--navy);color:var(--cream);}
@@ -178,20 +178,35 @@
   .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);border-bottom:1px solid var(--line-light);margin:16px 0;padding:14px 0;gap:14px;}
   .cover-stats .stat-big{font-size:calc(30px * var(--font-scale));font-weight:800;color:var(--green);margin-bottom:3px;}
   .cover-stats .stat-lbl{font-size:calc(19.5px * var(--font-scale));color:var(--slate-500);line-height:1.3;}
-  .chat-card{margin:16px 0;background:#fff;border:1px solid var(--line-light);border-radius:14px;overflow:hidden;box-shadow:0 12px 26px -16px rgba(11,18,32,.28);}
+  .chat-card{margin:16px 0;background:#fff;border:1px solid var(--line-light);border-radius:20px;overflow:hidden;box-shadow:0 12px 26px -16px rgba(11,18,32,.28);}
   .chat-card .thread-head{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:1px solid #EEEDE8;background:#FCFBF7;}
   .chat-card .thread-head b{font-size:calc(22.5px * var(--font-scale));color:var(--ink);display:block;}
   .chat-card .thread-head span{font-size:calc(18px * var(--font-scale));color:var(--green);font-weight:700;}
   .chat-card .thread-body{padding:14px 16px;}
   .avatar{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:calc(18px * var(--font-scale));font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
-  .msg{border-radius:10px;padding:9px 12px;font-size:calc(21px * var(--font-scale));line-height:1.44;margin-bottom:8px;}
+  .msg{border-radius:12px;padding:9px 12px;font-size:calc(21px * var(--font-scale));line-height:1.44;margin-bottom:8px;}
   .msg-customer{background:#fff;border:1px solid #E9E7DF;color:#22262B;}
   .msg-kova{background:#F3F0FF;border:1px solid #DCD0FF;color:#2E1F5C;}
   .msg-cards{display:flex;gap:7px;margin-top:7px;}
-  .msg-card{flex:1;background:#fff;border:1px solid #E5DBFF;border-radius:7px;padding:6px 9px;}
+  .msg-card{flex:1;background:#fff;border:1px solid #E5DBFF;border-radius:9px;padding:6px 9px;}
   .msg-card b{font-size:calc(18px * var(--font-scale));display:block;color:var(--ink);}
   .msg-card span{font-size:calc(16.5px * var(--font-scale));color:var(--green);}
   .handoff-btn{margin-top:7px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:calc(18px * var(--font-scale));padding:5px 11px;border-radius:9999px;}
+
+  /* dark-panel treatment for the chat mockup (used by "See It In Action") */
+  .panel-dark .chat-card{background:rgba(255,255,255,.045);border-color:rgba(184,166,255,.22);box-shadow:none;}
+  .panel-dark .chat-card .thread-head{background:transparent;border-bottom-color:rgba(184,166,255,.18);}
+  .panel-dark .chat-card .thread-head b{color:#fff;}
+  .panel-dark .chat-card .thread-head span{color:var(--gold);}
+  .panel-dark .msg-customer{background:rgba(255,255,255,.07);border-color:transparent;color:#fff;}
+  .panel-dark .msg-kova{background:var(--green);border-color:transparent;color:#fff;}
+  .panel-dark .msg-card{background:rgba(255,255,255,.14);border-color:transparent;}
+  .panel-dark .msg-card b{color:#fff;}
+  .panel-dark .msg-card span{color:#fff;opacity:.85;}
+  .panel-dark .handoff-btn{background:var(--gold);border-color:transparent;color:var(--navy);}
+  .panel-dark .cover-stats{border-color:var(--line-dark);}
+  .panel-dark .cover-stats .stat-big{color:var(--gold);}
+  .panel-dark .cover-stats .stat-lbl{color:var(--green-mint);}
 
   /* ---- Executive Summary (page 2) ---- */
   .exec-headline{font-size:calc(38px * var(--font-scale));font-weight:800;letter-spacing:-.015em;line-height:1.14;max-width:15.5em;}
@@ -207,11 +222,14 @@
   .where-row{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .where-row .card-label{margin:0;}
   .where-pills{display:flex;gap:8px;}
-  .simple-note{background:#F3F0FF;border:1px solid #D9CCFF;border-radius:10px;padding:14px 16px;margin-top:14px;}
+  .simple-note{background:#F3F0FF;border-radius:16px;padding:14px 16px;margin-top:14px;}
   .simple-note .card-label{margin-bottom:6px;}
-  .simple-note p{font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:#3A2A6B;}
-  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
-  .three-col .card-body{color:var(--slate-500);}
+  .simple-note p{font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:#3A2A6B;text-align:left;}
+  .def-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px;}
+  .def-card{border-top:3px solid var(--green);padding-top:12px;}
+  .def-card .dcl{font-size:calc(18px * var(--font-scale));font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:7px;}
+  .def-card .dct{font-size:calc(24px * var(--font-scale));font-weight:700;color:var(--ink);margin-bottom:7px;line-height:1.3;}
+  .def-card p{font-size:calc(20px * var(--font-scale));line-height:1.5;color:var(--slate-500);margin:0;text-align:left;}
 
   /* ---- Opportunity (2x2) ---- */
   .four-col{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;}
@@ -296,16 +314,14 @@
   .price-meta .pv{font-size:calc(21px * var(--font-scale));color:#E4EAF0;margin-bottom:5px;}
 
   /* ---- Next steps ---- */
-  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
-  .step-card{border:1px solid var(--line-dark);border-radius:12px;padding:16px;background:rgba(255,255,255,.02);}
-  .step-card h3{font-size:calc(24px * var(--font-scale));font-weight:700;color:#fff;margin:9px 0 5px;}
-  .step-card p{font-size:calc(19.5px * var(--font-scale));color:#D2DCE6;line-height:1.42;}
-  .ns-footnote{margin-top:18px;font-size:calc(23px * var(--font-scale));color:#C7D3E0;line-height:1.5;}
-  .contact-card{margin-top:16px;max-width:460px;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:12px;padding:16px 20px;}
-  .contact-card .crow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-dark);font-size:calc(23px * var(--font-scale));}
-  .contact-card .crow:last-child{border-bottom:none;}
-  .contact-card .crow .k{color:var(--green-mint);font-weight:700;}
-  .contact-card .crow .v{color:#fff;font-weight:700;}
+  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;}
+  .step-card{border-radius:18px;padding:18px;background:#F4F0FF;}
+  .step-card h3{font-size:calc(24px * var(--font-scale));font-weight:700;color:var(--ink);margin:9px 0 5px;}
+  .step-card p{font-size:calc(19.5px * var(--font-scale));color:var(--slate-500);line-height:1.42;}
+  .ns-footnote{margin-top:18px;font-size:calc(21px * var(--font-scale));font-style:italic;color:var(--slate-500);line-height:1.5;}
+  .contact-bar{margin-top:18px;background:var(--navy);border-radius:18px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .contact-bar .cb-l{font-size:calc(22.5px * var(--font-scale));font-weight:700;color:#fff;}
+  .contact-bar .cb-r{font-size:calc(20px * var(--font-scale));color:var(--green-mint);}
 
   @media (max-width: 980px){
     .app-body{flex-direction:column;}
@@ -834,14 +850,14 @@ function panel(inner, dark){
 
 /* ---- Panel content builders (no outer wrapper) ---- */
 function pcWhatIs(d){
-  const cols = d.cols.map(c=>`<div class="card"><div class="card-label">${esc(c.label)}</div><div class="card-title">${esc(c.title)}</div><div class="card-body">${esc(c.body)}</div></div>`).join('');
+  const cols = d.cols.map(c=>`<div class="def-card"><div class="dcl">${esc(c.label)}</div><div class="dct">${esc(c.title)}</div><p>${esc(c.body)}</p></div>`).join('');
   const pills = d.where.map(w=>`<span class="pill">${esc(w)}</span>`).join('');
   return `<div class="eyebrow">WHAT KOVA AI IS</div>
     <div class="headline">${esc(d.headline)}</div>
     <div class="body-copy">${esc(d.body)}</div>
     <div class="where-row"><div class="card-label">WHERE IT WORKS</div><div class="where-pills">${pills}</div></div>
     <div class="simple-note"><div class="card-label">THE SIMPLE VERSION</div><p>${esc(d.simple)}</p></div>
-    <div class="three-col">${cols}</div>`;
+    <div class="def-cards">${cols}</div>`;
 }
 function pcChatDemo(cover){
   const messages = cover.chat.messages.map(m=>{
@@ -958,10 +974,9 @@ function pcNextSteps(d){
     <div class="headline">${esc(d.headline)}</div>
     <div class="steps-row">${steps}</div>
     <div class="ns-footnote">${esc(d.footnote)}</div>
-    <div class="contact-card">
-      <div class="crow"><span class="k">Contact</span><span class="v">${esc(KOVA.signeeName)}</span></div>
-      <div class="crow"><span class="k">WhatsApp</span><span class="v">${esc(KOVA.phone)}</span></div>
-      <div class="crow"><span class="k">Email</span><span class="v">sales@trykovaai.com</span></div>
+    <div class="contact-bar">
+      <div class="cb-l">${esc(KOVA.signeeName)}, ${esc(KOVA.signeeTitle)}</div>
+      <div class="cb-r">${esc(KOVA.phone)} &nbsp;&middot;&nbsp; sales@trykovaai.com</div>
     </div>`;
 }
 
@@ -1056,7 +1071,7 @@ function buildExecSummaryPage(ind){
 function buildContentItems(ind, company){
   const items = [
     {html: panel(pcWhatIs(ind.whatIs), false), label:'What Kova Is'},
-    {html: panel(pcChatDemo(ind.cover), false), label:'See It In Action'},
+    {html: panel(pcChatDemo(ind.cover), true), label:'See It In Action'},
     {html: panel(pcOpportunity(ind.opportunity), true), label:'The Opportunity'},
     {html: panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false), label:'The Business Case'},
     {html: panel(pcChanges(ind.changes, company), true), label:'What Changes'},
@@ -1069,7 +1084,7 @@ function buildContentItems(ind, company){
   items.push(
     {html: panel(pcRevenue(ind.revenue), true), label:'Demand & Revenue'},
     {html: panel(pcRollout(ind.rollout), false), label:'Rollout'},
-    {html: panel(pcNextSteps(ind.nextSteps), true), label:'Next Steps'}
+    {html: panel(pcNextSteps(ind.nextSteps), false), label:'Next Steps'}
   );
   return items;
 }
