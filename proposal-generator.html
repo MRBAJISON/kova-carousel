@@ -4,24 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kova AI — Enterprise Proposal Generator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="vendor/html2canvas.min.js"></script>
 <script src="vendor/jspdf.umd.min.js"></script>
 <style>
   :root{
-    --cream:#FFFDF8;
-    --navy:#071427;
-    --navy-2:#0B1B32;
-    --ink:#0B1220;
-    --green:#5B2BE8;
-    --green-mint:#B8A6FF;
-    --gold:#FFF3A0;
-    --slate-600:#20242B;
-    --slate-500:#2E333B;
+    /* palette sampled directly from TopUp_Pharmacy_x_Kova_AI_Proposal.pdf */
+    --cream:#FFFDF6;
+    --page-wash:linear-gradient(135deg,#FFFDF6 0%,#F7F9FA 45%,#EBF2EF 100%);
+    --navy:#071326;
+    --navy-grid:#121E30;
+    --grid-line:#182335;
+    --ink:#0B1A14;
+    --green:#0E8B5E;
+    --green-mint:#74D49D;
+    --gold:#FFF5A7;
+    --slate-600:#41505A;
+    --slate-500:#5C6B74;
     --slate-400:#94A3B8;
-    --line-light:#E7E1D3;
+    --line-light:#E6EDE9;
+    --card-light:#FBFCFB;
+    --tint-green:#E0ECE5;
+    --pill-fill:#DDE8E3;
     --line-dark:rgba(255,255,255,.09);
     --app-bg:#F1F4F8;
     --app-panel:#FFFFFF;
@@ -34,7 +37,7 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{height:100%;}
   body{
-    font-family:'Geist',system-ui,-apple-system,sans-serif;
+    font-family:var(--sans);
     background:var(--app-bg);
     color:var(--app-ink);
     -webkit-font-smoothing:antialiased;
@@ -83,7 +86,7 @@
   .result-box .rv{font-size:26px;font-weight:800;color:var(--gold);}
   .tier-select{display:flex;flex-direction:column;gap:8px;}
   .tier-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--app-border);border-radius:8px;cursor:pointer;font-size:13px;}
-  .tier-opt.active{border-color:var(--green);background:#F3F0FF;}
+  .tier-opt.active{border-color:var(--green);background:#E0ECE5;}
   .tier-opt input{accent-color:var(--green);}
   .download-bar{
     position:sticky;bottom:0;background:#fff;border-top:1px solid var(--app-border);
@@ -113,7 +116,7 @@
      Every page has a neutral cream canvas; light/dark sections are
      self-contained panels so two sections can share a page.
      ============================================================ */
-  .page{width:1240px;height:1754px;position:relative;overflow:hidden;font-family:var(--sans);-webkit-font-smoothing:antialiased;background:var(--cream);color:var(--ink);}
+  .page{width:1240px;height:1754px;position:relative;overflow:hidden;font-family:var(--sans);-webkit-font-smoothing:antialiased;background:var(--page-wash);color:var(--ink);}
   .page-pad{padding:46px 60px;height:100%;display:flex;flex-direction:column;}
   .page-pad > *{flex-shrink:0;}
   .runner{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line-light);flex-shrink:0;}
@@ -124,12 +127,12 @@
 
   .panel-stack{display:flex;flex-direction:column;gap:20px;flex-shrink:0;}
   .panel{border-radius:22px;flex-shrink:0;}
-  .panel-light{background:#fff;border:1px solid var(--line-light);}
-  .panel-dark{background:var(--navy);color:#fff;position:relative;overflow:hidden;}
+  .panel-light{background:var(--card-light);border:1px solid var(--line-light);}
+  .panel-dark{background:var(--navy-grid);color:#fff;position:relative;overflow:hidden;}
   .panel-dark.grid-bg::before{
     content:'';position:absolute;inset:0;pointer-events:none;
-    background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
-    background-size:56px 56px;
+    background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+    background-size:62px 62px;
   }
   .panel-inner{position:relative;z-index:1;padding:26px 28px;}
 
@@ -140,14 +143,14 @@
   .panel-dark .body-copy{color:#C7D3E0;}
   .page p{text-align:justify;}
 
-  .card{background:#fff;border:1px solid var(--line-light);border-radius:16px;padding:18px 20px;}
+  .card{background:var(--card-light);border:1px solid var(--line-light);border-radius:16px;padding:18px 20px;box-shadow:0 6px 14px -11px rgba(7,19,38,.22);}
   .panel-dark .card{background:rgba(255,255,255,.035);border-color:var(--line-dark);}
   .card-label{font-size:calc(19.5px * var(--font-scale));font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
   .panel-dark .card-label{color:var(--green-mint);}
   .card-title{font-size:calc(28.5px * var(--font-scale));font-weight:700;margin-bottom:6px;letter-spacing:-.01em;}
   .card-body{font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:var(--slate-500);text-align:justify;}
   .panel-dark .card-body{color:#C7D3E0;}
-  .card.accent{background:#F3F0FF;border-color:#D9CCFF;}
+  .card.accent{background:#E0ECE5;border-color:#C6DBD0;}
   .panel-dark .card.accent{background:rgba(91,43,232,.14);border-color:rgba(184,166,255,.35);}
 
   .badge-circle{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:calc(22.5px * var(--font-scale));display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
@@ -165,23 +168,45 @@
   .evidence-list li b{color:var(--ink);}
   .panel-dark .evidence-list li b{color:#fff;}
 
-  .pill{display:inline-flex;align-items:center;padding:6px 15px;border-radius:9999px;border:1.5px solid var(--green);background:transparent;font-size:calc(22px * var(--font-scale));font-weight:700;color:var(--green);}
-  .panel-dark .pill{border-color:var(--green-mint);color:var(--green-mint);}
+  .pill{display:inline-flex;align-items:center;padding:7px 17px;border-radius:9999px;border:1px solid #C6DBD0;background:var(--pill-fill);font-size:calc(22px * var(--font-scale));font-weight:700;color:var(--ink);}
+  .panel-dark .pill{background:rgba(116,212,157,.10);border-color:rgba(116,212,157,.35);color:var(--green-mint);}
 
   /* ---- Cover (page 1, full-bleed) + chat mockup (also used by "See It In Action") ---- */
-  .page.cover-page{background:var(--navy);color:var(--cream);}
-  .cover-page .pagenum{color:var(--green-mint);}
-  .cover-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg, rgba(91,43,232,.55) 0%, rgba(27,15,74,0) 46%);}
-  .cover-masthead{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
-  .cover-wordmark-img{height:32px;width:auto;display:block;}
-  .cover-masthead .tag{font-size:calc(18px * var(--font-scale));font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--green-mint);}
-  .cover-eyebrow{font-size:calc(23px * var(--font-scale));font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green-mint);margin:44px 0 14px;position:relative;z-index:1;}
-  .cover-headline{font-size:calc(62px * var(--font-scale));font-weight:800;letter-spacing:-.02em;line-height:1.05;max-width:11.4em;position:relative;z-index:1;}
-  .cover-hero-stat{margin-top:auto;position:relative;z-index:1;}
-  .cover-hero-stat .n{font-size:calc(118px * var(--font-scale));font-weight:800;letter-spacing:-.03em;color:var(--gold);line-height:1;}
-  .cover-hero-stat .l{font-size:calc(20px * var(--font-scale));font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--green-mint);margin-top:8px;}
-  .cover-prepared{margin-top:26px;font-size:calc(20px * var(--font-scale));font-weight:300;color:var(--green-mint);position:relative;z-index:1;}
-  .cover-prepared b{color:var(--cream);font-weight:700;}
+  /* ---- Title page: pharmacy-style split cover (cream above, navy below) ---- */
+  .page.cover-page .page-pad{padding:0;}
+  .cover-top{padding:52px 60px 34px;}
+  .cover-wordmark-img{height:34px;width:auto;display:block;}
+  .cover-eyebrow{font-size:calc(21px * var(--font-scale));font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--green);margin:30px 0 12px;}
+  .cover-headline{font-size:calc(58px * var(--font-scale));font-weight:800;letter-spacing:-.024em;line-height:1.1;max-width:11.2em;}
+  .cover-sub{font-size:calc(25px * var(--font-scale));line-height:1.6;color:var(--slate-600);max-width:31em;margin-top:16px;text-align:left;}
+  .cover-statrow{display:grid;grid-template-columns:repeat(3,1fr);margin-top:28px;border-top:1px solid var(--line-light);padding-top:18px;}
+  .cover-statrow .s{padding-right:18px;border-right:1px solid var(--line-light);}
+  .cover-statrow .s:last-child{border-right:none;}
+  .cover-statrow .n{font-size:calc(34px * var(--font-scale));font-weight:800;color:var(--green);letter-spacing:-.015em;line-height:1.15;}
+  .cover-statrow .l{font-size:calc(19px * var(--font-scale));color:var(--slate-500);line-height:1.35;margin-top:5px;}
+  .cover-bottom{flex:1;background:var(--navy);position:relative;display:flex;align-items:flex-start;justify-content:center;padding:30px 60px 92px;}
+  .cover-bottom .chat-card{margin:-54px 0 0;width:100%;max-width:560px;}
+  .guarantee-bar{position:absolute;left:60px;right:60px;bottom:38px;background:#050F1E;border-radius:12px;display:grid;grid-template-columns:repeat(4,1fr);}
+  .guarantee-bar div{padding:15px 17px;font-size:calc(18px * var(--font-scale));font-weight:700;color:#fff;line-height:1.3;border-right:1px solid rgba(255,255,255,.13);}
+  .guarantee-bar div:last-child{border-right:none;}
+  .cover-page .pagenum{color:rgba(255,255,255,.45);bottom:112px;}
+
+  /* ---- Letter of introduction (page 2) ---- */
+  .letter-head{display:flex;justify-content:space-between;align-items:flex-start;}
+  .letter-wordmark{height:34px;width:auto;display:block;}
+  .letter-addr{text-align:right;font-size:calc(19px * var(--font-scale));line-height:1.5;color:var(--slate-600);}
+  .letter-addr b{display:block;color:var(--ink);}
+  .letter-rule{border-top:3px solid var(--green);margin:18px 0 28px;}
+  .letter-date{font-size:calc(21px * var(--font-scale));color:var(--slate-500);margin-bottom:24px;}
+  .letter-to{font-size:calc(23px * var(--font-scale));line-height:1.5;color:var(--ink);font-weight:700;margin-bottom:24px;}
+  .letter-re{font-size:calc(25px * var(--font-scale));font-weight:800;line-height:1.4;margin-bottom:20px;color:var(--ink);}
+  .letter-re span{color:var(--green);}
+  .letter-sal{font-size:calc(25px * var(--font-scale));margin-bottom:16px;color:var(--ink);}
+  .letter-body p{font-size:calc(25px * var(--font-scale));line-height:1.68;color:var(--slate-600);margin-bottom:18px;text-align:justify;}
+  .sig{margin-top:26px;}
+  .sig p{font-size:calc(25px * var(--font-scale));color:var(--slate-600);margin-bottom:34px;}
+  .sig b{display:block;font-size:calc(25px * var(--font-scale));color:var(--ink);}
+  .sig span{font-size:calc(21px * var(--font-scale));color:var(--slate-500);}
   .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);border-bottom:1px solid var(--line-light);margin:16px 0;padding:14px 0;gap:14px;}
   .cover-stats .stat-big{font-size:calc(30px * var(--font-scale));font-weight:800;color:var(--green);margin-bottom:3px;}
   .cover-stats .stat-lbl{font-size:calc(19.5px * var(--font-scale));color:var(--slate-500);line-height:1.3;}
@@ -193,9 +218,9 @@
   .avatar{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:calc(18px * var(--font-scale));font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
   .msg{border-radius:12px;padding:9px 12px;font-size:calc(21px * var(--font-scale));line-height:1.44;margin-bottom:8px;}
   .msg-customer{background:#fff;border:1px solid #E9E7DF;color:#22262B;}
-  .msg-kova{background:#F3F0FF;border:1px solid #DCD0FF;color:#2E1F5C;}
+  .msg-kova{background:#E0ECE5;border:1px solid #CFE5DA;color:#14352A;}
   .msg-cards{display:flex;gap:7px;margin-top:7px;}
-  .msg-card{flex:1;background:#fff;border:1px solid #E5DBFF;border-radius:9px;padding:6px 9px;}
+  .msg-card{flex:1;background:#fff;border:1px solid #D9E7E0;border-radius:9px;padding:6px 9px;}
   .msg-card b{font-size:calc(18px * var(--font-scale));display:block;color:var(--ink);}
   .msg-card span{font-size:calc(16.5px * var(--font-scale));color:var(--green);}
   .handoff-btn{margin-top:7px;display:inline-block;border:1.5px solid var(--green);color:var(--green);font-weight:800;font-size:calc(18px * var(--font-scale));padding:5px 11px;border-radius:9999px;}
@@ -216,15 +241,14 @@
   .panel-dark .cover-stats .stat-lbl{color:var(--green-mint);}
 
   /* ---- Executive Summary (page 2) ---- */
-  .exec-headline{font-size:calc(38px * var(--font-scale));font-weight:800;letter-spacing:-.015em;line-height:1.14;max-width:15.5em;}
 
   /* ---- What Kova Is ---- */
   .where-row{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .where-row .card-label{margin:0;}
   .where-pills{display:flex;gap:8px;}
-  .simple-note{background:#F3F0FF;border-radius:16px;padding:14px 16px;margin-top:14px;}
+  .simple-note{background:var(--tint-green);border-radius:16px;padding:14px 16px;margin-top:14px;}
   .simple-note .card-label{margin-bottom:6px;}
-  .simple-note p{font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:#3A2A6B;text-align:left;}
+  .simple-note p{font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:#1F4636;text-align:left;}
   .def-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px;}
   .def-card{border-top:3px solid var(--green);padding-top:12px;}
   .def-card .dcl{font-size:calc(18px * var(--font-scale));font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:7px;}
@@ -232,7 +256,11 @@
   .def-card p{font-size:calc(20px * var(--font-scale));line-height:1.5;color:var(--slate-500);margin:0;text-align:left;}
 
   /* ---- Opportunity (2x2) ---- */
-  .four-col{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;}
+  /* all four opportunity cards sit on one line */
+  .four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;}
+  .four-col .card{padding:14px 15px;}
+  .four-col .card .card-title{font-size:calc(22px * var(--font-scale));line-height:1.25;}
+  .four-col .card .card-body{font-size:calc(18px * var(--font-scale));line-height:1.45;text-align:left;}
   .four-col .card .num{font-size:calc(22px * var(--font-scale));font-weight:800;color:var(--green-mint);margin-bottom:8px;}
   .four-col .card .card-title{color:#fff;font-size:calc(27px * var(--font-scale));}
   .callout{margin-top:14px;border-left:3px solid var(--green);background:rgba(255,255,255,.03);border-radius:0 8px 8px 0;padding:13px 16px;font-size:calc(22.5px * var(--font-scale));line-height:1.5;color:#DAE2EA;}
@@ -267,7 +295,7 @@
   /* ---- Handles (stacked cards) ---- */
   .handle-grid{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
   .handle-card{background:#FFFDF5;border:1px solid var(--line-light);border-radius:12px;padding:16px 18px;}
-  .handle-card.accent{background:#F3F0FF;border-color:#D9CCFF;}
+  .handle-card.accent{background:#E0ECE5;border-color:#C6DBD0;}
   .handle-card h3{font-size:calc(28.5px * var(--font-scale));font-weight:800;margin-bottom:6px;}
   .handle-card p{font-size:calc(22.5px * var(--font-scale));color:var(--slate-500);line-height:1.48;}
   .handle-card .bullets{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
@@ -295,7 +323,7 @@
   /* ---- Rollout (phases) ---- */
   .phase-list{display:flex;flex-direction:column;gap:9px;margin-top:14px;}
   .phase-card{border:1px solid var(--line-light);border-radius:12px;padding:14px 16px;}
-  .phase-card.active{background:#F3F0FF;border-color:#D9CCFF;}
+  .phase-card.active{background:#E0ECE5;border-color:#C6DBD0;}
   .phase-card h3{font-size:calc(27px * var(--font-scale));font-weight:800;margin-bottom:5px;}
   .phase-card p{font-size:calc(22px * var(--font-scale));color:var(--slate-500);line-height:1.45;}
 
@@ -315,7 +343,7 @@
 
   /* ---- Next steps ---- */
   .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;}
-  .step-card{border-radius:18px;padding:18px;background:#F4F0FF;}
+  .step-card{border-radius:18px;padding:18px;background:var(--tint-green);}
   .step-card h3{font-size:calc(24px * var(--font-scale));font-weight:700;color:var(--ink);margin:9px 0 5px;}
   .step-card p{font-size:calc(19.5px * var(--font-scale));color:var(--slate-500);line-height:1.42;}
   .contact-bar{margin-top:18px;background:var(--navy);border-radius:18px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
@@ -483,10 +511,10 @@ insurance: {
   opportunity:{
     headline:'Your policyholders are already messaging you. Most of that demand never becomes a protected client.',
     items:[
-      {n:'01',title:"They're on WhatsApp",body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or branch visits. It is already where your clients reach out.'},
-      {n:'02',title:'They expect speed',body:'Clients expect a reply within 10–30 minutes, and most buy from the first insurer to respond with a clear quote. Slow replies mean lost policies.'},
-      {n:'03',title:'After-hours is dead air',body:'Accidents and renewal deadlines do not wait for office hours, but the call centre is closed and simple sales like third-party cover sit unanswered until morning instead of closing on the spot.'},
-      {n:'04',title:'Staff are stretched',body:'The same coverage and premium questions repeat all day, pulling adjusters and agents away from claims and underwriting.'}
+      {n:'01',title:"They're on WhatsApp",short:'98% of Ghanaians use it daily and prefer it to calls.',body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or branch visits. It is already where your clients reach out.'},
+      {n:'02',title:'They expect speed',short:'Most buy from whoever quotes first, within 10–30 minutes.',body:'Clients expect a reply within 10–30 minutes, and most buy from the first insurer to respond with a clear quote. Slow replies mean lost policies.'},
+      {n:'03',title:'After-hours is dead air',short:'Accidents and renewals do not wait for office hours.',body:'Accidents and renewal deadlines do not wait for office hours, but the call centre is closed and simple sales like third-party cover sit unanswered until morning instead of closing on the spot.'},
+      {n:'04',title:'Staff are stretched',short:'Repeat premium questions pull adjusters off claims.',body:'The same coverage and premium questions repeat all day, pulling adjusters and agents away from claims and underwriting.'}
     ],
     callout:'The demand is not the problem: it is already in your phone. The problem is that the slice arriving after hours, or while agents are on calls, quietly goes to a competitor.'
   },
@@ -603,10 +631,10 @@ bank: {
   opportunity:{
     headline:'Your customers are already messaging you. Most of that demand never becomes a served customer.',
     items:[
-      {n:'01',title:"They're on WhatsApp",body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or branch visits. It is already where your customers reach out.'},
-      {n:'02',title:'They expect speed',body:'Customers expect a reply within 10–30 minutes, and most open an account with the first bank to respond. Slow replies mean lost customers.'},
-      {n:'03',title:'After-hours is dead air',body:'Salary-day questions and urgent card issues do not wait for banking hours, but the branch is closed and messages pile up unanswered until morning.'},
-      {n:'04',title:'Staff are stretched',body:'The same balance and rate questions repeat all day, pulling relationship officers away from onboarding and credit decisions.'}
+      {n:'01',title:"They're on WhatsApp",short:'98% of Ghanaians use it daily and prefer it to branch visits.',body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or branch visits. It is already where your customers reach out.'},
+      {n:'02',title:'They expect speed',short:'Most open an account with whoever replies first.',body:'Customers expect a reply within 10–30 minutes, and most open an account with the first bank to respond. Slow replies mean lost customers.'},
+      {n:'03',title:'After-hours is dead air',short:'Salary-day and card issues do not wait for banking hours.',body:'Salary-day questions and urgent card issues do not wait for banking hours, but the branch is closed and messages pile up unanswered until morning.'},
+      {n:'04',title:'Staff are stretched',short:'Repeat rate questions pull officers off credit decisions.',body:'The same balance and rate questions repeat all day, pulling relationship officers away from onboarding and credit decisions.'}
     ],
     callout:'The demand is not the problem: it is already in your phone. The problem is that the slice arriving after hours, or while officers are on calls, quietly goes to a competitor.'
   },
@@ -723,10 +751,10 @@ government: {
   opportunity:{
     headline:'Citizens are already messaging you. Most of that demand never becomes a resolved enquiry.',
     items:[
-      {n:'01',title:"They're on WhatsApp",body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or counter visits. It is already where citizens reach out.'},
-      {n:'02',title:'They expect speed',body:'Citizens expect a reply within 10–30 minutes. Slow replies mean repeat calls, walk-ins, and complaints.'},
-      {n:'03',title:'After-hours is dead air',body:'Deadlines and urgent questions do not wait for office hours, but the counter is closed and messages pile up unanswered until morning.'},
-      {n:'04',title:'Staff are stretched',body:'The same "what documents do I need" and "what is my status" questions repeat all day, pulling officers away from casework.'}
+      {n:'01',title:"They're on WhatsApp",short:'98% of Ghanaians use it daily and prefer it to counter visits.',body:'98% of Ghanaians use WhatsApp every day, and most prefer it to calls or counter visits. It is already where citizens reach out.'},
+      {n:'02',title:'They expect speed',short:'Citizens expect a reply within 10–30 minutes.',body:'Citizens expect a reply within 10–30 minutes. Slow replies mean repeat calls, walk-ins, and complaints.'},
+      {n:'03',title:'After-hours is dead air',short:'Deadlines and urgent questions do not wait for office hours.',body:'Deadlines and urgent questions do not wait for office hours, but the counter is closed and messages pile up unanswered until morning.'},
+      {n:'04',title:'Staff are stretched',short:'Repeat document questions pull officers off casework.',body:'The same "what documents do I need" and "what is my status" questions repeat all day, pulling officers away from casework.'}
     ],
     callout:'The demand is not the problem: it is already in your phone. The problem is that the slice arriving after hours, or while the counter is busy, quietly becomes a queue, a complaint, or a missed deadline.'
   },
@@ -858,35 +886,37 @@ function pcWhatIs(d){
     <div class="simple-note"><div class="card-label">THE SIMPLE VERSION</div><p>${esc(d.simple)}</p></div>
     <div class="def-cards">${cols}</div>`;
 }
-function pcChatDemo(cover){
-  const messages = cover.chat.messages.map(m=>{
+/* Shared WhatsApp mockup: used both on the title page and the "See It In Action" panel. */
+function chatCard(cover, limit){
+  const msgs = limit ? cover.chat.messages.slice(0, limit) : cover.chat.messages;
+  const messages = msgs.map(m=>{
     if(m.from==='customer'){ return `<div class="msg msg-customer">${esc(m.text)}</div>`; }
     const cards = m.cards ? `<div class="msg-cards">${m.cards.map(c=>`<div class="msg-card"><b>${esc(c.title)}</b><span>${esc(c.sub)}</span></div>`).join('')}</div>` : '';
     const handoff = m.handoff ? `<div class="handoff-btn">${esc(m.handoff)}</div>` : '';
     return `<div class="msg msg-kova">${esc(m.text)}${cards}${handoff}</div>`;
   }).join('');
+  return `<div class="chat-card">
+      <div class="thread-head"><div class="avatar">${esc(cover.chat.contacts[0].initial)}</div><div><b>${esc(cover.chat.activeName)}</b><span>ONLINE NOW</span></div></div>
+      <div class="thread-body">${messages}</div>
+    </div>`;
+}
+function pcChatDemo(cover){
   const stats = cover.stats.map(s=>`<div><div class="stat-big">${esc(s.big)}</div><div class="stat-lbl">${esc(s.label)}</div></div>`).join('');
   return `<div class="eyebrow">SEE IT IN ACTION</div>
     <div class="headline">How this looks on WhatsApp.</div>
-    <div class="chat-card">
-      <div class="thread-head"><div class="avatar">${esc(cover.chat.contacts[0].initial)}</div><div><b>${esc(cover.chat.activeName)}</b><span>ONLINE NOW</span></div></div>
-      <div class="thread-body">${messages}</div>
-    </div>
+    ${chatCard(cover)}
     <div class="cover-stats">${stats}</div>`;
 }
-function pcProblem(cover){
+/* Problem and Opportunity share a single panel/page. */
+function pcProblemOpportunity(cover, opp){
   const bullets = cover.challengeBullets.map(b=>`<li><b>${esc(b.label)}:</b> ${esc(b.body)}</li>`).join('');
-  return `<div class="eyebrow">THE PROBLEM</div>
+  const items = opp.items.map(it=>`<div class="card"><div class="num">${esc(it.n)}</div><div class="card-title">${esc(it.title)}</div><div class="card-body">${esc(it.short || it.body)}</div></div>`).join('');
+  return `<div class="eyebrow">PROBLEM AND OPPORTUNITY</div>
     <div class="headline">${esc(cover.challengeHeading)}</div>
     <div class="body-copy">${esc(cover.challengeBody)}</div>
-    <ul class="evidence-list">${bullets}</ul>`;
-}
-function pcOpportunity(d){
-  const items = d.items.map(it=>`<div class="card"><div class="num">${esc(it.n)}</div><div class="card-title">${esc(it.title)}</div><div class="card-body">${esc(it.body)}</div></div>`).join('');
-  return `<div class="eyebrow">THE OPPORTUNITY</div>
-    <div class="headline">${esc(d.headline)}</div>
+    <ul class="evidence-list">${bullets}</ul>
     <div class="four-col">${items}</div>
-    <div class="callout">${esc(d.callout)}</div>`;
+    <div class="callout">${esc(opp.callout)}</div>`;
 }
 function computeCalc(c){ return (Number(c.extra)||0) * (Number(c.avg)||0) * 30; }
 function pcBusinessCase(d, calc, calcState, note){
@@ -994,9 +1024,8 @@ function pcWhyUs(ind){
     <div class="tag-grid">${tags}</div>`;
 }
 function pcTerms(d){
-  return `<div class="eyebrow">TERMS &amp; NEXT STEPS</div>
-    <div class="headline">This proposal is valid for 30 days from the date above.</div>
-    <div class="body-copy">${esc(d.footnote)} To proceed, reply to confirm and we will schedule the setup call below.</div>
+  return `<div class="eyebrow">TERMS AND NEXT STEPS</div>
+    <div class="body-copy" style="margin-top:0;">${esc(d.footnote)} To proceed, reply to confirm and we will schedule the setup call below.</div>
     <div class="contact-bar">
       <div class="cb-l">${esc(KOVA.signeeName)}, ${esc(KOVA.signeeTitle)}</div>
       <div class="cb-r">${esc(KOVA.phone)} &nbsp;&middot;&nbsp; sales@trykovaai.com</div>
@@ -1014,10 +1043,11 @@ function applyFontVars(){
   document.documentElement.style.setProperty('--font-scale', state.fontScale);
 }
 
-function measureHTML(html){
+/* width defaults to the .page-pad content box; pass PAGE_W for full-bleed pages. */
+function measureHTML(html, width){
   const div = document.createElement('div');
   div.className = 'page'; // inherit .page's font-family and other text-affecting rules
-  div.style.width = '1120px'; // matches .page-pad content width (1240 - 60px*2 horizontal padding)
+  div.style.width = (width || 1120) + 'px'; // 1120 = 1240 - 60px*2 horizontal padding
   div.style.height = 'auto';
   div.style.overflow = 'visible';
   div.style.position = 'absolute';
@@ -1052,7 +1082,7 @@ function packExact(items, assemble, budget){
   return pages;
 }
 
-function buildCoverPage(ind, company, contactPerson, contactTitle){
+function buildCoverPage(ind, company, contactPerson, contactTitle, chatMsgs){
   const d = ind.cover;
   const companyLabel = company || 'Your Organisation';
   const heroStat = d.stats[0];
@@ -1060,27 +1090,56 @@ function buildCoverPage(ind, company, contactPerson, contactTitle){
     ? `${esc(contactPerson)}${contactTitle ? ', ' + esc(contactTitle) : ''}, ${esc(companyLabel)}`
     : esc(companyLabel);
 
-  return `<div class="cover-wash"></div>
-    <div class="cover-masthead">
-      <img class="cover-wordmark-img" src="kova-wordmark-dark.png" alt="Kova AI">
-      <div class="tag">Proposal</div>
+  const statsHtml = d.stats.map(s=>`<div class="s"><div class="n">${esc(s.big)}</div><div class="l">${esc(s.label)}</div></div>`).join('');
+  const tagsHtml = d.tags.map(t=>`<div>${esc(t)}</div>`).join('');
+
+  return `<div class="cover-top">
+      <img class="cover-wordmark-img" src="kova-wordmark-light-green.png" alt="Kova AI">
+      <div class="cover-eyebrow">${esc(ind.proposalType)} &middot; Prepared for ${esc(companyLabel)}</div>
+      <div class="cover-headline">${esc(d.headline)}</div>
+      <div class="cover-sub">${esc(d.body)}</div>
+      <div class="cover-statrow">${statsHtml}</div>
     </div>
-    <div class="cover-eyebrow">Prepared for ${esc(companyLabel)}</div>
-    <div class="cover-headline">${esc(d.headline)}</div>
-    <div class="cover-hero-stat">
-      <div class="n">${esc(heroStat.big)}</div>
-      <div class="l">${esc(heroStat.label)}</div>
+    <div class="cover-bottom">
+      ${chatCard(d, chatMsgs || 4)}
+      <div class="guarantee-bar">${tagsHtml}</div>
     </div>
-    <div class="cover-prepared">Prepared for <b>${preparedFor}</b> &nbsp;&middot;&nbsp; Prepared by <b>${esc(KOVA.name)}</b> &nbsp;&middot;&nbsp; ${formatToday()}</div>`;
+    <div class="pagenum">${preparedFor} &middot; ${formatToday()}</div>`;
 }
 
-function buildExecSummaryPage(ind, company){
+/* The letter of introduction replaces the old executive summary. */
+function buildLetterPage(ind, company, contactPerson, contactTitle){
   const d = ind.cover;
-  const companyLabel = company || 'Your Organisation';
+  const companyLabel = company || '[Your Company Name]';
   const intro = esc(d.introTemplate).replace('{{COMPANY}}', esc(companyLabel));
-  return `<div class="eyebrow">Executive Summary</div>
-    <div class="exec-headline">${esc(d.headline)}</div>
-    <div class="body-copy">${intro}</div>`;
+  const toLines = [];
+  if(contactPerson) toLines.push(esc(contactPerson));
+  if(contactTitle) toLines.push(esc(contactTitle));
+  toLines.push(esc(companyLabel));
+
+  return `<div class="letter-head">
+      <img class="letter-wordmark" src="kova-wordmark-light-green.png" alt="Kova AI">
+      <div class="letter-addr">
+        <b>${esc(KOVA.name)}</b>
+        ${esc(KOVA.address)}<br>
+        ${esc(KOVA.phone)} &middot; ${esc(KOVA.email)}<br>
+        ${esc(KOVA.website)}
+      </div>
+    </div>
+    <div class="letter-rule"></div>
+    <div class="letter-date">${formatToday()}</div>
+    <div class="letter-to">${toLines.join('<br>')}</div>
+    <div class="letter-re"><span>RE:</span> ${esc(d.headline)}</div>
+    <div class="letter-sal">Dear Sir/Madam,</div>
+    <div class="letter-body">
+      <p>${intro}</p>
+      <p>The pages that follow set out the problem as we understand it, the solution we propose, what is included, how quickly it can be live, and what we would need from your team to begin.</p>
+    </div>
+    <div class="sig">
+      <p>Sincerely,</p>
+      <b>${esc(KOVA.signeeName)}</b>
+      <span>${esc(KOVA.signeeTitle)}, ${esc(KOVA.name)}</span>
+    </div>`;
 }
 
 function buildContentSections(ind, company){
@@ -1089,30 +1148,19 @@ function buildContentSections(ind, company){
     whyUsItems.push({html: panel(pcCompliance(ind.compliance), true), label:'Compliance & Scope'});
   }
   return [
-    { name:'Problem / Opportunity', items:[
-        {html: panel(pcProblem(ind.cover), true), label:'The Problem'},
-        {html: panel(pcOpportunity(ind.opportunity), true), label:'The Opportunity'},
-        {html: panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false), label:'The Business Case'}
-    ]},
-    { name:'Proposed Solution', items:[
-        {html: panel(pcSolution(ind.cover), false), label:'Proposed Solution'},
-        {html: panel(pcWhatIs(ind.whatIs), false), label:'What Kova Is'},
-        {html: panel(pcChatDemo(ind.cover), true), label:'See It In Action'},
-        {html: panel(pcChanges(ind.changes, company), true), label:'What Changes'},
-        {html: panel(pcHandles(ind.handles), false), label:'What Kova Handles'},
-        {html: panel(pcWorkflow(ind.workflow), false), label:'Safe Workflow'}
-    ]},
-    { name:'Scope of Work / Deliverables', items:[
-        {html: panel(pcRollout(ind.rollout), false), label:'Scope of Work'},
-        {html: panel(pcRevenue(ind.revenue), true), label:'Demand & Revenue'}
-    ]},
-    { name:'Timeline', items:[
-        {html: panel(pcTimeline(ind.nextSteps), false), label:'Timeline'}
-    ]},
-    { name:'Why Us', items: whyUsItems },
-    { name:'Terms & Next Steps', items:[
-        {html: panel(pcTerms(ind.nextSteps), false), label:'Terms & Next Steps'}
-    ]}
+    {html: panel(pcProblemOpportunity(ind.cover, ind.opportunity), true), label:'Problem and Opportunity'},
+    {html: panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false), label:'The Business Case'},
+    {html: panel(pcSolution(ind.cover), false), label:'Proposed Solution'},
+    {html: panel(pcWhatIs(ind.whatIs), false), label:'What Kova Is'},
+    {html: panel(pcChatDemo(ind.cover), true), label:'See It In Action'},
+    {html: panel(pcChanges(ind.changes, company), true), label:'What Changes'},
+    {html: panel(pcHandles(ind.handles), false), label:'What Kova Handles'},
+    {html: panel(pcWorkflow(ind.workflow), false), label:'Safe Workflow'},
+    {html: panel(pcRollout(ind.rollout), false), label:'Scope of Work'},
+    {html: panel(pcRevenue(ind.revenue), true), label:'Demand & Revenue'},
+    {html: panel(pcTimeline(ind.nextSteps), false), label:'Timeline'},
+    ...whyUsItems,
+    {html: panel(pcTerms(ind.nextSteps), false), label:'Terms and Next Steps'}
   ];
 }
 
@@ -1129,27 +1177,29 @@ function buildPages(){
   const budget = PAGE_H - PAGE_PAD_V;
   const rn = runner(ind.proposalType, company);
 
-  const coverHtml = buildCoverPage(ind, company, contactPerson, contactTitle);
-  const execHtml = buildExecSummaryPage(ind, company);
+  // The cover is a fixed full-bleed layout rather than packed content, so at large
+  // font sizes it can outgrow the sheet. Drop chat messages until it fits.
+  let coverHtml = '';
+  for(let msgs = 4; msgs >= 1; msgs--){
+    coverHtml = buildCoverPage(ind, company, contactPerson, contactTitle, msgs);
+    if(measureHTML(`<div class="page-pad" style="padding:0">${coverHtml}</div>`, PAGE_W) <= PAGE_H) break;
+  }
+  const letterHtml = buildLetterPage(ind, company, contactPerson, contactTitle);
 
-  // Each of the 8 proposal sections starts on its own page: sections are packed
-  // independently so content from two different sections never shares a page,
-  // even if that leaves some blank space at the bottom of a page.
+  // Panels pack continuously, so two sections may share a page whenever they fit.
   const assembleContent = group => `${rn}<div class="panel-stack">${group.map(it=>it.html).join('')}</div>`;
-  const sections = buildContentSections(ind, company);
-  const sectionGroups = sections.map(section => packExact(section.items, assembleContent, budget));
-  const allGroups = sectionGroups.flat();
+  const allGroups = packExact(buildContentSections(ind, company), assembleContent, budget);
 
   const totalPages = 2 + allGroups.length;
 
   const pages = [];
   const titles = [];
 
-  pages.push(`<div class="page cover-page"><div class="page-pad">${coverHtml}${pageFoot(1, totalPages)}</div></div>`);
+  pages.push(`<div class="page cover-page"><div class="page-pad">${coverHtml}</div></div>`);
   titles.push('Title Page');
 
-  pages.push(`<div class="page"><div class="page-pad">${rn}${execHtml}${pageFoot(2, totalPages)}</div></div>`);
-  titles.push('Executive Summary');
+  pages.push(`<div class="page"><div class="page-pad">${letterHtml}${pageFoot(2, totalPages)}</div></div>`);
+  titles.push('Letter of Introduction');
 
   allGroups.forEach(group=>{
     pages.push(`<div class="page"><div class="page-pad">${rn}<div class="panel-stack">${group.map(it=>it.html).join('')}</div>${pageFoot(pages.length+1, totalPages)}</div></div>`);
