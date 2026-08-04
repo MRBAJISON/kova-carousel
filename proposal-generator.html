@@ -1195,11 +1195,12 @@ function buildPages(){
   const pages = [];
   const titles = [];
 
+  // Letter of introduction leads the document; the title page follows it.
+  pages.push(`<div class="page"><div class="page-pad">${letterHtml}${pageFoot(1, totalPages)}</div></div>`);
+  titles.push('Letter of Introduction');
+
   pages.push(`<div class="page cover-page"><div class="page-pad">${coverHtml}</div></div>`);
   titles.push('Title Page');
-
-  pages.push(`<div class="page"><div class="page-pad">${letterHtml}${pageFoot(2, totalPages)}</div></div>`);
-  titles.push('Letter of Introduction');
 
   allGroups.forEach(group=>{
     pages.push(`<div class="page"><div class="page-pad">${rn}<div class="panel-stack">${group.map(it=>it.html).join('')}</div>${pageFoot(pages.length+1, totalPages)}</div></div>`);
