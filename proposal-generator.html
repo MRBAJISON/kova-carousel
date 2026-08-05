@@ -273,7 +273,6 @@
   .calc-row label{font-size:calc(22.5px * var(--font-scale));color:#B9C4D0;}
   .calc-row .inwrap{display:flex;align-items:center;gap:5px;}
   .calc-row input{width:74px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:7px;color:#fff;font-family:inherit;font-size:calc(22.5px * var(--font-scale));padding:6px 9px;text-align:right;}
-  .calc-row .unit{font-size:calc(19.5px * var(--font-scale));color:#8A98A8;}
   .calc-result{padding-top:14px;display:flex;justify-content:space-between;align-items:flex-end;}
   .calc-result .rl{font-size:calc(19px * var(--font-scale));font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#C7D3E0;line-height:1.35;max-width:150px;}
   .calc-result .rv{font-size:calc(46.5px * var(--font-scale));font-weight:800;color:var(--gold);text-align:right;}
@@ -928,7 +927,7 @@ function pcBusinessCase(d, calc, calcState, note){
     <div class="bc-right">
       <h4>What it could mean for you</h4>
       <div class="calc-row"><label>${esc(calc.messagesLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.messages}"></div></div>
-      <div class="calc-row"><label>${esc(calc.shareLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.share}"><span class="unit">%</span></div></div>
+      <div class="calc-row"><label>${esc(calc.shareLabel).replace(' (%)','')}</label><div class="inwrap"><input type="text" readonly value="${calcState.share}%"></div></div>
       <div class="calc-row"><label>${esc(calc.extraLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.extra}"></div></div>
       <div class="calc-row"><label>${esc(calc.avgLabel)}</label><div class="inwrap"><input type="text" readonly value="${calcState.avg}"></div></div>
       <div class="calc-result"><div class="rl">${esc(calc.resultLabel)}</div><div class="rv">${fmtGHS(result)}</div></div>
