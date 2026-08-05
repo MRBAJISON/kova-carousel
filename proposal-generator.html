@@ -207,6 +207,9 @@
   .sig p{font-size:calc(25px * var(--font-scale));color:var(--slate-600);margin-bottom:34px;}
   .sig b{display:block;font-size:calc(25px * var(--font-scale));color:var(--ink);}
   .sig span{font-size:calc(21px * var(--font-scale));color:var(--slate-500);}
+  .letter-cc{margin-top:34px;padding-top:18px;border-top:1px solid var(--line-light);display:flex;gap:14px;}
+  .letter-cc .cc-label{font-size:calc(21px * var(--font-scale));font-weight:800;color:var(--green);flex:none;}
+  .letter-cc .cc-names div{font-size:calc(21px * var(--font-scale));line-height:1.6;color:var(--slate-600);}
   .cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-light);border-bottom:1px solid var(--line-light);margin:16px 0;padding:14px 0;gap:14px;}
   .cover-stats .stat-big{font-size:calc(30px * var(--font-scale));font-weight:800;color:var(--green);margin-bottom:3px;}
   .cover-stats .stat-lbl{font-size:calc(19.5px * var(--font-scale));color:var(--slate-500);line-height:1.3;}
@@ -397,6 +400,16 @@
       <div class="field">
         <label for="contactTitle">Contact's position / title (optional)</label>
         <input type="text" id="contactTitle" placeholder="e.g. Managing Director">
+      </div>
+      <div class="field">
+        <label for="companyAddress">Company address (optional)</label>
+        <textarea id="companyAddress" placeholder="e.g. 12 Independence Ave&#10;Accra, Ghana"></textarea>
+        <div class="field-note">One line per line of the address.</div>
+      </div>
+      <div class="field">
+        <label for="ccList">CC (optional)</label>
+        <textarea id="ccList" placeholder="e.g. Head of Claims&#10;Head of IT&#10;Legal &amp; Compliance"></textarea>
+        <div class="field-note">One department or person per line. Appears as a cc list under the signature.</div>
       </div>
     </div>
 
@@ -845,6 +858,8 @@ const state = {
   companyName:'',
   contactPerson:'',
   contactTitle:'',
+  companyAddress:'',
+  ccList:'',
   fontScale:1,
   calc:{}
 };
@@ -860,6 +875,8 @@ initCalc();
    ============================================================ */
 function esc(s){ return (s===undefined||s===null) ? '' : String(s); }
 function fmtGHS(n){ return 'GHS ' + Math.round(n).toLocaleString('en-US'); }
+/* Splits a textarea value into trimmed, non-empty lines. */
+function lines(s){ return esc(s).split('\n').map(l=>l.trim()).filter(Boolean); }
 function formatToday(){
   const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   const d = new Date();
@@ -1106,17 +1123,24 @@ function buildCoverPage(ind, company, contactPerson, contactTitle, chatMsgs){
     <div class="pagenum">${preparedFor} &middot; ${formatToday()}</div>`;
 }
 
-/* The letter of introduction replaces the old executive summary. */
-function buildLetterPage(ind, company, contactPerson, contactTitle){
+/* The letter of introduction replaces the old executive summary. Returns blocks. */
+function buildLetterBlocks(ind, company, contactPerson, contactTitle, address, ccEntries){
   const d = ind.cover;
   const companyLabel = company || '[Your Company Name]';
   const intro = esc(d.introTemplate).replace('{{COMPANY}}', esc(companyLabel));
+  // Recipient block order: name, then position, company name, address.
   const toLines = [];
   if(contactPerson) toLines.push(esc(contactPerson));
   if(contactTitle) toLines.push(esc(contactTitle));
   toLines.push(esc(companyLabel));
+  lines(address).forEach(l=>toLines.push(esc(l)));
 
-  return `<div class="letter-head">
+  const cc = (ccEntries || []).map(c=>esc(c));
+  const ccHtml = cc.length
+    ? `<div class="letter-cc"><span class="cc-label">cc:</span><div class="cc-names">${cc.map(c=>`<div>${c}</div>`).join('')}</div></div>`
+    : '';
+
+  const head = `<div class="letter-head">
       <img class="letter-wordmark" src="kova-wordmark-light-green.png" alt="Kova AI">
       <div class="letter-addr">
         <b>${esc(KOVA.name)}</b>
@@ -1129,16 +1153,24 @@ function buildLetterPage(ind, company, contactPerson, contactTitle){
     <div class="letter-date">${formatToday()}</div>
     <div class="letter-to">${toLines.join('<br>')}</div>
     <div class="letter-re"><span>RE:</span> ${esc(d.headline)}</div>
-    <div class="letter-sal">Dear Sir/Madam,</div>
-    <div class="letter-body">
+    <div class="letter-sal">Dear Sir/Madam,</div>`;
+
+  const body = `<div class="letter-body">
       <p>${intro}</p>
       <p>The pages that follow set out the problem as we understand it, the solution we propose, what is included, how quickly it can be live, and what we would need from your team to begin.</p>
-    </div>
-    <div class="sig">
+    </div>`;
+
+  const signature = `<div class="sig">
       <p>Sincerely,</p>
       <b>${esc(KOVA.signeeName)}</b>
       <span>${esc(KOVA.signeeTitle)}, ${esc(KOVA.name)}</span>
     </div>`;
+
+  // Returned as blocks so a long address or cc list can spill to a second page
+  // instead of overflowing the sheet.
+  const blocks = [{html: head + body}, {html: signature}];
+  if(ccHtml) blocks.push({html: ccHtml});
+  return blocks;
 }
 
 function buildContentSections(ind, company){
@@ -1183,20 +1215,36 @@ function buildPages(){
     coverHtml = buildCoverPage(ind, company, contactPerson, contactTitle, msgs);
     if(measureHTML(`<div class="page-pad" style="padding:0">${coverHtml}</div>`, PAGE_W) <= PAGE_H) break;
   }
-  const letterHtml = buildLetterPage(ind, company, contactPerson, contactTitle);
+  const letterBlocks = buildLetterBlocks(ind, company, contactPerson, contactTitle, state.companyAddress, lines(state.ccList));
+
+  // The letter's own letterhead heads page 1; any spill (long address, long cc
+  // list) continues on following pages, which carry the running header instead.
+  const assembleLetterFirst = group => group.map(b=>b.html).join('');
+  const assembleLetterCont  = group => rn + group.map(b=>b.html).join('');
+  const letterFirstGroup = [];
+  for(const block of letterBlocks){
+    const trial = [...letterFirstGroup, block];
+    if(letterFirstGroup.length > 0 && measureHTML(assembleLetterFirst(trial)) > budget) break;
+    letterFirstGroup.push(block);
+  }
+  const letterRest = letterBlocks.slice(letterFirstGroup.length);
+  const letterGroups = [letterFirstGroup, ...(letterRest.length ? packExact(letterRest, assembleLetterCont, budget) : [])];
 
   // Panels pack continuously, so two sections may share a page whenever they fit.
   const assembleContent = group => `${rn}<div class="panel-stack">${group.map(it=>it.html).join('')}</div>`;
   const allGroups = packExact(buildContentSections(ind, company), assembleContent, budget);
 
-  const totalPages = 2 + allGroups.length;
+  const totalPages = letterGroups.length + 1 + allGroups.length;
 
   const pages = [];
   const titles = [];
 
   // Letter of introduction leads the document; the title page follows it.
-  pages.push(`<div class="page"><div class="page-pad">${letterHtml}${pageFoot(1, totalPages)}</div></div>`);
-  titles.push('Letter of Introduction');
+  letterGroups.forEach((group, i)=>{
+    const inner = (i === 0 ? '' : rn) + group.map(b=>b.html).join('');
+    pages.push(`<div class="page"><div class="page-pad">${inner}${pageFoot(pages.length+1, totalPages)}</div></div>`);
+    titles.push(i === 0 ? 'Letter of Introduction' : 'Letter of Introduction (cont.)');
+  });
 
   pages.push(`<div class="page cover-page"><div class="page-pad">${coverHtml}</div></div>`);
   titles.push('Title Page');
@@ -1286,6 +1334,8 @@ function updateCalcResult(){
 document.getElementById('companyName').addEventListener('input', e=>{ state.companyName = e.target.value; renderAll(); });
 document.getElementById('contactPerson').addEventListener('input', e=>{ state.contactPerson = e.target.value; renderAll(); });
 document.getElementById('contactTitle').addEventListener('input', e=>{ state.contactTitle = e.target.value; renderAll(); });
+document.getElementById('companyAddress').addEventListener('input', e=>{ state.companyAddress = e.target.value; renderAll(); });
+document.getElementById('ccList').addEventListener('input', e=>{ state.ccList = e.target.value; renderAll(); });
 document.getElementById('fontScale').addEventListener('change', e=>{ state.fontScale = parseFloat(e.target.value); renderAll(); });
 
 /* ============================================================
