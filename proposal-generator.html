@@ -847,6 +847,142 @@ government: {
     ],
     footnote:'No long lock-in. No setup fee on the standard first phase. Your officers stay in control of every determination and approval.'
   }
+},
+
+/* ================= MICROCREDIT ================= */
+microcredit: {
+  label:'Microcredit', proposalType:'MICROCREDIT PROPOSAL',
+  cover:{
+    headline:'Answer every loan enquiry instantly, and fill more applications, day and night.',
+    body:'Kova AI replies instantly from your approved loan products and eligibility rules, walks applicants through the application form field by field, and hands every completed file to your credit officers. Never quotes a binding rate. Never approves a loan.',
+    introTemplate:'I am writing to introduce Kova AI, an AI-powered customer engagement platform that helps microcredit institutions transform how they attract, qualify, and onboard borrowers. We believe our platform presents a compelling opportunity for {{COMPANY}} to reduce the cost of handling loan enquiries, increase completed application volume, and reach privately employed salaried workers at scale, without adding front-desk headcount.',
+    challengeHeading:'The Challenge Your Institution Faces',
+    challengeBody:'Most loan enquiries arrive as questions your team has answered a hundred times: how much can I borrow, what are the requirements, what documents do I need, how long does approval take. They arrive at all hours, and every one of them competes for the same officers who should be assessing credit and recovering repayments.',
+    challengeBullets:[
+      {label:'Enquiries never become applications', body:'A large share of people who ask about a loan never complete the form. They stall on requirements, documents, or a question nobody answered in time.'},
+      {label:'Officers are consumed by repetition', body:'The same eligibility and document questions repeat all day, pulling loan officers away from assessment, disbursement, and collections.'},
+      {label:'Reaching salaried workers is slow and manual', body:'Privately employed salary earners are the strongest segment for salary-backed lending, but reaching them depends on referrals, field agents, and word of mouth.'}
+    ],
+    solutionHeading:'How Kova AI Addresses These Challenges',
+    solutionBody:'Kova AI is delivered in two phases. Phase 1 puts an AI loan assistant on your WhatsApp and website that answers product and eligibility questions, guides applicants through the loan form, collects supporting documents, and hands complete files to your credit officers. Phase 2 adds outbound reach: a permission-based contact database of privately employed salaried workers and a bulk SMS channel that routes every reply straight back into the Phase 1 assistant.',
+    stats:[{big:'24/7',label:'loan enquiries answered'},{big:'Guided forms',label:'applications completed in chat'},{big:'Credit-safe',label:'every decision stays with your officers'}],
+    tags:['Never approves a loan','Product-approved answers','Consent-based outreach','Full opt-out on every SMS'],
+    chat:{
+      contacts:[
+        {initial:'Y',name:'Yaw Owusu',time:'21:14',preview:'How much can I borrow on my salary?'},
+        {initial:'A',name:'Adjoa Mensah',time:'20:52',preview:'What documents do I need?'},
+        {initial:'S',name:'Selorm Agbo',time:'20:31',preview:'Is my application approved yet?'}
+      ],
+      activeName:'Yaw Owusu',
+      messages:[
+        {from:'customer', text:'I saw your SMS. I earn GHS 3,200 a month at a private company. How much can I borrow?'},
+        {from:'kova', text:'On a salary-backed loan you would typically qualify in this range, subject to assessment by our credit team.', cards:[{title:'Salary Loan',sub:'Up to GHS 9,600 · 12 months'},{title:'Quick Advance',sub:'Up to GHS 3,200 · 3 months'}]},
+        {from:'customer', text:'What do I need to apply?'},
+        {from:'kova', text:'Ghana Card, your last 3 payslips, and 3 months of bank statements. I can start your application here and now, it takes about 4 minutes.'},
+        {from:'customer', text:'Okay, let us start.'},
+        {from:'kova', text:'Your application is complete and your documents are attached. A credit officer will review and contact you within one working day.', handoff:'Sent to credit officer'}
+      ]
+    }
+  },
+  whatIs:{
+    headline:'A loan assistant that talks to applicants and knows where to stop.',
+    body:'Kova AI answers product, eligibility, requirement, and status questions using only the loan information you approve, then walks the applicant through your application form one field at a time inside the chat, collecting and checking each document as it goes. The moment a conversation touches an approval, a rate commitment, a restructure, or a repayment dispute, it stops and hands over to your credit team with the full file attached.',
+    simple:'It does not approve or decline loans, set or commit to interest rates, assess creditworthiness, or negotiate repayment. It handles the enquiry and intake work so your officers only ever see complete, ready-to-assess files.',
+    where:['WhatsApp','Website live chat','SMS reply routing'],
+    cols:[
+      {label:'WHAT THE AI DOES', title:'Enquiry handling and guided intake', body:'Answers everyday loan questions and completes the application form with the applicant, any hour, around the clock.'},
+      {label:'WHAT YOUR PEOPLE DO', title:'Credit assessment and approval', body:'Your officers keep full control of scoring, approval, disbursement, restructuring, and recovery.'},
+      {label:'WHAT THE SYSTEM DOES', title:'Products, documents and handoff', body:'Kova works only from your approved loan data and routes complete files to the right officer.'}
+    ]
+  },
+  opportunity:{
+    headline:'The demand is already reaching you. Most of it never becomes a completed application.',
+    items:[
+      {n:'01',title:"They're on WhatsApp",short:'98% of Ghanaians use it daily and prefer it to calls.',body:'98% of Ghanaians use WhatsApp every day, and most prefer it to phone calls or walking into a branch. It is already where loan enquiries arrive.'},
+      {n:'02',title:'They stall on the form',short:'Most enquiries drop off before the form is completed.',body:'Most people who ask about a loan never finish the application, stalling on requirements, documents, or an unanswered question.'},
+      {n:'03',title:'After-hours is dead air',short:'Enquiries arrive at night and wait until morning.',body:'Salary earners enquire in the evening and at weekends, when the office is closed and the enquiry waits until morning, if it is still there.'},
+      {n:'04',title:'Officers are stretched',short:'Repeat questions pull officers off assessment and recovery.',body:'The same eligibility and document questions repeat all day, pulling credit officers away from assessment, disbursement, and collections.'}
+    ],
+    callout:'The demand is not the problem: it is already in your phone. The problem is that most of it never reaches a completed, assessable application file.'
+  },
+  businessCase:{
+    headline:'Kova only has to convert a couple of extra loans a month to pay for itself.',
+    cards:[
+      {label:'COMPLETED APPLICATIONS',title:'Loans you are losing at the form',body:'Applicants are guided through the form in the conversation instead of abandoning it, turning enquiries into complete, assessable files.'},
+      {label:'RECOVERED TIME',title:'Hours back for your officers',body:'Routine eligibility and document questions are handled automatically, so officers focus on assessment, disbursement, and recovery.'},
+      {label:'NEW REACH',title:'A segment you are not touching today',body:'Phase 2 puts your offer in front of privately employed salary earners at scale, with every reply routed back into the assistant.'}
+    ],
+    calc:{messagesLabel:'Applicant messages / day',messagesDefault:120,shareLabel:'Share Kova answers instantly (%)',shareDefault:60,extraLabel:'Extra loans disbursed / day',extraDefault:2,avgLabel:'Average revenue per loan (GHS)',avgDefault:350,resultLabel:'NEW LOAN REVENUE / MONTH'},
+    note:'Illustrative estimate using industry benchmarks for response speed, application completion, and conversational intake. Your team sets the real inputs against your own book.'
+  },
+  changes:{
+    headline:'From unanswered enquiries to complete application files.',
+    body:'Same loan products, same credit policy, same approval authority. The difference is that every enquiry now gets an immediate, consistent answer, and your officers only open files that are already complete.',
+    rows:[
+      {label:'EVENING ENQUIRY', today:'Seen tomorrow, if at all. The applicant has borrowed elsewhere.', kova:'Answered in seconds, and the application is completed the same evening.'},
+      {label:"OFFICER'S DAY", today:'Interrupted all day by "what do I need to apply" questions.', kova:'A cleaner queue: only complete files and real credit decisions.'},
+      {label:'DOCUMENT CHASING', today:'Days lost going back and forth for a missing payslip or ID.', kova:'Documents collected and checked during the conversation, before the file is handed over.'},
+      {label:'REACHING SALARY EARNERS', today:'Dependent on referrals, field agents, and word of mouth.', kova:'Consent-based SMS campaigns that route replies straight into the assistant.'}
+    ]
+  },
+  handles:{
+    headline:'A borrower-facing assistant around your credit team, not instead of it.',
+    cols:[
+      {title:'Inform', body:'Use approved loan data to answer product, eligibility, requirement, fee, and status questions.', bullets:['Loan products and limits','Eligibility and requirements','Required documents','Repayment schedules']},
+      {title:'Complete the application', body:'Walk the applicant through your form field by field and collect every supporting document.', bullets:['Guided form completion','Ghana Card and payslip capture','Bank statement upload','Basic completeness checks']},
+      {title:'Hand off', accent:true, body:'Escalate anything that needs a credit decision, with the full file already attached.', bullets:['Approval and declines','Rate and tenure commitments','Restructuring requests','Repayment and recovery disputes']}
+    ],
+    example:'"I can help with our published loan requirements and complete your application. The approval decision and final rate come from a credit officer, who will review your file and contact you within one working day."'
+  },
+  workflow:{
+    eyebrow:'CREDIT-SAFE WORKFLOW',
+    headline:'The AI reduces intake work without making credit decisions.',
+    steps:[
+      {n:1,title:'Applicant asks',body:'The applicant asks about a loan, or replies to an SMS campaign.'},
+      {n:2,title:'AI qualifies',body:'Kova answers from approved product data and checks basic eligibility rules.'},
+      {n:3,title:'AI completes the file',body:'It fills the application with the applicant and collects the required documents.'},
+      {n:4,title:'Officer decides',body:'Your credit officer receives a complete file and remains responsible for the decision.'}
+    ],
+    boundaryTitle:'Clear boundary',
+    boundaryBody:'Kova does not approve or decline loans, commit to a rate or tenure, score creditworthiness, or negotiate repayment. It works only from your approved loan information and routes every credit decision to your officers.'
+  },
+  revenue:{
+    eyebrow:'PHASE 2 · REACH AND OUTREACH',
+    headline:'Putting your offer in front of privately employed salary earners.',
+    body:'Phase 2 builds a permission-based contact database of privately employed salaried workers, the strongest segment for salary-backed lending, and reaches them by bulk SMS. Every campaign carries your sender ID and a working opt-out, and every reply is routed straight into the Phase 1 assistant so interest is captured and qualified immediately instead of landing in an unattended inbox.',
+    tags:['Segment targeting','Your sender ID','Delivery reporting','Opt-out on every message','Replies routed to the AI','Campaign scheduling'],
+    ask:'"REPLY YES to check how much you qualify for on your salary."',
+    respond:'"Kova AI answers instantly on WhatsApp, checks eligibility, and completes the application."',
+    receives:'A complete application file, the campaign it came from, and the applicant contact in one place.'
+  },
+  compliance:{
+    eyebrow:'DATA PROTECTION AND OUTREACH COMPLIANCE',
+    headline:'Phase 2 is built on consent, not on scraped data.',
+    body:'Outbound campaigns to individuals are regulated. Kova AI operates Phase 2 on a documented lawful basis so that neither your institution nor ours carries avoidable exposure, and so campaigns are not blocked or penalised once they are live.',
+    rows:[
+      {req:'Contact data must have a lawful basis', approach:'Contacts are sourced through consented sign-up, opt-in campaigns, and licensed or lawfully obtained directories. We do not scrape platforms whose terms prohibit it.'},
+      {req:'Marketing SMS must be opt-out', approach:'Every message carries a working opt-out, and opt-outs are honoured immediately and permanently across all future campaigns.'},
+      {req:'Processing must comply with Act 843', approach:'Handled under Ghana’s Data Protection Act, 2012 (Act 843), with registration, purpose limitation, retention limits, and data subject access and deletion rights.'},
+      {req:'Sender identity must be legitimate', approach:'Campaigns run under your registered sender ID through licensed aggregators, in line with National Communications Authority requirements.'},
+      {req:'You must retain control of the data', approach:'Your institution retains ownership of all applicant and campaign data, with export and deletion available on request.'}
+    ],
+    tags:['Ghana Data Protection Act 2012 (Act 843)','Consent-based sourcing','Guaranteed opt-out','Licensed SMS aggregators','Full audit trail','Data ownership retained']
+  },
+  rollout:{
+    headline:'Start with the AI assistant. Add outreach once it is proven on your own conversations.',
+    phase1:{title:'Phase 1 · AI loan assistant', body:'WhatsApp and website assistant answering product, eligibility, requirement, and status questions, completing the application form with the applicant, collecting documents, and handing complete files to your credit officers with full conversation analytics.'},
+    phase2:{title:'Phase 2 · Reach and bulk SMS', body:'A permission-based contact database of privately employed salaried workers, bulk SMS campaigns under your sender ID with guaranteed opt-out, and reply routing that feeds every response back into the Phase 1 assistant.'},
+    optional:{title:'Optional · Core system connection', body:'Sync loan products, application status, and borrower records with your existing loan management system, plus repayment reminders where the system supports it.'}
+  },
+  nextSteps:{
+    headline:'Start with a low-risk pilot. See it working on your real enquiries.',
+    steps:[
+      {n:1,title:'30-minute setup call', body:'We load your approved loan products, eligibility rules, and application form, and set the handoff rules with your team.'},
+      {n:2,title:'Go live on WhatsApp', body:'Kova starts answering real applicant enquiries and completing forms within days, not months.'},
+      {n:3,title:'Review, then add Phase 2', body:'After 2–4 weeks we review completed applications together and decide whether to switch on outreach.'}
+    ],
+    footnote:'No long lock-in. No setup fee on the standard first phase. Your credit officers stay in control of every approval, rate, and recovery decision. Phase 2 begins only once you approve the campaign plan and consent model.'
+  }
 }
 };
 
@@ -1290,7 +1426,7 @@ window.addEventListener('resize', scalePreviews);
 /* ---- industry toggle ---- */
 function renderToggle(){
   const el = document.getElementById('industryToggle');
-  const keys = ['insurance','bank','government'];
+  const keys = ['insurance','bank','government','microcredit'];
   el.innerHTML = keys.map(k=>`<button data-k="${k}" class="${state.industry===k?'active':''}">${CONTENT[k].label}</button>`).join('');
   el.querySelectorAll('button').forEach(btn=>{
     btn.onclick = ()=>{
