@@ -852,6 +852,15 @@ government: {
 /* ================= MICROCREDIT ================= */
 microcredit: {
   label:'Microcredit', proposalType:'MICROCREDIT PROPOSAL',
+  /* Drops the chat demo, business case and compliance pages, and places Why Us
+     directly after Scope of Work so the two share a page. */
+  sectionOrder:[
+    'problemOpportunity','solution','whatIs','changes','handles','workflow',
+    'scope','whyUs','revenue','timeline','terms'
+  ],
+  /* Start a fresh page at Scope of Work so it and Why Us land together rather
+     than Scope trailing the previous page and pushing Why Us onto the next. */
+  sectionBreakBefore:['scope'],
   cover:{
     headline:'Answer every loan enquiry instantly, and fill more applications, day and night.',
     body:'Kova AI replies instantly from your approved loan products and eligibility rules, walks applicants through the application form field by field, and hands every completed file to your credit officers. Never quotes a binding rate. Never approves a loan.',
@@ -1309,26 +1318,39 @@ function buildLetterBlocks(ind, company, contactPerson, contactTitle, address, c
   return blocks;
 }
 
+/* Running order of the body sections. An industry can override it with its own
+   `sectionOrder`, which is how a vertical drops sections it does not need or
+   places two of them adjacently so they share a page. */
+const DEFAULT_SECTION_ORDER = [
+  'problemOpportunity','businessCase','solution','whatIs','chatDemo','changes',
+  'handles','workflow','scope','revenue','timeline','whyUs','compliance','terms'
+];
+
 function buildContentSections(ind, company){
-  const whyUsItems = [{html: panel(pcWhyUs(ind), true), label:'Why Us'}];
-  if(ind.compliance){
-    whyUsItems.push({html: panel(pcCompliance(ind.compliance), true), label:'Compliance & Scope'});
-  }
-  return [
-    {html: panel(pcProblemOpportunity(ind.cover, ind.opportunity), true), label:'Problem and Opportunity'},
-    {html: panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false), label:'The Business Case'},
-    {html: panel(pcSolution(ind.cover), false), label:'Proposed Solution'},
-    {html: panel(pcWhatIs(ind.whatIs), false), label:'What Kova Is'},
-    {html: panel(pcChatDemo(ind.cover), true), label:'See It In Action'},
-    {html: panel(pcChanges(ind.changes, company), true), label:'What Changes'},
-    {html: panel(pcHandles(ind.handles), false), label:'What Kova Handles'},
-    {html: panel(pcWorkflow(ind.workflow), false), label:'Safe Workflow'},
-    {html: panel(pcRollout(ind.rollout), false), label:'Scope of Work'},
-    {html: panel(pcRevenue(ind.revenue), true), label:'Demand & Revenue'},
-    {html: panel(pcTimeline(ind.nextSteps), false), label:'Timeline'},
-    ...whyUsItems,
-    {html: panel(pcTerms(ind.nextSteps), false), label:'Terms and Next Steps'}
-  ];
+  // Lazy, so a section left out of the order is never built.
+  const build = {
+    problemOpportunity: () => ({html: panel(pcProblemOpportunity(ind.cover, ind.opportunity), true), label:'Problem and Opportunity'}),
+    businessCase:       () => ({html: panel(pcBusinessCase(ind.businessCase, ind.businessCase.calc, state.calc, ind.businessCase.note), false), label:'The Business Case'}),
+    solution:           () => ({html: panel(pcSolution(ind.cover), false), label:'Proposed Solution'}),
+    whatIs:             () => ({html: panel(pcWhatIs(ind.whatIs), false), label:'What Kova Is'}),
+    chatDemo:           () => ({html: panel(pcChatDemo(ind.cover), true), label:'See It In Action'}),
+    changes:            () => ({html: panel(pcChanges(ind.changes, company), true), label:'What Changes'}),
+    handles:            () => ({html: panel(pcHandles(ind.handles), false), label:'What Kova Handles'}),
+    workflow:           () => ({html: panel(pcWorkflow(ind.workflow), false), label:'Safe Workflow'}),
+    scope:              () => ({html: panel(pcRollout(ind.rollout), false), label:'Scope of Work'}),
+    revenue:            () => ({html: panel(pcRevenue(ind.revenue), true), label:'Demand & Revenue'}),
+    timeline:           () => ({html: panel(pcTimeline(ind.nextSteps), false), label:'Timeline'}),
+    whyUs:              () => ({html: panel(pcWhyUs(ind), true), label:'Why Us'}),
+    compliance:         () => ind.compliance ? {html: panel(pcCompliance(ind.compliance), true), label:'Compliance & Scope'} : null,
+    terms:              () => ({html: panel(pcTerms(ind.nextSteps), false), label:'Terms and Next Steps'})
+  };
+
+  return (ind.sectionOrder || DEFAULT_SECTION_ORDER)
+    .map(key => {
+      const item = build[key] && build[key]();
+      return item ? Object.assign(item, {key}) : null;
+    })
+    .filter(Boolean);
 }
 
 /* ============================================================
@@ -1367,8 +1389,17 @@ function buildPages(){
   const letterGroups = [letterFirstGroup, ...(letterRest.length ? packExact(letterRest, assembleLetterCont, budget) : [])];
 
   // Panels pack continuously, so two sections may share a page whenever they fit.
+  // An industry can list section keys in `sectionBreakBefore` to force a fresh
+  // page at that point, which is how two sections are kept together: break before
+  // the first so the pair starts on an empty page instead of trailing earlier ones.
   const assembleContent = group => `${rn}<div class="panel-stack">${group.map(it=>it.html).join('')}</div>`;
-  const allGroups = packExact(buildContentSections(ind, company), assembleContent, budget);
+  const breakBefore = new Set(ind.sectionBreakBefore || []);
+  const runs = [];
+  buildContentSections(ind, company).forEach(item=>{
+    if(!runs.length || breakBefore.has(item.key)) runs.push([]);
+    runs[runs.length-1].push(item);
+  });
+  const allGroups = runs.flatMap(run => packExact(run, assembleContent, budget));
 
   const totalPages = letterGroups.length + 1 + allGroups.length;
 
